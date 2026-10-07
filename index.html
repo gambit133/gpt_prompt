@@ -176,7 +176,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 footer{color:var(--muted);font-size:11.5px;padding:8px 0 28px;text-align:center}
 
 /* dialog */
-dialog{position:fixed;width:min(97vw,1400px);max-width:97vw;max-height:96vh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:14px 16px 16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+dialog{position:fixed;width:min(97vw,1400px);max-width:97vw;max-height:96vh;max-height:96dvh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:14px 16px 16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
 dialog[open]{animation:dpop .25s cubic-bezier(.2,.8,.2,1)}
 @keyframes dpop{from{opacity:0;transform:translateY(10px) scale(.98)}}
 dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
@@ -210,9 +210,15 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
   .preview{position:static}
   .preview-img img{max-height:360px}
   .tagline{display:none}
+  dialog{inset:0;margin:0;width:100vw;max-width:100vw;height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;border:0;border-radius:0;padding:14px 14px 28px;overscroll-behavior:contain}
+  dialog[open]{animation:dslide .25s cubic-bezier(.2,.8,.2,1)}
+  @keyframes dslide{from{opacity:0;transform:translateY(16px)}}
+  .dx{position:fixed;top:10px;right:10px}
   .dbody{grid-template-columns:1fr}
   .dside{position:static}
-  .dimg img{max-height:60vh}
+  .dimg img{max-height:none}
+  .dimg{margin-top:36px}
+  .dnav{top:auto;bottom:12px;transform:none}
 }
 @media(max-width:760px){
   .tab{padding:6px 10px;font-size:12px}
