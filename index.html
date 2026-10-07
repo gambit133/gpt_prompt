@@ -16,22 +16,32 @@ body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,'Noto Sans KR
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :is(button,a,select):focus-visible{outline:3px solid var(--warn);outline-offset:2px}
-.wrap{max-width:980px;margin:0 auto;padding:0 16px}
-header{padding:18px 0 6px}
+.wrap{max-width:1480px;margin:0 auto;padding:0 16px}
+header{padding:14px 0 4px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{font-weight:800;font-size:15px;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
 .brand .logo{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:15px;box-shadow:0 6px 14px -6px var(--accent)}
 .brand small{font-weight:500;color:var(--muted);font-size:12px}
-.hero{padding:16px 0 10px}
-.hero h1{font-size:clamp(23px,3.6vw,32px);letter-spacing:-.04em;line-height:1.25;margin:0 0 8px}
-.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{margin:0;color:var(--muted);font-size:14px;max-width:720px}
-.hero p b{color:var(--ink)}
-.flow{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 0;font-size:12px;color:var(--muted)}
-.flow span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 11px 4px 5px;display:inline-flex;align-items:center;gap:6px;transition:transform .2s,box-shadow .2s}
-.flow span:hover{transform:translateY(-2px);box-shadow:0 8px 16px -10px rgba(38,62,54,.4)}
-.flow b{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:11px}
-section.step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:14px 0;box-shadow:0 1px 2px rgba(38,62,54,.04),0 14px 30px -24px rgba(38,62,54,.35)}
+.tagline{margin:0;font-size:13px;color:var(--muted);max-width:640px}
+section.step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:0;box-shadow:0 1px 2px rgba(38,62,54,.04),0 14px 30px -24px rgba(38,62,54,.35)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 410px;gap:14px;align-items:start;padding-top:12px;padding-bottom:20px}
+.side{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;padding-right:2px}
+.side section.step{padding:14px}
+.selected{display:flex;gap:12px;align-items:center;background:var(--soft2);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:12px}
+.selected img{width:78px;height:104px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line);cursor:zoom-in;background:#f5f0e7;flex:none;transition:transform .2s}
+.selected img:hover{transform:scale(1.04)}
+.selmeta{min-width:0}
+.selected strong{display:block;font-size:14px;line-height:1.3}
+.selected p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.badge2{display:inline-block;font-size:10.5px;background:var(--accent);color:#fff;border-radius:999px;padding:1px 8px;margin-bottom:4px}
+.sellinks{display:flex;gap:10px;margin-top:5px}
+.linkbtn{background:none;border:0;padding:0;font-size:12px;color:var(--accent);text-decoration:underline;font-weight:600}
+.side .form{grid-template-columns:1fr 1fr}
+.side .field.topic{grid-column:1/-1}
+.side .toggle{margin-top:8px;width:100%;justify-content:flex-start}
+.side .output{min-height:250px;font-size:12.5px;line-height:1.7}
+.side .actions .primary{flex-basis:100%}
+.hint.small{font-size:11.5px;color:var(--muted);margin:6px 0 0}
 .step-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .step-head h2{margin:0;font-size:16px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
 .step-head h2 b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;box-shadow:0 5px 12px -5px var(--accent)}
@@ -49,16 +59,12 @@ section.step{background:var(--card);border:1px solid var(--line);border-radius:1
 .chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 #search{flex:0 1 240px;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;height:36px;background:#fff;font-size:12.5px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
 #search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--ring)}
-.tabdesc{font-size:12.5px;color:var(--muted);margin:0 0 10px}
+.group-label{display:flex;align-items:center;gap:8px;margin:12px 0 8px;font-weight:800;font-size:13px}
+.group-label span{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:999px;padding:3px 11px}
+.group-label .cnt{background:none;color:var(--muted);font-weight:600;font-size:12px;padding:0}
 .card .badge{position:absolute;right:8px;bottom:8px;background:rgba(38,62,54,.75);color:#fff;font-size:10.5px;font-weight:600;border-radius:999px;padding:2px 8px;backdrop-filter:blur(3px)}
 .thumbwrap{position:relative}
-.group-label{display:flex;align-items:center;gap:8px;margin:12px 0 8px;font-weight:800;font-size:13px}
-.group-label:first-child{margin-top:4px}
-.group-label .cnt{font-weight:600;color:var(--muted);font-size:12px}
-.group-label span{background:var(--soft);border-radius:999px;padding:3px 11px;transition:background .25s,color .25s}
-.group-label.active span{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 5px 12px -6px var(--accent)}
-.group-label small{font-weight:500;color:var(--muted);font-size:12px}
-.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 .card{position:relative;border:2px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;
   transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s}
 .card:hover{transform:translateY(-5px);box-shadow:0 18px 30px -16px rgba(38,62,54,.45);border-color:#c3cdbf}
@@ -66,7 +72,7 @@ section.step{background:var(--card);border:1px solid var(--line);border-radius:1
 @keyframes flow{to{background-position:0 0,300% 0}}
 .card-pick{all:unset;display:block;cursor:pointer;width:100%}
 .card-pick:focus-visible{outline:3px solid var(--warn);outline-offset:-3px;border-radius:12px}
-.card .thumb{display:block;width:100%;height:230px;object-fit:cover;object-position:top;background:#f5f0e7;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.card .thumb{display:block;width:100%;height:210px;object-fit:cover;object-position:top;background:#f5f0e7;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .card:hover .thumb{transform:scale(1.04)}
 .card .meta{padding:9px 10px 10px;background:var(--card);position:relative}
 .card strong{display:block;font-size:13px;line-height:1.3;margin-bottom:3px}
@@ -107,14 +113,6 @@ section.step{background:var(--card);border:1px solid var(--line);border-radius:1
 .secondary:active{transform:translateY(1px)}
 #status{min-height:18px;font-size:12.5px;color:var(--accent);margin-top:8px;font-weight:600}
 .secondary.accent{border-color:var(--accent);color:var(--accent);font-weight:700;background:var(--soft2)}
-.tip{display:flex;gap:10px;align-items:flex-start;background:linear-gradient(135deg,var(--soft2),#fff);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:10px 12px;margin-top:10px;font-size:12.5px;line-height:1.6}
-.tip-icon{font-size:18px;line-height:1.2}
-.tip strong{color:var(--accent)}
-.howto{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.howto div{background:var(--soft2);border-radius:12px;padding:10px 12px;font-size:12px;border:1px solid transparent;transition:transform .2s,border-color .2s,box-shadow .2s}
-.howto div:hover{transform:translateY(-3px);border-color:var(--line);box-shadow:0 12px 20px -16px rgba(38,62,54,.5)}
-.howto b{display:block;color:var(--accent);margin-bottom:2px}
-.howto p{margin:0;color:var(--muted)}
 footer{color:var(--muted);font-size:11.5px;padding:8px 0 28px;text-align:center}
 dialog{width:min(97vw,1500px);max-width:97vw;max-height:96vh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:14px 16px 16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
 dialog .dbtns{display:flex;gap:8px;align-items:center}
@@ -134,6 +132,11 @@ dialog .dcontent{white-space:pre-wrap;font-size:12.5px;color:var(--muted);backgr
 .toast.show{transform:translate(-50%,0);opacity:1}
 .toast .ok{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:12px}
 [hidden]{display:none!important}
+@media(max-width:1099px){
+  .layout{grid-template-columns:1fr}
+  .side{position:static;max-height:none;overflow:visible}
+  .tagline{display:none}
+}
 @media(max-width:760px){
   .tab{padding:7px 10px;font-size:12px}
   #search{flex-basis:100%}
@@ -142,77 +145,72 @@ dialog .dcontent{white-space:pre-wrap;font-size:12.5px;color:var(--muted);backgr
   .form{grid-template-columns:1fr 1fr}
   .form .field.topic{grid-column:1/-1}
   .form-row2{grid-template-columns:1fr}
-  .howto{grid-template-columns:1fr}
-  .primary{flex-basis:100%}
+    .primary{flex-basis:100%}
 }
 @media(max-width:420px){.card .thumb{height:140px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-@media print{.actions,.attach,.howto,footer,.step-choose,.toast{display:none}.output{min-height:600px}body{background:#fff}}
+@media print{.actions,.attach,footer,.step-choose,.toast,.selected{display:none}.layout{display:block}.output{min-height:600px}body{background:#fff}}
 </style>
 </head>
 <body>
 <header class="wrap">
   <div class="topbar">
     <div class="brand"><span class="logo" aria-hidden="true">✎</span>배움의 도구<small>GPT 이미지 프롬프트 생성기</small></div>
-  </div>
-  <div class="hero">
-    <h1><em>그림 하나</em> 고르고, 과목·주제만 적으면 끝.</h1>
-    <p>복사한 프롬프트를 ChatGPT에 붙여넣으세요. <b>교과서 사진·필기·학습지·요약본·PDF 같은 자료를 함께 첨부하면</b> 내용을 읽고 알아서 정리한 학습 이미지를 만들어 줍니다.</p>
-    <div class="flow"><span><b>1</b>그림 고르기</span><span><b>2</b>과목·주제 적기</span><span><b>3</b>복사해서 ChatGPT에 자료와 함께 붙여넣기</span></div>
+    <p class="tagline">그림을 고르고 과목·주제만 적으면 프롬프트 완성. 복사해서 ChatGPT에 자료와 함께 붙여넣으세요.</p>
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap layout">
   <section class="step step-choose" aria-labelledby="h1">
-    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint" id="galleryHint">탭으로 용도를 고르고 그림을 누르세요 · 전체 <b id="countAll"></b>종</span></div>
+    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 🔍 크게 보기</span></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="용도별 묶음"></div>
-    <div class="filterbar"><div class="chips" id="styleChips" aria-label="스타일 필터"></div><input id="search" type="search" placeholder="🔍 검색: 암기, 표, 칠판, 발문…" aria-label="예시 검색"></div>
+    <div class="filterbar"><div class="chips" id="styleChips" aria-label="스타일 필터"></div><input id="search" type="search" placeholder="검색: 암기, 표, 칠판, 발문…" aria-label="예시 검색"></div>
     <div id="groups"></div>
-    <p id="noResult" class="hint" hidden>일치하는 예시가 없습니다. 검색어나 필터를 바꿔 보세요.</p>
+    <p id="noResult" class="hint" hidden>일치하는 예시가 없습니다.</p>
   </section>
 
-  <section class="step" aria-labelledby="h2">
-    <div class="step-head"><h2 id="h2"><b>2</b>간단히 적기</h2><span class="hint">비워 두면 첨부 자료를 기준으로 만듭니다</span></div>
-    <div class="form">
-      <div class="field"><label for="grade">학년</label>
-        <select id="grade">
-          <option value="">선택 안 함</option>
-          <option>초등학교 저학년</option><option>초등학교 고학년</option>
-          <option>중학교 1학년</option><option>중학교 2학년</option><option>중학교 3학년</option>
-          <option>고등학교 1학년</option><option>고등학교 2학년</option><option>고등학교 3학년</option>
-          <option>대학생·성인</option>
-        </select></div>
-      <div class="field"><label for="subject">과목</label><input id="subject" list="subjects" placeholder="예: 국어" autocomplete="off">
-        <datalist id="subjects"><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option></datalist></div>
-      <div class="field topic"><label for="topic">주제·단원</label><input id="topic" placeholder="예: 구운몽, 광합성, 3·1 운동 (비워도 됨)"></div>
-    </div>
-    <div class="form-row2">
-      <div class="field"><label for="extra">추가 요청 <span style="font-weight:400">(선택)</span></label><input id="extra" placeholder="예: 정답은 맨 뒤에, 그림 많이, 영어 단어 병기"></div>
+  <aside class="side" id="editor">
+    <section class="step" aria-labelledby="h2">
+      <div class="selected">
+        <img id="selThumb" alt="선택한 예시" title="크게 보기">
+        <div class="selmeta"><span class="badge2" id="selTag"></span><strong id="selName"></strong><p id="selDesc"></p>
+          <div class="sellinks"><button id="selZoom" class="linkbtn">크게 보기</button><button id="changePick" class="linkbtn">다른 그림 고르기</button></div></div>
+      </div>
+      <div class="step-head"><h2 id="h2"><b>2</b>간단히 적기</h2><span class="hint">비워 두면 첨부 자료 기준</span></div>
+      <div class="form">
+        <div class="field"><label for="grade">학년</label>
+          <select id="grade">
+            <option value="">선택 안 함</option>
+            <option>초등학교 저학년</option><option>초등학교 고학년</option>
+            <option>중학교 1학년</option><option>중학교 2학년</option><option>중학교 3학년</option>
+            <option>고등학교 1학년</option><option>고등학교 2학년</option><option>고등학교 3학년</option>
+            <option>대학생·성인</option>
+          </select></div>
+        <div class="field"><label for="subject">과목</label><input id="subject" list="subjects" placeholder="예: 국어" autocomplete="off">
+          <datalist id="subjects"><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option></datalist></div>
+        <div class="field topic"><label for="topic">주제·단원</label><input id="topic" placeholder="예: 구운몽, 광합성, 3·1 운동"></div>
+        <div class="field topic"><label for="extra">추가 요청 <span style="font-weight:400">(선택)</span></label><input id="extra" placeholder="예: 정답은 맨 뒤에, 영어 병기"></div>
+      </div>
       <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료를 첨부할게요</label>
-    </div>
-    <p class="attach" id="attachInfo">✓ 첨부파일 참조 프롬프트 문구가 추가되었습니다. ChatGPT에 자료(교과서 사진·학습지·요약본·PDF 등)를 첨부하면 이를 참고하여 이미지가 생성됩니다. 선택한 예시 이미지도 함께 첨부하면 더 정확합니다.</p>
-  </section>
+      <p class="attach" id="attachInfo">✓ 첨부 자료 참조 문구 포함 · 예시 이미지도 함께 첨부하면 더 정확합니다.</p>
+    </section>
 
-  <section class="step" aria-labelledby="h3">
-    <div class="step-head"><h2 id="h3"><b>3</b>복사해서 붙여넣기</h2><span class="hint" id="length"></span></div>
-    <textarea id="output" class="output" spellcheck="false" aria-label="완성 프롬프트 (직접 수정 가능)"></textarea>
-    <div class="actions">
-      <button id="copy" class="primary">📋 프롬프트 복사</button>
-      <button id="copyImage" class="secondary accent" title="클립보드에 복사한 뒤 ChatGPT 입력창에 Ctrl+V(⌘V)로 붙여넣으세요">🖼 예시 이미지 복사</button>
-      <a id="refDownload" class="secondary" href="#" download="example.jpg" title="복사가 안 되면 저장해서 첨부하세요">⬇ 예시 이미지 저장</a>
-      <button id="reset" class="secondary">입력 지우기</button>
-    </div>
-    <div id="status" role="status" aria-live="polite"></div>
-    <div class="tip"><span class="tip-icon">💡</span><div><strong>더 정확하게 만들려면 예시 이미지도 함께 첨부하세요.</strong> <b>예시 이미지 복사</b>를 누른 뒤 ChatGPT 입력창에 붙여넣기(Ctrl+V)하고, 이어서 프롬프트를 붙여넣으면 됩니다. 글로 설명한 스타일보다 그림을 직접 보여 주는 쪽이 구성과 색감을 훨씬 잘 따라갑니다. 복사가 안 되는 기기에서는 <b>예시 이미지 저장</b> 후 파일로 첨부하세요.</div></div>
-    <div class="howto">
-      <div><b>① 예시 이미지 + 자료 첨부</b><p>복사한 예시 이미지를 ChatGPT에 붙여넣고, 교과서 사진·필기·학습지·요약본·PDF 등 자료도 올립니다.</p></div>
-      <div><b>② 프롬프트 붙여넣기</b><p>복사한 프롬프트를 그대로 붙여넣고 전송합니다.</p></div>
-      <div><b>③ 확인하고 고치기</b><p>틀린 글자나 빠진 내용은 "○○를 △△로 고쳐 줘"라고 이어서 요청하세요.</p></div>
-    </div>
-  </section>
+    <section class="step" aria-labelledby="h3">
+      <div class="step-head"><h2 id="h3"><b>3</b>복사해서 붙여넣기</h2><span class="hint" id="length"></span></div>
+      <textarea id="output" class="output" spellcheck="false" aria-label="완성 프롬프트 (직접 수정 가능)"></textarea>
+      <div class="actions">
+        <button id="copy" class="primary">📋 프롬프트 복사</button>
+        <button id="copyImage" class="secondary accent" title="ChatGPT 입력창에 Ctrl+V로 붙여넣으세요">🖼 예시 이미지 복사</button>
+        <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 저장</a>
+        <button id="reset" class="secondary">지우기</button>
+      </div>
+      <div id="status" role="status" aria-live="polite"></div>
+      <p class="hint small">예시 이미지를 함께 붙여넣으면 구성과 색감을 더 정확히 따릅니다.</p>
+    </section>
+  </aside>
 </main>
 
-<footer class="wrap">입력한 내용은 저장되거나 전송되지 않습니다 · 이 페이지는 프롬프트만 만들고, 이미지는 ChatGPT에서 생성됩니다 · 예시 이미지는 모두 고3 국어 「구운몽」으로 만든 것입니다</footer>
+<footer class="wrap">입력은 저장·전송되지 않습니다 · 예시는 모두 고3 국어 「구운몽」</footer>
 
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
 <dialog id="dialog">
@@ -270,6 +268,7 @@ const info={
 };
 const GROUPS=[['organize','📘 정리하기','요약·노트·표·도식으로 내용을 정리하는 자료'],['understand','💡 이해하기','개념·원리·비유·질문으로 깊이 이해하는 자료'],['memorize','🧠 암기하기','카드·두문자·이야기·빈칸으로 외우는 자료'],['check','✅ 점검하기','문제 풀이·회상·대조로 내가 아는지 확인하는 자료'],['teacher','🍎 선생님용','학습 목표·수업 설계·발문·학습지·평가 자료']];
 let tab='organize',styleFilter='전체',query='';
+const isMobile=()=>window.matchMedia('(max-width:1099px)').matches;
 const HAND='크림색 모눈 종이 질감에 검은 펜 손글씨, 노랑·초록·분홍 형광펜 제목, 얇은 테두리, 작은 고전 인물 수채 일러스트';
 const $=id=>document.getElementById(id);
 let role='student',active='s-onepage';
@@ -291,7 +290,6 @@ function renderGallery(){
     if(!searching&&g!==tab)continue;
     const list=samples.filter(s=>s.group===g&&(styleFilter==='전체'||s.tag===styleFilter)&&matches(s));if(!list.length)continue;shown+=list.length;
     if(searching){const lab=document.createElement('div');lab.className='group-label active';lab.innerHTML=`<span></span><span class="cnt"></span>`;lab.children[0].textContent=label;lab.children[1].textContent=list.length+'종';wrap.append(lab)}
-    else{const d=document.createElement('p');d.className='tabdesc';d.textContent=desc;wrap.append(d)}
     const grid=document.createElement('div');grid.className='gallery';renderGroup(list,grid);wrap.append(grid);
   }
   $('noResult').hidden=shown>0;
@@ -308,7 +306,7 @@ function renderGroup(list,el){
     const meta=document.createElement('div');meta.className='meta';
     const t=document.createElement('strong');t.textContent=info[s.key].name;
     const d=document.createElement('p');d.textContent=info[s.key].desc;
-    meta.append(t,d);pick.append(tw,meta);pick.onclick=()=>{active=s.key;setRole(s.role);};
+    meta.append(t,d);pick.append(tw,meta);pick.onclick=()=>{if(isMobile())openDialog(s);else{active=s.key;setRole(s.role);}};
     const check=document.createElement('span');check.className='check';check.textContent='✓ 선택됨';
     const zoom=document.createElement('button');zoom.className='zoom';zoom.textContent='🔍 크게';zoom.setAttribute('aria-label',info[s.key].name+' 예시 크게 보기');
     zoom.onclick=e=>{e.stopPropagation();openDialog(s)};
@@ -317,7 +315,9 @@ function renderGroup(list,el){
 }
 let dialogKey=null;
 function openDialog(s){dialogKey=s.key;$('dialogImage').src=s.image;$('dialogImage').alt=s.title;$('dialogTitle').textContent=info[s.key].name+' · '+s.title;$('dialogContent').textContent='이미지 속 내용\n'+s.content;$('dialog').showModal()}
-$('dialogPick').onclick=()=>{if(dialogKey){active=dialogKey;tab=sample().group;$('dialog').close();setRole(sample().role);$('h2').scrollIntoView({behavior:'smooth',block:'start'})}};
+$('dialogPick').onclick=()=>{if(dialogKey){active=dialogKey;tab=sample().group;$('dialog').close();setRole(sample().role);if(isMobile())$('editor').scrollIntoView({behavior:'smooth',block:'start'})}};
+$('selThumb').onclick=$('selZoom').onclick=()=>openDialog(sample());
+$('changePick').onclick=()=>$('h1').scrollIntoView({behavior:'smooth',block:'start'});
 
 function build(){
   const s=sample(),f=info[s.key];
@@ -352,6 +352,7 @@ function build(){
   if(extra)parts.push(`[추가 요청]\n${extra}`);
   parts.push(`완성 후 한글 오탈자와 내용 오류를 한 번 더 점검해 주세요. 이미지 생성이 어려우면 같은 구성의 텍스트 초안을 먼저 보여 주세요.`);
   $('refDownload').href=s.image;$('refDownload').download=s.key+'.jpg';
+  $('selThumb').src=s.thumb;$('selName').textContent=f.name;$('selDesc').textContent=f.desc;$('selTag').textContent=s.tag;
   $('output').value=parts.join('\n\n');
   $('length').textContent=$('output').value.length.toLocaleString()+'자';
   $('status').textContent='';
@@ -367,9 +368,9 @@ $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').c
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
 $('copy').onclick=async()=>{
   const text=$('output').value;if(!text.trim()){$('status').textContent='복사할 내용이 없습니다.';return}
-  try{await navigator.clipboard.writeText(text);$('status').textContent='✓ 복사했습니다. ChatGPT에 자료를 첨부하고 그대로 붙여넣으세요.';toast('복사 완료! ChatGPT에 붙여넣으세요')}
+  try{await navigator.clipboard.writeText(text);$('status').textContent='✓ 프롬프트를 복사했습니다.';toast('프롬프트 복사 완료')}
   catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}
-    $('status').textContent=ok?'✓ 복사했습니다. ChatGPT에 붙여넣으세요.':'자동 복사가 막혔습니다. Ctrl+C(⌘C)로 복사하세요.'}
+    $('status').textContent=ok?'✓ 프롬프트를 복사했습니다.':'자동 복사가 막혔습니다. Ctrl+C로 복사하세요.'}
 };
 $('copyImage').onclick=async()=>{
   const s=sample();
@@ -377,13 +378,13 @@ $('copyImage').onclick=async()=>{
     if(!window.ClipboardItem)throw new Error('no ClipboardItem');
     const blobPromise=fetch(s.image).then(r=>r.blob()).then(b=>createImageBitmap(b)).then(bm=>{const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))});
     await navigator.clipboard.write([new ClipboardItem({'image/png':blobPromise})]);
-    $('status').textContent='✓ 예시 이미지를 복사했습니다. ChatGPT 입력창에 Ctrl+V(⌘V)로 붙여넣고, 이어서 프롬프트도 붙여넣으세요.';toast('예시 이미지 복사 완료! ChatGPT에 붙여넣으세요');
+    $('status').textContent='✓ 예시 이미지를 복사했습니다. ChatGPT에 Ctrl+V로 붙여넣으세요.';toast('예시 이미지 복사 완료');
   }catch(e){
     $('refDownload').click();
-    $('status').textContent='이 브라우저는 이미지 복사를 지원하지 않아 파일로 저장했습니다. 저장된 그림을 ChatGPT에 첨부하세요.';
+    $('status').textContent='이미지 복사가 지원되지 않아 파일로 저장했습니다.';
   }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('attach').checked=true;$('attachInfo').hidden=false;build();$('status').textContent='입력을 지웠습니다.'};
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('attach').checked=true;$('attachInfo').hidden=false;build();$('status').textContent='';};
 let toastTimer;function toast(msg){$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
 $('dialogClose').onclick=()=>$('dialog').close();
 $('dialog').onclick=e=>{if(e.target===$('dialog'))$('dialog').close()};
