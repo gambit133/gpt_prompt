@@ -1,0 +1,23 @@
+{
+ "name": "쌤플레이",
+ "short_name": "쌤플레이",
+ "description": "학습자료 프롬프트 sample 생성기",
+ "start_url": "./index.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#f4f3ec",
+ "theme_color": "#255c47",
+ "icons": [
+  {
+   "src": "assets/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "assets/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  }
+ ]
+}

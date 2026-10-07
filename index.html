@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#255c47">
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>쌤플레이 · AI마당 선생님모여라 학습자료 프롬프트 sample 생성기</title>
 <meta name="description" content="쌤플레이 — AI마당, 선생님 모여라. 학습자료 프롬프트 sample 생성기. 예시 그림을 고르고 과목·주제만 적으면 ChatGPT용 학습 이미지 프롬프트가 완성됩니다.">
 <style>
@@ -60,6 +62,7 @@ section.step{position:relative;background:var(--card);border:1px solid var(--lin
 .step-head h2{margin:0;font-size:16px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
 .step-head h2 b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;box-shadow:0 5px 12px -5px var(--accent);transition:transform .3s}
 .step-head .hint{font-size:12px;color:var(--muted)}
+.step-head .hint.warn{color:#d2452f;font-weight:700}
 .tip{margin:-4px 0 12px;font-size:12.5px;line-height:1.5;color:var(--accent);background:var(--soft2);border-radius:10px;padding:7px 11px}
 .tip b{font-weight:800}
 section.step.current{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring),0 14px 30px -24px rgba(38,62,54,.35)}
@@ -807,7 +810,7 @@ function build(){
   const extras=val('extra').split(/\n+/).map(s=>s.trim()).filter(Boolean);
   const contents=attach?[]:val('content').split(/\n+/).map(s=>s.trim()).filter(Boolean);
   const who=[grade,subject].filter(Boolean).join(' ');
-  const demo=topic.replace(/[「」『』\s]/g,'')==='구운몽'&&(subject.replace(/\s/g,'')==='국어'||!subject);
+  const demo=topic.replace(/[「」『』\s]/g,'')==='구운몽'&&(subject.replace(/\s/g,'')==='국어'||!subject)&&(!grade||/고등학교|대학생/.test(grade));
   const parts=[];
   if(demo){
     let g=s.generation.replaceAll('고3 국어',(who||'고3 국어'));
@@ -840,7 +843,7 @@ function build(){
   parts.push(`완성 후 한글 오탈자와 내용 오류를 한 번 더 점검해 주세요. 이미지 생성이 어려우면 같은 구성의 텍스트 초안을 먼저 보여 주세요.`);
   $('refDownload').href=s.image;$('refDownload').download=s.key+'.jpg';$('refDownload').onclick=()=>setTimeout(()=>imgDone('예시 이미지 저장 완료. 파일로 첨부 후 프롬프트 붙여넣기.'),100);
   $('output').value=parts.join('\n\n');
-  $('length').textContent=$('output').value.length.toLocaleString()+'자';
+  updateLength();
   $('status').textContent='';
 }
 renderTunes();
@@ -974,7 +977,8 @@ $('extra').addEventListener('input',()=>{setCurrent(2);build()});$('content').ad
 $('topic').addEventListener('input',()=>{renderExamples('content');$('content').placeholder='예) '+contentExamples().items.slice(0,3).join('\n')});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
-$('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
+function updateLength(){const n=$('output').value.length;const long=n>3000;$('length').textContent=n.toLocaleString()+'자'+(long?' · 조금 길어요 (3,000자 이내 권장)':'');$('length').classList.toggle('warn',long)}
+$('output').addEventListener('input',updateLength);
 
 let toastTimer;function toast(msg){if(isMobile()&&/복사/.test(msg))return;$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
 $('copy').onclick=async()=>{
