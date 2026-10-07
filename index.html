@@ -636,7 +636,7 @@ function setCurrent(n){
 }
 function lockStep3(lock){$('step3').classList.toggle('locked',lock);if(lock)$('step3').setAttribute('inert','');else $('step3').removeAttribute('inert')}
 function enterWork(key,scroll=true){
-  active=key;const s=sample();role=s.role;if(tab!=='all')tab=s.group;
+  const changed=active!==key;active=key;if(changed&&typeof resetInputs==='function')resetInputs();const s=sample();role=s.role;if(tab!=='all')tab=s.group;
   document.body.classList.toggle('teacher',role==='teacher');
   $('choose').hidden=true;$('work').hidden=false;
   $('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);
@@ -829,7 +829,8 @@ $('copyImage').onclick=async()=>{
     $('refDownload').click();imgDone('이 브라우저는 이미지 복사가 안 되어 파일로 저장했습니다. 저장된 파일을 첨부하세요.');
   }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);build();toast('모두 지웠어요')};
+function resetInputs(){['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);build();}
+$('reset').onclick=()=>{resetInputs();toast('모두 지웠어요')};
 
 window.addEventListener('pageshow',()=>{syncSubject();renderExamples('topic');renderExamples('extra');if(active)build()});
 renderGallery();setCurrent(1);
