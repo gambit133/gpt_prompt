@@ -145,9 +145,15 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .examples span{font-size:11px;color:var(--muted);margin-right:2px}
 .examples button{border:1px dashed #c3cdbf;background:transparent;border-radius:999px;padding:2px 9px;font-size:11px;color:var(--accent);transition:all .15s}
 .examples button:hover{background:var(--soft);border-style:solid}
-.copyopt{height:auto;min-height:38px;padding:6px 12px;flex-wrap:wrap;font-weight:600}
-.copyopt .lbl{white-space:nowrap}
-.copyopt .hint{font-weight:400;font-size:11.5px}
+.imgstep{margin-top:10px;border:1.5px dashed var(--line);border-radius:12px;padding:10px 12px;transition:border-color .3s,background .3s}
+.imgstep-msg{margin:0 0 8px;font-size:12.5px;color:var(--muted)}
+.imgstep-msg b{color:var(--ink)}
+.imgstep .actions.sub{margin-top:0}
+.imgstep.glow{border-color:var(--accent);background:var(--soft2);animation:focusPulse 1.6s ease-in-out infinite}
+.imgstep.glow .imgstep-msg{color:var(--accent);font-weight:700}
+.imgstep.glow .secondary{border-color:var(--accent);color:var(--accent);font-weight:700;background:#fff}
+.imgstep.done{border-style:solid;border-color:#3f8f6e;background:#eef6f1;animation:none}
+.imgstep.done .imgstep-msg{color:#2f6f52}
 .copyopt input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
 .copyopt .hint{font-weight:400}
 .actions.sub{margin-top:8px}
@@ -170,7 +176,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 footer{color:var(--muted);font-size:11.5px;padding:8px 0 28px;text-align:center}
 
 /* dialog */
-dialog{width:min(97vw,1400px);max-width:97vw;max-height:96vh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:14px 16px 16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+dialog{position:fixed;width:min(97vw,1400px);max-width:97vw;max-height:96vh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:14px 16px 16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
 dialog[open]{animation:dpop .25s cubic-bezier(.2,.8,.2,1)}
 @keyframes dpop{from{opacity:0;transform:translateY(10px) scale(.98)}}
 dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
@@ -188,6 +194,9 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 .dside .box p{margin:0}
 .dside .dbtns{display:flex;flex-direction:column;gap:8px;margin-top:4px}
 .dside .dbtns .primary{flex:none;width:100%}
+.secondary.big{justify-content:center;padding:12px 20px;font-size:14.5px;font-weight:700;border-radius:12px}
+.dx{position:absolute;top:10px;right:10px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:18px;line-height:1;display:grid;place-items:center;z-index:2;box-shadow:0 6px 14px -8px rgba(0,0,0,.4);transition:all .2s}
+.dx:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .dside .counter{font-size:11.5px;color:var(--muted);text-align:center}
 
 /* toast */
@@ -278,16 +287,18 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
           <div class="step-head"><h2 id="h3"><b>3</b>복사해서 붙여넣기</h2><span class="hint" id="length"></span></div>
           <textarea id="output" class="output" spellcheck="false" aria-label="완성 프롬프트 (직접 수정 가능)"></textarea>
           <div class="actions">
-            <button id="copy" class="primary">📋 복사하기 (예시 이미지 + 프롬프트)</button>
+            <button id="copy" class="primary">📋 프롬프트 복사</button>
           </div>
-          <label class="toggle copyopt"><span class="switch"><input id="withImage" type="checkbox" checked><span class="slider"></span></span><span class="lbl">예시 이미지 복사 포함</span><span class="hint">함께 붙여넣으면 더 정확합니다</span></label>
-          <div class="actions sub">
-            <button id="copyImage" class="secondary">🖼 예시 이미지만 복사</button>
-            <button id="shareImage" class="secondary" hidden>📤 예시 이미지 공유</button>
-            <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 예시 이미지 저장</a>
-            <button id="reset" class="secondary danger">🗑 전체 지우기</button>
+          <div class="imgstep" id="imgStep">
+            <p class="imgstep-msg" id="imgMsg"><b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.</p>
+            <div class="actions sub">
+              <button id="copyImage" class="secondary">🖼 예시 이미지 복사</button>
+              <button id="shareImage" class="secondary" hidden>📤 예시 이미지 공유</button>
+              <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 예시 이미지 저장</a>
+            </div>
           </div>
           <div id="status" role="status" aria-live="polite"></div>
+          <div class="actions sub"><button id="reset" class="secondary danger">🗑 전체 지우기</button></div>
         </section>
       </div>
     </div>
@@ -298,13 +309,14 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
 <dialog id="dialog" aria-labelledby="dialogTitle">
+  <button id="dialogX" class="dx" aria-label="닫기">✕</button>
   <div class="dbody">
     <div class="dimg"><img id="dialogImage" alt=""><button class="dnav prev" id="dPrev" aria-label="이전 예시">‹</button><button class="dnav next" id="dNext" aria-label="다음 예시">›</button></div>
     <div class="dside">
       <div><span class="badge2" id="dTag"></span><h3 id="dialogTitle"></h3><p class="sub" id="dDesc"></p></div>
       <div class="box"><b>어떤 자료인가요</b><p id="dWhat"></p></div>
       <div class="box"><b>이럴 때 좋아요</b><p id="dWhen"></p></div>
-      <div class="dbtns"><button id="dialogPick" class="primary">✓ 이 그림으로 만들기</button><button id="dialogClose" class="secondary">닫기</button></div>
+      <div class="dbtns"><button id="dialogPick" class="primary">✓ 이 그림으로 만들기</button><button id="dialogClose" class="secondary big">닫기</button></div>
       <div class="counter" id="dCounter"></div>
     </div>
   </div>
@@ -461,7 +473,7 @@ function openDialog(key){
 function dialogStep(d){const list=visibleKeys.length?visibleKeys:samples.map(s=>s.key);const i=list.indexOf(dialogKey);if(i<0)return;openDialog(list[(i+d+list.length)%list.length])}
 $('dPrev').onclick=()=>dialogStep(-1);$('dNext').onclick=()=>dialogStep(1);
 $('dialog').addEventListener('keydown',e=>{if(e.key==='ArrowLeft')dialogStep(-1);if(e.key==='ArrowRight')dialogStep(1)});
-$('dialogClose').onclick=()=>$('dialog').close();
+$('dialogClose').onclick=$('dialogX').onclick=()=>$('dialog').close();
 $('dialog').onclick=e=>{if(e.target===$('dialog'))$('dialog').close()};
 $('dialogPick').onclick=()=>{if(!dialogKey)return;$('dialog').close();enterWork(dialogKey)};
 
@@ -474,7 +486,7 @@ function enterWork(key,scroll=true){
   active=key;const s=sample();role=s.role;if(tab!=='all')tab=s.group;
   document.body.classList.toggle('teacher',role==='teacher');
   $('choose').hidden=true;$('work').hidden=false;
-  $('step3').classList.remove('done');setCurrent(2);
+  $('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';setCurrent(2);
   renderPreview();build();
   if(scroll)window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -551,7 +563,7 @@ function build(){
   if(tl.length)parts.push(`[세부 조정]\n${tl.join('\n')}\n세부 조정이 예시 이미지의 스타일과 다르면 세부 조정을 우선 적용하세요.`);
   if(extra)parts.push(`[추가 요청]\n${extra}`);
   parts.push(`완성 후 한글 오탈자와 내용 오류를 한 번 더 점검해 주세요. 이미지 생성이 어려우면 같은 구성의 텍스트 초안을 먼저 보여 주세요.`);
-  $('refDownload').href=s.image;$('refDownload').download=s.key+'.jpg';
+  $('refDownload').href=s.image;$('refDownload').download=s.key+'.jpg';$('refDownload').onclick=()=>setTimeout(()=>imgDone('✓ 예시 이미지를 저장했습니다. ChatGPT에 파일로 첨부하고 프롬프트를 붙여넣으세요.'),100);
   $('output').value=parts.join('\n\n');
   $('length').textContent=$('output').value.length.toLocaleString()+'자';
   $('status').textContent='';
@@ -562,45 +574,37 @@ document.querySelectorAll('.examples').forEach(ex=>{const target=$(ex.dataset.fo
   else target.value=b.textContent;
   target.dispatchEvent(new Event('input'));target.focus()})});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
-function updateCopyLabel(){$('copy').textContent=$('withImage').checked?'📋 복사하기 (예시 이미지 + 프롬프트)':'📋 복사하기 (프롬프트)'}
-$('withImage').addEventListener('change',updateCopyLabel);
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
 
 let toastTimer;function toast(msg){$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
 $('copy').onclick=async()=>{
   const text=$('output').value;if(!text.trim()){$('status').textContent='복사할 내용이 없습니다.';return}
-  const withImg=$('withImage').checked&&sample();
-  try{
-    if(withImg&&window.ClipboardItem){
-      await navigator.clipboard.write([new ClipboardItem({'text/plain':new Blob([text],{type:'text/plain'}),'image/png':imageBlob(sample().image)})]);
-      $('status').textContent='✓ 예시 이미지와 프롬프트를 복사했습니다. ChatGPT에 붙여넣으세요. 이미지만 붙으면 아래 프롬프트 복사를 한 번 더 누르세요.';toast('예시 이미지 + 프롬프트 복사 완료');
-    }else{
-      await navigator.clipboard.writeText(text);$('status').textContent='✓ 프롬프트를 복사했습니다.';toast('프롬프트 복사 완료');
-    }
-  }catch{
-    try{await navigator.clipboard.writeText(text);$('status').textContent=withImg?(canShareFiles()?'✓ 프롬프트를 복사했습니다. 이 기기는 이미지 복사를 막아, 예시 이미지는 「공유」나 「저장」으로 첨부하세요.':'✓ 프롬프트만 복사했습니다. 예시 이미지는 아래 버튼으로 따로 복사하세요.'):'✓ 프롬프트를 복사했습니다.';toast('프롬프트 복사 완료')}
-    catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}$('status').textContent=ok?'✓ 프롬프트를 복사했습니다.':'자동 복사가 막혔습니다. Ctrl+C로 복사하세요.'}
-  }
+  try{await navigator.clipboard.writeText(text)}
+  catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}if(!ok){$('status').textContent='자동 복사가 막혔습니다. Ctrl+C로 복사하세요.';return}}
+  $('status').textContent='';toast('프롬프트 복사 완료');
   $('step3').classList.add('done');$('step3').classList.remove('current');
+  $('imgStep').classList.remove('done');$('imgStep').classList.add('glow');
+  $('imgMsg').innerHTML='✓ 프롬프트를 복사했습니다. <b>이어서 예시 이미지도 ChatGPT에 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';
+  $('imgStep').scrollIntoView({behavior:'smooth',block:'nearest'});
 };
-$('copyImage').textContent='🖼 예시 이미지만 복사';
+function imgDone(msg){$('imgStep').classList.remove('glow');$('imgStep').classList.add('done');$('imgMsg').innerHTML=msg}
 async function imageFile(s){const b=await imageBlob(s.image);return new File([b],s.key+'.png',{type:'image/png'})}
 const canShareFiles=()=>{try{return !!(navigator.canShare&&navigator.canShare({files:[new File([''],'x.png',{type:'image/png'})]}))}catch{return false}};
 $('shareImage').hidden=!canShareFiles();
-$('shareImage').onclick=async()=>{const s=sample();if(!s)return;try{const f=await imageFile(s);await navigator.share({files:[f],title:info[s.key].name+' 예시'});$('status').textContent='✓ 공유 창에서 ChatGPT를 선택하면 이미지가 첨부됩니다.'}catch(e){if(e&&e.name!=='AbortError'){$('refDownload').click();$('status').textContent='공유가 지원되지 않아 파일로 저장했습니다.'}}};
+$('shareImage').onclick=async()=>{const s=sample();if(!s)return;try{const f=await imageFile(s);await navigator.share({files:[f],title:info[s.key].name+' 예시'});imgDone('✓ 공유 창에서 ChatGPT를 선택하면 이미지가 첨부됩니다. 이제 프롬프트를 붙여넣으세요.')}catch(e){if(e&&e.name!=='AbortError'){$('refDownload').click();$('status').textContent='공유가 지원되지 않아 파일로 저장했습니다.'}}};
 $('copyImage').onclick=async()=>{
   const s=sample();if(!s)return;
   try{
     if(!window.ClipboardItem)throw new Error('no ClipboardItem');
     await navigator.clipboard.write([new ClipboardItem({'image/png':imageBlob(s.image)})]);
-    $('status').textContent='✓ 예시 이미지를 복사했습니다. ChatGPT 입력창에 붙여넣으세요.';toast('예시 이미지 복사 완료');
+    imgDone('✓ 예시 이미지를 복사했습니다. ChatGPT 입력창에 이미지를 붙여넣은 뒤, 프롬프트도 붙여넣으세요.');toast('예시 이미지 복사 완료');
   }catch(e){
-    if(canShareFiles()){$('status').textContent='이 브라우저는 이미지 복사를 막습니다. 「예시 이미지 공유」로 ChatGPT에 보내거나 저장 후 첨부하세요.';$('shareImage').classList.add('accent')}
-    else{$('refDownload').click();$('status').textContent='이미지 복사가 지원되지 않아 파일로 저장했습니다. 저장된 그림을 첨부하세요.'}
+    if(canShareFiles()){$('imgMsg').innerHTML='이 브라우저는 이미지 복사를 막습니다. <b>예시 이미지 공유</b>로 ChatGPT에 보내거나 <b>저장</b> 후 첨부하세요.'}
+    else{$('refDownload').click();imgDone('✓ 이미지 복사가 지원되지 않아 파일로 저장했습니다. 저장된 그림을 ChatGPT에 첨부하세요.')}
   }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('withImage').checked=true;updateCopyLabel();$('step3').classList.remove('done');setCurrent(2);build();toast('입력을 모두 지웠습니다')};
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';setCurrent(2);build();toast('입력을 모두 지웠습니다')};
 
 renderGallery();setCurrent(1);
 </script>
