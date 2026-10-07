@@ -42,6 +42,9 @@ section.step.current .step-head h2 b{animation:bump 2s ease-in-out infinite}
 @keyframes bump{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
 section.step.pending{opacity:.62}
 section.step.pending:hover,section.step.pending:focus-within{opacity:1}
+section.step.locked{opacity:1}
+section.step.locked>*{filter:blur(1.5px);opacity:.45;pointer-events:none;user-select:none}
+section.step.locked::after{content:"2단계를 채우고 ‘다음’을 누르면 열려요";position:absolute;inset:0;display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--muted);border-radius:18px;background:rgba(255,254,250,.35);z-index:1}
 section.step.done .step-head h2 b{background:linear-gradient(135deg,#3f8f6e,#5fb08d)}
 section.step.done .step-head h2 b::before{content:"✓"}
 section.step.done .step-head h2 b{font-size:0}
@@ -526,15 +529,18 @@ $('dialog').onclick=e=>{if(e.target===$('dialog'))$('dialog').close()};
 $('dialogPick').onclick=()=>{if(!dialogKey)return;$('dialog').close();enterWork(dialogKey)};
 
 /* ---------- workspace ---------- */
+let unlocked=false;
 function setCurrent(n){
   const steps={1:$('choose'),2:$('step2'),3:$('step3')};
-  for(const [k,el] of Object.entries(steps)){el.classList.toggle('current',+k===n);el.classList.toggle('pending',+k>n)}
+  for(const [k,el] of Object.entries(steps)){el.classList.toggle('current',+k===n);el.classList.toggle('pending',+k>n&&!(+k===3&&unlocked))}
+  lockStep3(!unlocked);
 }
+function lockStep3(lock){$('step3').classList.toggle('locked',lock);if(lock)$('step3').setAttribute('inert','');else $('step3').removeAttribute('inert')}
 function enterWork(key,scroll=true){
   active=key;const s=sample();role=s.role;if(tab!=='all')tab=s.group;
   document.body.classList.toggle('teacher',role==='teacher');
   $('choose').hidden=true;$('work').hidden=false;
-  $('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 같이 올리면</b> 구성과 색감이 더 비슷하게 나와요.';setCurrent(2);
+  $('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 같이 올리면</b> 구성과 색감이 더 비슷하게 나와요.';unlocked=false;setCurrent(2);
   renderPreview();build();
   if(scroll)window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -554,7 +560,7 @@ $('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
 const REQUIRED=['grade','subject','topic'];
 function validate(){let ok=true;for(const id of REQUIRED){const bad=!val(id);$(id).closest('.field').classList.toggle('invalid',bad);if(bad)ok=false}$('reqMsg').hidden=ok;return ok}
 $('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step2 .field.invalid input,#step2 .field.invalid select');if(first){if(isMobile())first.scrollIntoView({behavior:'smooth',block:'center'});else first.focus()}return}
-  setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});if(!isMobile())setTimeout(()=>$('output').focus({preventScroll:true}),400)};
+  unlocked=true;setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});if(!isMobile())setTimeout(()=>$('output').focus({preventScroll:true}),400)};
 $('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';if(!isMobile())$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'))});
 REQUIRED.forEach(id=>$(id).addEventListener('input',()=>{if(val(id))$(id).closest('.field').classList.remove('invalid');if(REQUIRED.every(i=>val(i)))$('reqMsg').hidden=true}));
 $('output').addEventListener('focus',()=>setCurrent(3));
@@ -678,7 +684,7 @@ $('copyImage').onclick=async()=>{
     else{$('refDownload').click();imgDone('이미지 복사가 안 되는 브라우저라 파일로 저장했어요. 저장된 그림을 ChatGPT에 올려 주세요.')}
   }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 같이 올리면</b> 구성과 색감이 더 비슷하게 나와요.';setCurrent(2);build();toast('모두 지웠어요')};
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 같이 올리면</b> 구성과 색감이 더 비슷하게 나와요.';unlocked=false;setCurrent(2);build();toast('모두 지웠어요')};
 
 renderGallery();setCurrent(1);
 </script>
