@@ -33,12 +33,26 @@ header.wrap{padding:18px 16px 8px}
 .topbar{flex-wrap:nowrap}
 .tagline{flex:1;text-align:right}
 .menu{position:relative;flex:none}
-.hamb{width:40px;height:40px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);display:grid;place-items:center;gap:0;padding:0}
-.hamb span{display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;margin:2px 0}
-.hamb:hover{border-color:var(--accent)}
-.menulist{position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 34px -14px rgba(0,0,0,.4);padding:6px;min-width:170px;z-index:40;display:grid;gap:2px}
-.menulist a{text-decoration:none;color:var(--ink);font-size:13.5px;padding:9px 12px;border-radius:8px}
-.menulist a:hover{background:var(--soft2);color:var(--accent)}
+.hamb{width:44px;height:44px;border:0;border-radius:50%;background:linear-gradient(145deg,#fffefa,#eef2e9);box-shadow:inset 0 1px 0 #fff,0 6px 14px -6px rgba(38,62,54,.45),0 0 0 1px var(--line);display:grid;place-items:center;padding:0;cursor:pointer;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s,background .3s}
+.hamb:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 #fff,0 10px 18px -8px rgba(38,62,54,.5),0 0 0 1px var(--accent)}
+.hamb:active{transform:scale(.94)}
+.hamb .hb{position:relative;width:20px;height:14px;display:block}
+.hamb .hb i{position:absolute;left:0;height:2.5px;border-radius:3px;background:var(--ink);transition:transform .4s cubic-bezier(.68,-.55,.27,1.55),opacity .25s,width .3s,top .3s,background .3s}
+.hamb .hb i:nth-child(1){top:0;width:20px}
+.hamb .hb i:nth-child(2){top:50%;transform:translateY(-50%);width:14px}
+.hamb .hb i:nth-child(3){top:100%;transform:translateY(-100%);width:20px}
+.hamb.open{background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 16px -8px var(--accent)}
+.hamb.open .hb i{background:#fff;width:20px}
+.hamb.open .hb i:nth-child(1){top:50%;transform:translateY(-50%) rotate(45deg)}
+.hamb.open .hb i:nth-child(2){opacity:0;transform:translateY(-50%) scaleX(0)}
+.hamb.open .hb i:nth-child(3){top:50%;transform:translateY(-50%) rotate(-45deg)}
+.menulist{position:absolute;right:0;top:calc(100% + 10px);background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 22px 40px -16px rgba(0,0,0,.45);padding:8px;min-width:200px;z-index:40;display:grid;gap:2px;transform-origin:top right;animation:menuIn .28s cubic-bezier(.2,.9,.3,1.2)}
+.menulist[hidden]{display:none}
+.menulist::before{content:"";position:absolute;top:-6px;right:16px;width:11px;height:11px;background:var(--card);border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+@keyframes menuIn{from{opacity:0;transform:translateY(-6px) scale(.9)}}
+.menulist a{text-decoration:none;color:var(--ink);font-size:14px;font-weight:600;padding:9px 12px 9px 9px;border-radius:10px;display:flex;align-items:center;gap:10px;transition:background .2s,color .2s,transform .2s}
+.menulist a .mi{width:28px;height:28px;border-radius:8px;background:var(--soft2);display:grid;place-items:center;font-size:14px;flex:none}
+.menulist a:hover{background:var(--soft2);color:var(--accent);transform:translateX(2px)}
 @media(max-width:1099px){.tagline{display:none}}
 main.wrap{padding-top:12px;padding-bottom:24px}
 
@@ -408,7 +422,7 @@ dialog.guide{width:min(96vw,640px)}
   <div class="topbar">
     <a class="brand" id="homeLink" href="#" title="홈으로"><img class="logo" src="assets/logo.svg" alt="" width="34" height="34">쌤플레이<small>AI마당 · 선생님 모여라</small></a>
     <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b></p>
-    <div class="menu"><button id="menuBtn" class="hamb" aria-label="메뉴" aria-expanded="false"><span></span><span></span><span></span></button><nav id="menuList" class="menulist" hidden><a href="about.html">사이트 소개</a><a href="#" id="menuHome">쌤플 고르기</a></nav></div>
+    <div class="menu"><button id="menuBtn" class="hamb" aria-label="메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="about.html"><span class="mi">📖</span>사이트 소개</a><a href="#" id="menuHome"><span class="mi">🖼️</span>쌤플 고르기</a></nav></div>
   </div>
 </header>
 
@@ -642,7 +656,7 @@ const GUIDE={
   't-quiz':['수업 직후 확인 문항과 교사용 정답','차시 마무리 형성평가'],
   't-rubric':['평가 요소·수준·배점을 정리한 채점 기준표','서술형·수행평가 채점 기준 안내']
 };
-const GROUPS=[['teacher','🍎 선생님용'],['organize','📘 정리하기'],['understand','💡 이해하기'],['memorize','🧠 암기하기'],['check','✅ 점검하기']];
+const GROUPS=[['teacher','🍎 선생님용'],['organize','📘 정리'],['understand','💡 이해'],['memorize','🧠 암기'],['check','✅ 점검']];
 const HAND='크림색 모눈 종이 질감에 검은 펜 손글씨, 노랑·초록·분홍 형광펜 제목, 얇은 테두리, 작은 고전 인물 수채 일러스트';
 const $=id=>document.getElementById(id);
 const isMobile=()=>window.matchMedia('(max-width:1099px),(pointer:coarse)').matches;
@@ -738,9 +752,10 @@ function renderPreview(){
 function goHome(){$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
 $('changePick').onclick=()=>{$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
 $('homeLink').onclick=e=>{e.preventDefault();if($('dialog').open)$('dialog').close();goHome()};
-$('menuHome').onclick=e=>{e.preventDefault();$('menuList').hidden=true;if($('dialog').open)$('dialog').close();goHome()};
-$('menuBtn').onclick=e=>{e.stopPropagation();const o=$('menuList').hidden;$('menuList').hidden=!o;$('menuBtn').setAttribute('aria-expanded',o)};
-document.addEventListener('click',e=>{if(!document.querySelector('.menu').contains(e.target))$('menuList').hidden=true});
+$('menuHome').onclick=e=>{e.preventDefault();setMenu(false);if($('dialog').open)$('dialog').close();goHome()};
+function setMenu(open){$('menuList').hidden=!open;$('menuBtn').classList.toggle('open',open);$('menuBtn').setAttribute('aria-expanded',open)}
+$('menuBtn').onclick=e=>{e.stopPropagation();setMenu($('menuList').hidden)};
+document.addEventListener('click',e=>{if(!document.querySelector('.menu').contains(e.target))setMenu(false)});
 $('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
 const REQUIRED=['grade','subject','topic'];
 const REQ_NAME={grade:'학년',subject:'과목',topic:'주제',content:'학습 내용'};
