@@ -651,7 +651,7 @@ async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const b
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
 
-let toastTimer;function toast(msg){$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
+let toastTimer;function toast(msg){if(isMobile()&&/복사/.test(msg))return;$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
 $('copy').onclick=async()=>{
   const text=$('output').value;if(!text.trim()){$('status').textContent='복사할 프롬프트가 없어요.';return}
   try{await navigator.clipboard.writeText(text)}
