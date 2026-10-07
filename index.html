@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#255c47">
-<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>쌤플레이 · AI마당 선생님모여라 학습자료 프롬프트 sample 생성기</title>
@@ -24,12 +24,10 @@ button{cursor:pointer}
 .wrap{max-width:1480px;margin:0 auto;padding:0 16px}
 header.wrap{padding:18px 16px 8px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{font-weight:800;font-size:17px;letter-spacing:.02em;display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;border-radius:10px;transition:opacity .2s;padding:4px 0}
-.brand:hover{opacity:.8}
-.brand:hover .logo{transform:rotate(-8deg) scale(1.05)}
-.brand .logo{transition:transform .2s}
-.brand .logo{width:34px;height:34px;border-radius:10px;display:block;box-shadow:0 6px 14px -6px var(--accent)}
-.brand small{font-weight:500;color:var(--muted);font-size:12.5px}
+.brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;border-radius:10px;transition:opacity .2s;padding:2px 0}
+.brand:hover{opacity:.85}
+.brand .logo{height:56px;width:auto;display:block;filter:drop-shadow(0 4px 8px rgba(38,62,54,.18))}
+.brand small{font-weight:600;color:var(--muted);font-size:12.5px;margin-top:10px}
 .tagline{margin:0;font-size:13px;color:var(--muted)}
 .tagline b{color:var(--accent);font-weight:700}
 .topbar{flex-wrap:nowrap}
@@ -411,10 +409,12 @@ dialog.guide{width:min(96vw,640px)}
 @media(max-width:760px){
   header.wrap{padding:22px 16px 10px;padding-top:calc(22px + env(safe-area-inset-top))}
   .stickysel{top:calc(6px + env(safe-area-inset-top))}
-  .brand{font-size:16px}
+  .brand .logo{height:44px}
+  .brand small{display:none}
   .step-head{align-items:center}
   .step-head h2{font-size:15px}
   .step-choose .step-head .hint{display:none}
+  .step-choose .step-head h2 .capy{display:none}
   .step-choose .step-head{margin-bottom:6px}
   .tab{padding:6px 11px;font-size:12.5px}
   .ddbtn{padding:0 10px}
@@ -427,12 +427,25 @@ dialog.guide{width:min(96vw,640px)}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media print{.step-choose,.selbar,.alts,.actions,footer,.toast,.tune{display:none}.work-grid{display:block}.output{min-height:600px}body{background:#fff}}
+.capy{display:inline-block;overflow:hidden;position:relative;flex:none;vertical-align:middle;pointer-events:none}
+.capy img{position:absolute;left:0;top:0;height:100%;width:auto;max-width:none;animation:capySlide linear infinite}
+@keyframes capySlide{to{transform:translateX(-100%)}}
+.capy-blink{aspect-ratio:152/128}.capy-blink img{animation-duration:3.6s;animation-timing-function:steps(9)}
+.capy-read{aspect-ratio:115/128}.capy-read img{animation-duration:2.4s;animation-timing-function:steps(11)}
+.capy-type{aspect-ratio:138/128}.capy-type img{animation-duration:1.8s;animation-timing-function:steps(11)}
+.capy-sleep{aspect-ratio:201/128}.capy-sleep img{animation-duration:4s;animation-timing-function:steps(9)}
+.capy-dance{aspect-ratio:146/128}.capy-dance img{animation-duration:4s;animation-timing-function:steps(33)}
+.capy.h32{height:32px}.capy.h36{height:36px}.capy.h40{height:40px}.capy.h44{height:44px}.capy.h48{height:48px}.capy.h56{height:56px}.capy.h64{height:64px}.capy.h80{height:80px}.capy.h96{height:96px}
+.imgload{position:absolute;inset:10px;display:grid;place-items:center;background:rgba(245,240,231,.85);border-radius:12px;z-index:1}.imgload[hidden]{display:none}
+#splash{position:fixed;inset:0;z-index:999;background:var(--paper);display:grid;place-items:center;transition:opacity .4s}#splash.out{opacity:0;pointer-events:none}#splash .sin{display:grid;justify-items:center;gap:6px}#splash img.lg{width:min(70vw,260px);height:auto}
+@media(prefers-reduced-motion:reduce){.capy img{animation:none}}
 </style>
 </head>
 <body>
+<div id="splash" aria-hidden="true"><div class="sin"><span class="capy capy-read h96" aria-hidden="true"><img src="assets/capy-read.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-read.png'"></span><img class="lg" src="assets/logo-capy.png" alt=""></div></div>
 <header class="wrap">
   <div class="topbar">
-    <a class="brand" id="homeLink" href="#" title="홈으로"><img class="logo" src="assets/logo.svg" alt="" width="34" height="34">쌤플레이<small>AI마당 · 선생님 모여라</small></a>
+    <a class="brand" id="homeLink" href="#" title="홈으로"><img class="logo" src="assets/logo-capy.png" alt="쌤플레이"><small>AI마당 · 선생님 모여라</small></a>
     <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b></p>
     <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="about.html">사이트 소개</a><a href="#" id="menuHome">쌤플 고르기</a></nav></div>
   </div>
@@ -440,13 +453,13 @@ dialog.guide{width:min(96vw,640px)}
 
 <main class="wrap">
   <section class="step step-choose current" id="choose" aria-labelledby="h1">
-    <div class="step-head"><h2 id="h1"><b>1</b>어떤 쌤플을 사용할까요?</h2>
+    <div class="step-head"><h2 id="h1"><b>1</b>어떤 쌤플을 사용할까요?<span class="capy capy-blink h40" aria-hidden="true"><img src="assets/capy-blink.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-blink.png'"></span></h2>
       <div class="headright">
         <div class="dd" id="styleDd"><button id="styleBtn" class="ddbtn" aria-haspopup="listbox" aria-expanded="false">스타일 <span id="styleCur">전체</span> <span class="caret" aria-hidden="true"></span></button><div class="ddmenu" id="styleMenu" role="listbox" hidden></div></div>
       </div></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="용도별 묶음"></div>
     <div id="groups"></div>
-    <p id="noResult" class="hint" hidden>해당하는 예시가 없어요.</p>
+    <p id="noResult" class="hint" hidden><span class="capy capy-sleep h48" aria-hidden="true"><img src="assets/capy-sleep.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-sleep.png'"></span><span>해당하는 쌤플이 없어요. 다른 스타일이나 분류를 골라 보세요.</span></p>
   </section>
 
   <section id="work" hidden aria-label="프롬프트 만들기">
@@ -455,7 +468,7 @@ dialog.guide{width:min(96vw,640px)}
     <div class="selbar"><span class="stepnum">✓</span><span>선택한 쌤플</span><strong id="selName"></strong><span class="badge2" id="selTag"></span></div>
     <div class="work-grid">
       <aside class="preview">
-        <div class="preview-img"><img id="selImage" alt="선택한 예시"><button id="selZoom" class="zoom">🔍 크게</button></div>
+        <div class="preview-img"><div class="imgload" id="pLoad" hidden><span class="capy capy-type h64" aria-hidden="true"><img src="assets/capy-type.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-type.png'"></span></div><img id="selImage" alt="선택한 예시"><button id="selZoom" class="zoom">🔍 크게</button></div>
         <p class="preview-what" id="selWhat"></p>
         <details class="alts" id="alts" open><summary class="alts-label">다른 쌤플 더보기</summary><div id="altStrip" class="alt-strip"></div></details>
       </aside>
@@ -515,14 +528,14 @@ dialog.guide{width:min(96vw,640px)}
   </section>
 </main>
 
-<footer class="wrap">쌤플레이 · 입력 내용은 저장되지 않습니다</footer>
+<footer class="wrap" style="display:flex;align-items:center;justify-content:center;gap:8px"><span class="capy capy-sleep h36" aria-hidden="true"><img src="assets/capy-sleep.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-sleep.png'"></span>쌤플레이 · 입력 내용은 저장되지 않습니다</footer>
 
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
-<div id="float" class="float" hidden role="status"><span class="ok">✓</span><div class="ftext"><b id="floatTitle">프롬프트 복사 완료</b><span id="floatText">프롬프트를 붙여넣으셨으면, 정확한 생성을 위해 예시 이미지도 넣어 주세요!</span></div><button id="floatImg" class="primary small">🖼️ 예시 이미지 복사</button><button id="floatX" aria-label="닫기">✕</button></div>
+<div id="float" class="float" hidden role="status"><span class="capy capy-dance h44" aria-hidden="true"><img src="assets/capy-dance.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-dance.png'"></span><div class="ftext"><b id="floatTitle">프롬프트 복사 완료</b><span id="floatText">프롬프트를 붙여넣으셨으면, 정확한 생성을 위해 예시 이미지도 넣어 주세요!</span></div><button id="floatImg" class="primary small">🖼️ 예시 이미지 복사</button><button id="floatX" aria-label="닫기">✕</button></div>
 <dialog id="guide" class="guide" aria-labelledby="gTitle">
   <button id="guideX" class="dx" aria-label="닫기">✕</button>
   <div class="gwrap">
-    <div class="ghead"><span class="gcheck">✓</span><div><h3 id="gTitle">프롬프트가 복사됐어요</h3><p class="sub">ChatGPT에 붙여넣는 순서</p></div></div>
+    <div class="ghead"><span class="capy capy-dance h56" aria-hidden="true"><img src="assets/capy-dance.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-dance.png'"></span><div><h3 id="gTitle">프롬프트가 복사됐어요</h3><p class="sub">ChatGPT에 붙여넣는 순서</p></div></div>
     <ol class="gsteps">
       <li class="s1"><b>1</b><div><strong>ChatGPT 입력창에 붙여넣기</strong><span>Ctrl+V(⌘V). 휴대폰은 입력창 길게 눌러 ‘붙여넣기’.</span></div></li>
       <li class="s2"><b>2</b><div><strong>예시 이미지도 넣기</strong><span>복사한 이미지를 붙여넣거나, 저장한 파일을 [+] 버튼으로 첨부.</span></div></li>
@@ -566,7 +579,7 @@ dialog.guide{width:min(96vw,640px)}
 <dialog id="dialog" aria-labelledby="dialogTitle">
   <button id="dialogX" class="dx" aria-label="닫기">✕</button>
   <div class="dbody">
-    <div class="dimg"><img id="dialogImage" alt=""><button class="dnav prev" id="dPrev" aria-label="이전 예시">‹</button><button class="dnav next" id="dNext" aria-label="다음 예시">›</button></div>
+    <div class="dimg"><div class="imgload" id="dLoad" hidden><span class="capy capy-type h64" aria-hidden="true"><img src="assets/capy-type.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-type.png'"></span></div><img id="dialogImage" alt=""><button class="dnav prev" id="dPrev" aria-label="이전 예시">‹</button><button class="dnav next" id="dNext" aria-label="다음 예시">›</button></div>
     <div class="dside">
       <div><span class="badge2" id="dTag"></span><h3 id="dialogTitle"></h3><p class="sub" id="dDesc"></p></div>
       <div class="box"><b>어떤 자료인가요</b><p id="dWhat"></p></div>
@@ -671,7 +684,7 @@ const GUIDE={
   't-quiz':['수업 직후 확인 문항과 교사용 정답','차시 마무리 형성평가'],
   't-rubric':['평가 요소·수준·배점을 정리한 채점 기준표','서술형·수행평가 채점 기준 안내']
 };
-const GROUPS=[['teacher','🍎 선생님용'],['organize','📘 정리'],['understand','💡 이해'],['memorize','🧠 암기'],['check','✅ 점검']];
+const GROUPS=[['teacher','선생님용'],['organize','정리'],['understand','이해'],['memorize','암기'],['check','점검']];
 const HAND='크림색 모눈 종이 질감에 검은 펜 손글씨, 노랑·초록·분홍 형광펜 제목, 얇은 테두리, 작은 고전 인물 수채 일러스트';
 const $=id=>document.getElementById(id);
 const isMobile=()=>window.matchMedia('(max-width:1099px),(pointer:coarse)').matches;
@@ -716,7 +729,7 @@ function renderGallery(){
     }));
     wrap.append(grid);
   }
-  $('noResult').hidden=visibleKeys.length>0;
+  $('noResult').hidden=visibleKeys.length>0;$('noResult').style.display=visibleKeys.length?'none':'flex';$('noResult').style.alignItems='center';$('noResult').style.gap='10px';
 }
 function closeMenu(){$('styleMenu').hidden=true;$('styleBtn').setAttribute('aria-expanded','false')}
 $('styleBtn').onclick=e=>{e.stopPropagation();const open=$('styleMenu').hidden;$('styleMenu').hidden=!open;$('styleBtn').setAttribute('aria-expanded',open)};
@@ -726,7 +739,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
 /* ---------- dialog ---------- */
 function openDialog(key){
   dialogKey=key;const s=byKey(key),f=info[key],g=GUIDE[key]||['',''];
-  $('dialogImage').src=s.image;$('dialogImage').alt=f.name+' 예시';$('dTag').textContent=s.tag;$('dialogTitle').textContent=f.name;$('dDesc').textContent=f.desc;
+  if($('dialogImage').src!==new URL(s.image,location.href).href)$('dLoad').hidden=false;$('dialogImage').src=s.image;$('dialogImage').alt=f.name+' 예시';$('dTag').textContent=s.tag;$('dialogTitle').textContent=f.name;$('dDesc').textContent=f.desc;
   $('dWhat').textContent=g[0];$('dWhen').textContent=g[1];
   const list=visibleKeys.length?visibleKeys:samples.map(s=>s.key);const i=list.indexOf(key);
   $('dCounter').textContent='';$('dPrev').hidden=$('dNext').hidden=list.length<2;
@@ -757,7 +770,7 @@ function enterWork(key,scroll=true){
 }
 function renderPreview(){
   const s=sample(),f=info[s.key];$('alts').open=!isMobile();
-  $('selImage').src=s.image;$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('ssImg').src=s.thumb;$('ssName').textContent=f.name;$('ssTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
+  if($('selImage').src!==new URL(s.image,location.href).href)$('pLoad').hidden=false;$('selImage').src=s.image;$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('ssImg').src=s.thumb;$('ssName').textContent=f.name;$('ssTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
   const alts=samples.filter(x=>x.group===s.group);
   $('altStrip').replaceChildren(...alts.map(x=>{const b=document.createElement('button');b.className='alt'+(x.key===s.key?' active':'');b.title=info[x.key].name;
     const im=document.createElement('img');im.src=x.thumb;im.alt='';im.loading='lazy';const sp=document.createElement('span');sp.textContent=info[x.key].name;b.append(im,sp);
@@ -1014,7 +1027,9 @@ function resetInputs(){['grade','subject','topic','extra','content'].forEach(id=
 $('reset').onclick=()=>{resetInputs();toast('모두 지웠어요')};
 
 window.addEventListener('pageshow',()=>{syncSubject();renderExamples('topic');renderExamples('extra');if(active)build()});
+$('dialogImage').onload=$('dialogImage').onerror=()=>{$('dLoad').hidden=true};$('selImage').onload=$('selImage').onerror=()=>{$('pLoad').hidden=true};
 renderGallery();setCurrent(1);
+(()=>{const sp=$('splash');const t0=Date.now();let d=false;const done=()=>{if(d)return;d=true;const wait=Math.max(0,500-(Date.now()-t0));setTimeout(()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),450)},wait)};if(document.readyState==='complete')done();else{window.addEventListener('load',done);setTimeout(done,1500)}})();
 </script>
 </body>
 </html>
