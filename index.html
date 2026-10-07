@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#255c47">
-<title>배움의 도구 · GPT 이미지 프롬프트 생성기</title>
-<meta name="description" content="학습자·교사용 ChatGPT 학습 이미지 프롬프트 생성기. 예시 그림을 고르고 과목·주제만 적으면 첨부 자료를 정리하는 프롬프트가 완성됩니다.">
+<title>쌤플레이 · AI마당 선생님모여라 학습자료 프롬프트 sample 생성기</title>
+<meta name="description" content="쌤플레이 — AI마당, 선생님 모여라. 학습자료 프롬프트 sample 생성기. 예시 그림을 고르고 과목·주제만 적으면 ChatGPT용 학습 이미지 프롬프트가 완성됩니다.">
 <style>
 :root{--paper:#f4f3ec;--card:#fffefa;--ink:#263e36;--muted:#6a756d;--line:#dedfd5;--accent:#255c47;--accent2:#3f8f6e;--accent-dark:#1a4232;--ring:rgba(37,92,71,.18);--soft:#e8eee2;--soft2:#f1f4ec;--warn:#ba793b;--peach:#f0c9a4}
 body.teacher{--accent:#315774;--accent2:#5a8ab4;--accent-dark:#24405a;--ring:rgba(49,87,116,.18);--soft:#e7eef3;--soft2:#eef3f7}
@@ -27,6 +27,7 @@ header{padding:14px 0 4px}
 .brand .logo{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:15px;box-shadow:0 6px 14px -6px var(--accent)}
 .brand small{font-weight:500;color:var(--muted);font-size:12px}
 .tagline{margin:0;font-size:13px;color:var(--muted)}
+.tagline b{color:var(--accent);font-weight:700}
 main.wrap{padding-top:12px;padding-bottom:24px}
 
 /* steps */
@@ -265,8 +266,8 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 <body>
 <header class="wrap">
   <div class="topbar">
-    <a class="brand" id="homeLink" href="#" title="홈으로"><span class="logo" aria-hidden="true">✎</span>배움의 도구<small>GPT 이미지 프롬프트 생성기</small></a>
-    <p class="tagline">그림을 고르고 과목·주제만 적으면 프롬프트 완성. 복사해서 ChatGPT에 자료와 함께 붙여넣으세요.</p>
+    <a class="brand" id="homeLink" href="#" title="홈으로"><span class="logo" aria-hidden="true">▶</span>쌤플레이<small>AI마당 · 선생님 모여라</small></a>
+    <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b> · 그림을 고르고 과목·주제만 적으면 프롬프트 완성</p>
   </div>
 </header>
 
@@ -344,7 +345,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
   </section>
 </main>
 
-<footer class="wrap">입력은 저장·전송되지 않습니다 · 예시는 모두 고3 국어 「구운몽」</footer>
+<footer class="wrap">쌤플레이 · 입력은 저장·전송되지 않습니다 · 예시는 모두 고3 국어 「구운몽」</footer>
 
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
 <dialog id="dialog" aria-labelledby="dialogTitle">
