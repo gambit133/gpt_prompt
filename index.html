@@ -569,7 +569,8 @@ dialog.guide{width:min(96vw,640px)}
       <p class="gnote">프롬프트를 붙여넣으셨으면, <b>정확한 생성을 위해 예시 이미지도 넣어 주세요!</b></p>
       <div class="gact-row"><button id="gCopyImage" class="primary gbig">🖼️ 예시 이미지 복사</button><button id="gSave" class="secondary gbig">⬇ 예시 이미지 저장</button></div>
       <p class="gstatus" id="gStatus"></p>
-      <div class="gact-row"><a id="gOpen" class="secondary gbig" href="https://chatgpt.com/" target="_blank" rel="noopener" title="프롬프트가 입력된 상태로 열립니다">ChatGPT 열기 (프롬프트 자동 입력) ↗</a><button id="guideClose" class="secondary gbig">닫기</button></div>
+      <div class="gact-row"><a id="gOpen" class="secondary gbig" href="https://chatgpt.com/" target="_blank" rel="noopener" title="프롬프트가 입력창에 들어간 상태로 열립니다. 전송은 직접 누르세요.">ChatGPT 열기 (프롬프트 넣어 두기) ↗</a><button id="guideClose" class="secondary gbig">닫기</button></div>
+      <p class="gnote" style="margin-top:4px">ChatGPT가 열리면 프롬프트만 들어가 있고 전송은 되지 않습니다. 예시 이미지와 자료를 붙인 뒤 직접 보내세요.</p>
       <label class="noshow"><input id="noGuide" type="checkbox">다음부터 이 안내 띄우지 않기 (복사 후 플로팅 안내만 표시)</label>
     </div>
   </div>
@@ -922,7 +923,7 @@ let noGuide=false,howOpen=false;try{noGuide=localStorage.getItem('noGuide')==='1
 function applyHow(){$('howto').hidden=!howOpen;document.querySelector('.gwrap').classList.toggle('anim',howOpen);$('howToggle').textContent=howOpen?'▼ 사용법 접기':'▶ 사용법 자세히 보기';$('howToggle').setAttribute('aria-expanded',howOpen)}
 $('howToggle').onclick=()=>{howOpen=!howOpen;applyHow();if(howOpen)$('howto').scrollIntoView({behavior:'smooth',block:'nearest'})};
 $('noGuide').onchange=()=>{noGuide=$('noGuide').checked;try{localStorage.setItem('noGuide',noGuide?'1':'0')}catch{}};
-function openGuide(){const s=sample();if(!s)return;if(noGuide)return;$('noGuide').checked=noGuide;howOpen=false;applyHow();$('gThumb').src=s.thumb;$('gThumbU').src=s.thumb;$('gThumbR').src=s.thumb;$('gOpen').href='https://chatgpt.com/?q='+encodeURIComponent($('output').value);$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';if(!$('guide').open)$('guide').showModal()}
+function openGuide(){const s=sample();if(!s)return;if(noGuide)return;$('noGuide').checked=noGuide;howOpen=false;applyHow();$('gThumb').src=s.thumb;$('gThumbU').src=s.thumb;$('gThumbR').src=s.thumb;$('gOpen').href='https://chatgpt.com/?prompt='+encodeURIComponent($('output').value);$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';if(!$('guide').open)$('guide').showModal()}
 $('guideX').onclick=$('guideClose').onclick=()=>$('guide').close();
 $('guide').onclick=e=>{if(e.target===$('guide'))$('guide').close()};
 $('gCopyImage').onclick=()=>$('copyImage').click();$('gSave').onclick=()=>$('refDownload').click();
