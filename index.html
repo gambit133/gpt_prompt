@@ -349,7 +349,7 @@ dialog.guide{width:min(96vw,760px)}
           <div class="step-head"><h2 id="h2"><b>2</b>간단히 적기</h2><span class="hint"><i class="req">*</i> 필수</span></div>
           <div class="form">
             <div class="field"><label for="grade">학년 <i class="req">*</i></label>
-              <select id="grade">
+              <select id="grade" autocomplete="off">
                 <option value="">학년 선택</option>
                 <option>초등학교 저학년</option><option>초등학교 고학년</option>
                 <option>중학교 1학년</option><option>중학교 2학년</option><option>중학교 3학년</option>
@@ -357,7 +357,7 @@ dialog.guide{width:min(96vw,760px)}
                 <option>대학생·성인</option>
               </select></div>
             <div class="field"><label for="subjectSel">과목 <i class="req">*</i></label>
-              <select id="subjectSel"><option value="">과목 선택</option><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option><option value="__custom">직접 입력…</option></select>
+              <select id="subjectSel" autocomplete="off"><option value="">과목 선택</option><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option><option value="__custom">직접 입력…</option></select>
               <input id="subject" placeholder="과목 직접 입력" autocomplete="off" hidden style="margin-top:6px"></div>
             <div class="field wide"><label for="topic">주제·단원 <i class="req">*</i></label><input id="topic" placeholder="예: 단원명과 다룰 범위 (과목을 고르면 아래 예시가 과목에 맞게 바뀌어요)">
               <details class="exbox" id="topicEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="topic">🎲 다른 예시</button></summary><div class="examples" id="topicExList"></div></details></div>
@@ -637,7 +637,10 @@ $('changePick').onclick=()=>{$('work').hidden=true;$('choose').hidden=false;setC
 $('homeLink').onclick=e=>{e.preventDefault();if($('dialog').open)$('dialog').close();goHome()};
 $('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
 const REQUIRED=['grade','subject','topic'];
-function validate(){let ok=true;for(const id of REQUIRED){const bad=!val(id);$(id).closest('.field').classList.toggle('invalid',bad);if(bad)ok=false}$('reqMsg').hidden=ok;return ok}
+const REQ_NAME={grade:'학년',subject:'과목',topic:'주제·단원'};
+function syncSubject(){const v=$('subjectSel').value;if(v&&v!=='__custom'){$('subject').value=v;$('subject').hidden=true}else if(v==='__custom'){$('subject').hidden=false}}
+function validate(){syncSubject();const missing=[];for(const id of REQUIRED){const bad=!val(id);$(id).closest('.field').classList.toggle('invalid',bad);if(bad)missing.push(REQ_NAME[id])}
+  $('reqMsg').hidden=!missing.length;if(missing.length)$('reqMsg').textContent=missing.join(', ')+(missing.length>1?'을(를)':'을(를)')+' 입력해 주세요.';return !missing.length}
 $('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step2 .field.invalid input,#step2 .field.invalid select');if(first){if(isMobile())first.scrollIntoView({behavior:'smooth',block:'center'});else first.focus()}return}
   unlocked=true;setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});if(!isMobile())setTimeout(()=>$('output').focus({preventScroll:true}),400)};
 $('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';if(!isMobile())$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'));renderExamples('topic');renderExamples('extra')});
@@ -664,7 +667,7 @@ function renderTunes(){
 }
 function tuneLines(){const out=Object.entries(tune).map(([k,v])=>`- ${k}: ${v}`);$('tuneCount').textContent=out.length?out.length:'';return out}
 function build(){
-  if(!active)return;
+  if(!active)return;syncSubject();
   const s=sample(),f=info[s.key];
   const grade=val('grade'),subject=val('subject'),topic=val('topic'),attach=$('attach').checked;
   const extras=val('extra').split(/\n+/).map(s=>s.trim()).filter(Boolean);
@@ -809,6 +812,7 @@ $('copyImage').onclick=async()=>{
 };
 $('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 같이 올리면</b> 구성과 색감이 더 비슷하게 나와요.';unlocked=false;setCurrent(2);build();toast('모두 지웠어요')};
 
+window.addEventListener('pageshow',()=>{syncSubject();renderExamples('topic');renderExamples('extra');if(active)build()});
 renderGallery();setCurrent(1);
 </script>
 </body>
