@@ -267,20 +267,20 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 <header class="wrap">
   <div class="topbar">
     <a class="brand" id="homeLink" href="#" title="홈으로"><span class="logo" aria-hidden="true">▶</span>쌤플레이<small>AI마당 · 선생님 모여라</small></a>
-    <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b> · 그림을 고르고 과목·주제만 적으면 프롬프트 완성</p>
+    <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b> · 그림 고르기 → 과목·주제 적기 → 복사</p>
   </div>
 </header>
 
 <main class="wrap">
   <section class="step step-choose current" id="choose" aria-labelledby="h1">
-    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 그림을 누르면 크게 보기</span></div>
+    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 누르면 크게 보기</span></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="용도별 묶음"></div>
     <div class="toolbar">
       <div class="searchwrap"><span class="sicon" aria-hidden="true">🔍</span><input id="search" type="search" placeholder="검색 (예: 암기, 표, 발문)" aria-label="예시 검색"></div>
       <div class="dd" id="styleDd"><button id="styleBtn" class="ddbtn" aria-haspopup="listbox" aria-expanded="false">스타일 <span id="styleCur">전체</span> <span class="caret">▾</span></button><div class="ddmenu" id="styleMenu" role="listbox" hidden></div></div>
     </div>
     <div id="groups"></div>
-    <p id="noResult" class="hint" hidden>일치하는 예시가 없습니다.</p>
+    <p id="noResult" class="hint" hidden>검색 결과가 없어요.</p>
   </section>
 
   <section id="work" hidden aria-label="프롬프트 만들기">
@@ -289,7 +289,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
       <aside class="preview">
         <div class="preview-img"><img id="selImage" alt="선택한 예시"><button id="selZoom" class="zoom">🔍 크게</button></div>
         <p class="preview-what" id="selWhat"></p>
-        <div class="alts"><span class="alts-label">같은 묶음의 다른 예시</span><div id="altStrip" class="alt-strip"></div></div>
+        <div class="alts"><span class="alts-label">같은 묶음 예시</span><div id="altStrip" class="alt-strip"></div></div>
       </aside>
 
       <div class="editor" id="editor">
@@ -313,13 +313,13 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
               <div class="extra-grid"><textarea id="extra" rows="4"></textarea></div>
               <details class="exbox" id="extraEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="extra">🎲 다른 예시</button></summary><div class="examples" id="extraExList"></div></details></div>
           </div>
-          <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료를 첨부할게요</label>
-          <p class="attach" id="attachInfo">✓ 첨부 자료 참조 문구 포함 · 예시 이미지도 함께 첨부하면 더 정확합니다.</p>
+          <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료 첨부</label>
+          <p class="attach" id="attachInfo">첨부 자료를 참고하라는 문구가 프롬프트에 들어갑니다. 예시 이미지도 같이 올리면 결과가 더 비슷해요.</p>
           <details class="tune" id="tune">
             <summary>🎨 세부 조정 <span class="n" id="tuneCount"></span><span class="hint" style="font-weight:400;margin-left:4px">톤·색감·글꼴·삽화·글자량·비율</span></summary>
             <div class="tune-groups" id="tuneGroups"></div>
           </details>
-          <p class="req-msg" id="reqMsg" hidden>표시된 필수 항목을 입력해 주세요.</p>
+          <p class="req-msg" id="reqMsg" hidden>* 표시 항목을 채워 주세요.</p>
           <div class="actions"><button id="next" class="primary">다음 → 프롬프트 확인</button></div>
         </section>
 
@@ -330,7 +330,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
             <button id="copy" class="primary">📋 프롬프트 복사</button>
           </div>
           <div class="imgstep" id="imgStep">
-            <p class="imgstep-msg" id="imgMsg"><b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.</p>
+            <p class="imgstep-msg" id="imgMsg"><b>예시 이미지도 같이 올리면</b> 구성과 색감이 더 비슷하게 나와요.</p>
             <div class="actions sub">
               <button id="copyImage" class="secondary">🖼 예시 이미지 복사</button>
               <button id="shareImage" class="secondary" hidden>📤 예시 이미지 공유</button>
@@ -345,7 +345,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
   </section>
 </main>
 
-<footer class="wrap">쌤플레이 · 입력은 저장·전송되지 않습니다 · 예시는 모두 고3 국어 「구운몽」</footer>
+<footer class="wrap">쌤플레이 · 입력 내용은 저장되지 않아요 · 예시는 고3 국어 「구운몽」</footer>
 
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
 <dialog id="dialog" aria-labelledby="dialogTitle">
@@ -356,7 +356,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
       <div><span class="badge2" id="dTag"></span><h3 id="dialogTitle"></h3><p class="sub" id="dDesc"></p></div>
       <div class="box"><b>어떤 자료인가요</b><p id="dWhat"></p></div>
       <div class="box"><b>이럴 때 좋아요</b><p id="dWhen"></p></div>
-      <div class="dbtns"><button id="dialogPick" class="primary xl">✓ 이 그림으로 만들기</button></div>
+      <div class="dbtns"><button id="dialogPick" class="primary xl">이 그림으로 만들기</button></div>
       <div class="counter" id="dCounter"></div>
     </div>
   </div>
@@ -496,7 +496,7 @@ function renderGallery(){
       const meta=document.createElement('div');meta.className='meta';
       const t=document.createElement('strong');t.textContent=f.name;const d=document.createElement('p');d.textContent=f.desc;meta.append(t,d);
       pick.append(tw,meta);pick.onclick=()=>openDialog(s.key);
-      const check=document.createElement('span');check.className='check';check.textContent='✓ 선택됨';
+      const check=document.createElement('span');check.className='check';check.textContent='선택됨';
       card.append(pick,check);return card;
     }));
     wrap.append(grid);
@@ -534,7 +534,7 @@ function enterWork(key,scroll=true){
   active=key;const s=sample();role=s.role;if(tab!=='all')tab=s.group;
   document.body.classList.toggle('teacher',role==='teacher');
   $('choose').hidden=true;$('work').hidden=false;
-  $('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';setCurrent(2);
+  $('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 같이 올리면</b> 구성과 색감이 더 비슷하게 나와요.';setCurrent(2);
   renderPreview();build();
   if(scroll)window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -616,7 +616,7 @@ function build(){
   if(attach&&extras.length)parts.push(`[추가 요청]\n${extras.map(x=>'- '+x).join('\n')}`);
   else if(demo&&extras.length)parts.push(`[추가 요청]\n${extras.map(x=>'- '+x).join('\n')}`);
   parts.push(`완성 후 한글 오탈자와 내용 오류를 한 번 더 점검해 주세요. 이미지 생성이 어려우면 같은 구성의 텍스트 초안을 먼저 보여 주세요.`);
-  $('refDownload').href=s.image;$('refDownload').download=s.key+'.jpg';$('refDownload').onclick=()=>setTimeout(()=>imgDone('✓ 예시 이미지를 저장했습니다. ChatGPT에 파일로 첨부하고 프롬프트를 붙여넣으세요.'),100);
+  $('refDownload').href=s.image;$('refDownload').download=s.key+'.jpg';$('refDownload').onclick=()=>setTimeout(()=>imgDone('예시 이미지 저장 완료. ChatGPT에 파일로 올리고 프롬프트를 붙여넣으세요.'),100);
   $('output').value=parts.join('\n\n');
   $('length').textContent=$('output').value.length.toLocaleString()+'자';
   $('status').textContent='';
@@ -638,7 +638,7 @@ function renderExamples(which){
 document.querySelectorAll('.shuffle').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();renderExamples(b.dataset.pool)});
 function applyAttachMode(){
   const attach=$('attach').checked;
-  $('extraLabel').innerHTML=attach?'추가 요청 <span style="font-weight:400">(선택)</span>':'학습 내용 <span style="font-weight:400">(첨부 자료가 없으니 핵심 내용을 적어 주세요)</span>';
+  $('extraLabel').innerHTML=attach?'추가 요청 <span style="font-weight:400">(선택)</span>':'학습 내용 <span style="font-weight:400">(첨부 대신 여기에 핵심 내용을 적어요)</span>';
   document.querySelector('.extra-wrap').classList.toggle('content',!attach);
   $('extra').placeholder=attach
     ?'예) 범위: 2단원 「광합성의 과정」 소단원만\n형식: 정답·해설은 맨 뒤에 따로, 객관식 7개 + 서술형 3개\n강조: 자주 틀리는 명반응 vs 암반응 비교를 표로, 영어 용어 병기'
@@ -653,32 +653,32 @@ $('output').addEventListener('input',()=>{$('length').textContent=$('output').va
 
 let toastTimer;function toast(msg){$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
 $('copy').onclick=async()=>{
-  const text=$('output').value;if(!text.trim()){$('status').textContent='복사할 내용이 없습니다.';return}
+  const text=$('output').value;if(!text.trim()){$('status').textContent='복사할 프롬프트가 없어요.';return}
   try{await navigator.clipboard.writeText(text)}
-  catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}if(!ok){$('status').textContent='자동 복사가 막혔습니다. Ctrl+C로 복사하세요.';return}}
+  catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}if(!ok){$('status').textContent='자동 복사가 안 돼요. Ctrl+C로 복사해 주세요.';return}}
   $('status').textContent='';toast('프롬프트 복사 완료');
   $('step3').classList.add('done');$('step3').classList.remove('current');
   $('imgStep').classList.remove('done');$('imgStep').classList.add('glow');
-  $('imgMsg').innerHTML='✓ 프롬프트를 복사했습니다. <b>이어서 예시 이미지도 ChatGPT에 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';
+  $('imgMsg').innerHTML='프롬프트 복사 완료. <b>이제 예시 이미지도 ChatGPT에 올려 주세요.</b> 구성과 색감이 더 비슷하게 나와요.';
   $('imgStep').scrollIntoView({behavior:'smooth',block:'nearest'});
 };
 function imgDone(msg){$('imgStep').classList.remove('glow');$('imgStep').classList.add('done');$('imgMsg').innerHTML=msg}
 async function imageFile(s){const b=await imageBlob(s.image);return new File([b],s.key+'.png',{type:'image/png'})}
 const canShareFiles=()=>{try{return !!(navigator.canShare&&navigator.canShare({files:[new File([''],'x.png',{type:'image/png'})]}))}catch{return false}};
 $('shareImage').hidden=!canShareFiles();
-$('shareImage').onclick=async()=>{const s=sample();if(!s)return;try{const f=await imageFile(s);await navigator.share({files:[f],title:info[s.key].name+' 예시'});imgDone('✓ 공유 창에서 ChatGPT를 선택하면 이미지가 첨부됩니다. 이제 프롬프트를 붙여넣으세요.')}catch(e){if(e&&e.name!=='AbortError'){$('refDownload').click();$('status').textContent='공유가 지원되지 않아 파일로 저장했습니다.'}}};
+$('shareImage').onclick=async()=>{const s=sample();if(!s)return;try{const f=await imageFile(s);await navigator.share({files:[f],title:info[s.key].name+' 예시'});imgDone('공유 창에서 ChatGPT를 고르면 이미지가 올라가요. 이어서 프롬프트를 붙여넣으세요.')}catch(e){if(e&&e.name!=='AbortError'){$('refDownload').click();$('status').textContent='공유가 안 되는 기기라 파일로 저장했어요.'}}};
 $('copyImage').onclick=async()=>{
   const s=sample();if(!s)return;
   try{
     if(!window.ClipboardItem)throw new Error('no ClipboardItem');
     await navigator.clipboard.write([new ClipboardItem({'image/png':imageBlob(s.image)})]);
-    imgDone('✓ 예시 이미지를 복사했습니다. ChatGPT 입력창에 이미지를 붙여넣은 뒤, 프롬프트도 붙여넣으세요.');toast('예시 이미지 복사 완료');
+    imgDone('예시 이미지 복사 완료. ChatGPT에 이미지 → 프롬프트 순서로 붙여넣으세요.');toast('예시 이미지 복사 완료');
   }catch(e){
-    if(canShareFiles()){$('imgMsg').innerHTML='이 브라우저는 이미지 복사를 막습니다. <b>예시 이미지 공유</b>로 ChatGPT에 보내거나 <b>저장</b> 후 첨부하세요.'}
-    else{$('refDownload').click();imgDone('✓ 이미지 복사가 지원되지 않아 파일로 저장했습니다. 저장된 그림을 ChatGPT에 첨부하세요.')}
+    if(canShareFiles()){$('imgMsg').innerHTML='이 브라우저는 이미지 복사가 안 돼요. <b>예시 이미지 공유</b>로 ChatGPT에 보내거나 <b>저장</b>해서 올려 주세요.'}
+    else{$('refDownload').click();imgDone('이미지 복사가 안 되는 브라우저라 파일로 저장했어요. 저장된 그림을 ChatGPT에 올려 주세요.')}
   }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';setCurrent(2);build();toast('입력을 모두 지웠습니다')};
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 같이 올리면</b> 구성과 색감이 더 비슷하게 나와요.';setCurrent(2);build();toast('모두 지웠어요')};
 
 renderGallery();setCurrent(1);
 </script>
