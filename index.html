@@ -141,8 +141,20 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .tag{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 11px;font-size:12px;color:var(--ink);transition:all .15s}
 .tag:hover{border-color:var(--accent);color:var(--accent)}
 .tag.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;box-shadow:0 4px 10px -6px var(--accent)}
-.examples{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:5px}
-.examples span{font-size:11px;color:var(--muted);margin-right:2px}
+.exbox{margin-top:5px}
+.exbox summary{cursor:pointer;font-size:11.5px;color:var(--muted);list-style:none;display:flex;align-items:center;gap:8px;user-select:none}
+.exbox summary::-webkit-details-marker{display:none}
+.exbox summary::before{content:"▸";font-size:11px;transition:transform .2s}
+.exbox[open] summary::before{transform:rotate(90deg)}
+.exbox .shuffle{display:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:1px 8px;font-size:11px;color:var(--accent)}
+.exbox[open] .shuffle{display:inline-block}
+.examples{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:6px}
+.extra-grid{display:grid;grid-template-columns:1fr;gap:6px}
+.extra-grid textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;font-size:12.5px;line-height:1.5;resize:vertical;min-height:54px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
+.extra-grid textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--ring)}
+.extra-grid textarea::placeholder{color:#9aa39c}
+.extra-wrap.content label{color:var(--accent)}
+.extra-wrap.content textarea{border-color:#b9c4b6;background:var(--soft2)}
 .examples button{border:1px dashed #c3cdbf;background:transparent;border-radius:999px;padding:2px 9px;font-size:11px;color:var(--accent);transition:all .15s}
 .examples button:hover{background:var(--soft);border-style:solid}
 .imgstep{margin-top:10px;border:1.5px dashed var(--line);border-radius:12px;padding:10px 12px;transition:border-color .3s,background .3s}
@@ -276,9 +288,14 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
               <select id="subjectSel"><option value="">과목 선택</option><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option><option value="__custom">직접 입력…</option></select>
               <input id="subject" placeholder="과목 직접 입력" autocomplete="off" hidden style="margin-top:6px"></div>
             <div class="field wide"><label for="topic">주제·단원 <i class="req">*</i></label><input id="topic" placeholder="예: 구운몽의 환몽 구조와 인물 관계 · 광합성의 과정과 조건 · 3·1 운동의 배경과 전개">
-              <div class="examples" data-for="topic" data-mode="set"><span>예시</span><button type="button">「구운몽」 환몽 구조와 인물 관계</button><button type="button">광합성의 과정과 영향 요인</button><button type="button">3·1 운동의 배경·전개·의의</button><button type="button">이차방정식 근의 공식과 활용</button><button type="button">현재완료 시제의 쓰임</button></div></div>
-            <div class="field wide"><label for="extra">추가 요청 <span style="font-weight:400">(선택)</span></label><input id="extra" placeholder="예: 1~3단원 범위만 · 정답은 맨 뒤에 따로 · 서술형 대비 위주 · 영어 용어 병기">
-              <div class="examples" data-for="extra" data-mode="append"><span>예시</span><button type="button">1~3단원 범위만</button><button type="button">정답은 맨 뒤에 따로</button><button type="button">서술형 대비 위주로</button><button type="button">영어 용어 병기</button><button type="button">표 위주로, 그림은 적게</button><button type="button">시험에 자주 나오는 것만</button></div></div>
+              <details class="exbox" id="topicEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="topic">🎲 다른 예시</button></summary><div class="examples" id="topicExList"></div></details></div>
+            <div class="field wide extra-wrap"><label id="extraLabel">추가 요청 <span style="font-weight:400">(선택)</span></label>
+              <div class="extra-grid">
+                <textarea id="extra1" rows="2"></textarea>
+                <textarea id="extra2" rows="2"></textarea>
+                <textarea id="extra3" rows="2"></textarea>
+              </div>
+              <details class="exbox" id="extraEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="extra">🎲 다른 예시</button></summary><div class="examples" id="extraExList"></div></details></div>
           </div>
           <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료를 첨부할게요</label>
           <p class="attach" id="attachInfo">✓ 첨부 자료 참조 문구 포함 · 예시 이미지도 함께 첨부하면 더 정확합니다.</p>
@@ -516,7 +533,7 @@ $('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step
 $('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';if(!isMobile())$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'))});
 REQUIRED.forEach(id=>$(id).addEventListener('input',()=>{if(val(id))$(id).closest('.field').classList.remove('invalid');if(REQUIRED.every(i=>val(i)))$('reqMsg').hidden=true}));
 $('output').addEventListener('focus',()=>setCurrent(3));
-['grade','subject','topic','extra'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
+['grade','subject','topic'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
 
 /* ---------- prompt ---------- */
 const TUNE_DEFS=[
@@ -539,7 +556,8 @@ function tuneLines(){const out=Object.entries(tune).map(([k,v])=>`- ${k}: ${v}`)
 function build(){
   if(!active)return;
   const s=sample(),f=info[s.key];
-  const grade=val('grade'),subject=val('subject'),topic=val('topic'),extra=val('extra'),attach=$('attach').checked;
+  const grade=val('grade'),subject=val('subject'),topic=val('topic'),attach=$('attach').checked;
+  const extras=['extra1','extra2','extra3'].map(val).filter(Boolean);
   const who=[grade,subject].filter(Boolean).join(' ');
   const demo=topic.replace(/[「」『』\s]/g,'')==='구운몽'&&(subject.replace(/\s/g,'')==='국어'||!subject);
   const parts=[];
@@ -557,7 +575,8 @@ function build(){
     if(attach){
       parts.push(`[첨부 자료 활용]\n함께 첨부한 자료(교과서·필기 사진, 학습지, 요약본, PDF, 수업 자료 등)를 먼저 꼼꼼히 읽고 핵심 내용을 뽑아 정리해 주세요.\n- 자료에 나온 용어·표기·순서·강조점을 그대로 우선 사용하세요.\n- 자료가 여러 개면 겹치는 내용은 합치고 빠진 부분은 보충하되, 자료에 없는 내용은 '보충'이라고 표시하세요.\n- 글씨가 흐릿하거나 범위가 불분명하면 만들기 전에 먼저 질문해 주세요.\n- 함께 첨부한 예시 이미지는 시각 스타일의 기준으로만 사용하고, 그 안의 문구와 내용은 복사하지 마세요.`);
     }else{
-      parts.push(`[자료 없음]\n첨부 자료가 없으므로 ${topic?`'${topic}'의 `:''}교과서 수준의 일반적인 내용을 기준으로 작성해 주세요. 자료를 분석했다고 말하지 말고, 확실하지 않은 내용은 넣지 마세요.`);
+      if(extras.length)parts.push(`[학습 내용]\n첨부 자료 대신 아래 내용을 근거로 작성해 주세요. 아래에 없는 내용을 보충할 때는 '보충'이라고 표시하고, 확실하지 않은 사실은 넣지 마세요.\n${extras.map(x=>'- '+x).join('\n')}`);
+      else parts.push(`[자료 없음]\n첨부 자료가 없으므로 ${topic?`'${topic}'의 `:''}교과서 수준의 일반적인 내용을 기준으로 작성해 주세요. 자료를 분석했다고 말하지 말고, 확실하지 않은 내용은 넣지 마세요.`);
     }
     parts.push(`[스타일]\n${(s.style||HAND)}. 실제로 읽을 수 있는 정확한 한글을 쓰고 장식보다 내용과 가독성을 우선하세요. 글자가 잘리거나 겹치지 않게 여백을 두세요. 함께 첨부한 예시 이미지가 있다면 그 시각 스타일(색·글꼴 느낌·배치)을 따르되, 예시 속 문구와 내용은 복사하지 마세요.`);
     if(role==='teacher'){
@@ -569,7 +588,8 @@ function build(){
   }
   const tl=tuneLines();
   if(tl.length)parts.push(`[세부 조정]\n${tl.join('\n')}\n세부 조정이 예시 이미지의 스타일과 다르면 세부 조정을 우선 적용하세요.`);
-  if(extra)parts.push(`[추가 요청]\n${extra}`);
+  if(attach&&extras.length)parts.push(`[추가 요청]\n${extras.map(x=>'- '+x).join('\n')}`);
+  else if(demo&&extras.length)parts.push(`[추가 요청]\n${extras.map(x=>'- '+x).join('\n')}`);
   parts.push(`완성 후 한글 오탈자와 내용 오류를 한 번 더 점검해 주세요. 이미지 생성이 어려우면 같은 구성의 텍스트 초안을 먼저 보여 주세요.`);
   $('refDownload').href=s.image;$('refDownload').download=s.key+'.jpg';$('refDownload').onclick=()=>setTimeout(()=>imgDone('✓ 예시 이미지를 저장했습니다. ChatGPT에 파일로 첨부하고 프롬프트를 붙여넣으세요.'),100);
   $('output').value=parts.join('\n\n');
@@ -577,12 +597,33 @@ function build(){
   $('status').textContent='';
 }
 renderTunes();
-document.querySelectorAll('.examples').forEach(ex=>{const target=$(ex.dataset.for);ex.querySelectorAll('button').forEach(b=>b.onclick=()=>{
-  if(ex.dataset.mode==='append'){const cur=target.value.trim();if(!cur.includes(b.textContent))target.value=cur?cur+', '+b.textContent:b.textContent}
-  else target.value=b.textContent;
-  target.dispatchEvent(new Event('input'));if(!isMobile())target.focus()})});
+const TOPIC_POOL=['「구운몽」 환몽 구조와 인물 관계','「춘향전」 갈등 구조와 주제 의식','윤동주 「서시」 화자의 태도와 상징','문장 성분과 호응 관계','음운 변동(비음화·유음화·구개음화)','광합성의 과정과 영향 요인','세포 분열(체세포 분열 vs 감수 분열)','힘과 운동: 뉴턴 운동 법칙','산과 염기의 중화 반응','지구의 자전·공전과 계절 변화','3·1 운동의 배경·전개·의의','조선 후기 실학의 등장 배경','프랑스 혁명의 전개 과정','냉전 체제의 형성과 해체','시장 가격의 결정: 수요·공급 곡선','민주 선거의 4대 원칙','이차방정식 근의 공식과 활용','삼각비의 뜻과 활용','확률의 기본 성질과 계산','일차함수의 그래프와 기울기','현재완료 시제의 쓰임','관계대명사 who·which·that 구분','to부정사의 세 가지 용법','가정법 과거와 과거완료','정보: 알고리즘과 순서도','기술·가정: 영양소의 종류와 기능','도덕: 정의로운 사회와 공정'];
+const EXTRA_POOL=['범위: 2단원 전체가 아니라 「광합성의 과정」 소단원만 다뤄 주세요.','정답·해설은 학생 영역과 분리해서 맨 뒤에 따로 모아 주세요.','문항은 객관식 7개 + 서술형 3개로 구성하고, 서술형에는 채점 포인트를 붙여 주세요.','자주 틀리는 「엽록체 vs 미토콘드리아」 비교를 표로 넣어 주세요.','핵심 용어에는 영어 용어를 괄호로 병기해 주세요.','그림보다 표와 도식 위주로, 삽화는 최소한만 넣어 주세요.','시험에 자주 나오는 개념 5개를 ★ 표시로 강조해 주세요.','중학생 수준의 쉬운 말로 쓰고, 어려운 용어는 한 줄 뜻풀이를 달아 주세요.','연도·수치는 자료에 있는 것만 쓰고 추측하지 마세요.','마지막에 「오늘의 확인 질문」 3개를 넣어 주세요.','교과서 서술 순서를 그대로 따라 구성해 주세요.','작품 속 인용문은 자료에 있는 문장만 사용해 주세요.','인쇄해서 쓸 수 있게 흑백으로도 구분되는 대비로 만들어 주세요.','A4 한 장을 넘지 않도록 내용을 압축해 주세요.','한 장에 다 안 들어가면 2장으로 나누고 각 장에 제목을 붙여 주세요.'];
+const CONTENT_POOL=['핵심 내용: 광합성은 빛에너지를 화학에너지로 바꾸는 과정이다. 엽록체의 틸라코이드에서 명반응, 스트로마에서 암반응이 일어난다.','꼭 들어갈 용어·공식: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂, 엽록소, ATP, NADPH, 캘빈 회로','시험 포인트·주의점: 빛의 세기·CO₂ 농도·온도에 따른 광합성량 변화 그래프, 한계 요인의 뜻','핵심 내용: 3·1 운동은 1919년 3월 1일 민족 대표 33인의 독립 선언으로 시작되어 전국·해외로 확산된 비폭력 만세 운동이다.','배경: 윌슨의 민족 자결주의, 2·8 독립 선언, 고종 서거 / 결과: 대한민국 임시 정부 수립, 일제 통치 방식 변화(문화 통치)','핵심 인물·사건 흐름: 성진(현실, 승려) → 꿈속 양소유로 부귀공명 체험 → 꿈에서 깨어 덧없음을 깨달음','주제와 근거: 부귀영화의 덧없음과 삶의 성찰 — 환몽 구조, 전지적 작가 시점, 팔선녀 ↔ 여덟 여성 대응','공식과 조건: 이차방정식 ax²+bx+c=0 (a≠0)의 근의 공식 x = (−b ± √(b²−4ac)) / 2a, 판별식 D=b²−4ac의 부호에 따른 근의 개수','예제: x²−5x+6=0 → (x−2)(x−3)=0 → x=2 또는 3 / 자주 하는 실수: a의 부호를 빼먹음, 판별식 계산 오류'];
+function pick(pool,n){const a=[...pool];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
+function renderExamples(which){
+  const attach=$('attach').checked;
+  const list=which==='topic'?$('topicExList'):$('extraExList');
+  const pool=which==='topic'?TOPIC_POOL:(attach?EXTRA_POOL:CONTENT_POOL);
+  list.replaceChildren(...pick(pool,which==='topic'?6:5).map(txt=>{const b=document.createElement('button');b.type='button';b.textContent=txt;b.onclick=()=>{
+    if(which==='topic'){$('topic').value=txt;$('topic').dispatchEvent(new Event('input'));if(!isMobile())$('topic').focus()}
+    else{const slot=['extra1','extra2','extra3'].map(id=>$(id)).find(el=>!el.value.trim())||$('extra3');slot.value=txt;slot.dispatchEvent(new Event('input'));if(!isMobile())slot.focus()}
+  };return b}));
+}
+document.querySelectorAll('.shuffle').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();renderExamples(b.dataset.pool)});
+function applyAttachMode(){
+  const attach=$('attach').checked;
+  $('extraLabel').innerHTML=attach?'추가 요청 <span style="font-weight:400">(선택)</span>':'학습 내용 <span style="font-weight:400">(첨부 자료가 없으니 핵심 내용을 적어 주세요)</span>';
+  document.querySelector('.extra-wrap').classList.toggle('content',!attach);
+  const ph=attach?['범위: 어느 단원·소단원까지 다룰지 (예: 2단원 「광합성의 과정」만)','형식: 정답 위치, 문항 수, 표·그림 비중 (예: 정답은 맨 뒤, 객관식 7 + 서술형 3)','강조·수준: 꼭 강조할 개념, 난이도, 병기 (예: 자주 틀리는 비교를 표로, 영어 용어 병기)']
+                 :['핵심 내용: 자료의 중심 내용을 2~3문장으로 (예: 광합성은 빛에너지를 화학에너지로…)','꼭 들어갈 용어·공식·인물 (예: 6CO₂+6H₂O→…, 엽록소, ATP)','시험 포인트·주의점·자주 틀리는 것 (예: 한계 요인 그래프, 명반응 vs 암반응 구분)'];
+  ['extra1','extra2','extra3'].forEach((id,i)=>$(id).placeholder=ph[i]);
+  renderExamples('extra');
+}
+renderExamples('topic');applyAttachMode();
+['extra1','extra2','extra3'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
-$('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;build()});
+$('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
 
 let toastTimer;function toast(msg){$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
@@ -612,7 +653,7 @@ $('copyImage').onclick=async()=>{
     else{$('refDownload').click();imgDone('✓ 이미지 복사가 지원되지 않아 파일로 저장했습니다. 저장된 그림을 ChatGPT에 첨부하세요.')}
   }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';setCurrent(2);build();toast('입력을 모두 지웠습니다')};
+$('reset').onclick=()=>{['grade','subject','topic','extra1','extra2','extra3'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';setCurrent(2);build();toast('입력을 모두 지웠습니다')};
 
 renderGallery();setCurrent(1);
 </script>
