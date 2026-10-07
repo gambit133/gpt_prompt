@@ -20,7 +20,7 @@ button{cursor:pointer}
 .ddbtn:focus,.ddbtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--ring)}
 [hidden]{display:none!important}
 .wrap{max-width:1480px;margin:0 auto;padding:0 16px}
-header{padding:16px 0 8px}
+header.wrap{padding:18px 16px 8px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{font-weight:800;font-size:17px;letter-spacing:.02em;display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;border-radius:10px;transition:opacity .2s;padding:4px 0}
 .brand:hover{opacity:.8}
@@ -30,9 +30,16 @@ header{padding:16px 0 8px}
 .brand small{font-weight:500;color:var(--muted);font-size:12.5px}
 .tagline{margin:0;font-size:13px;color:var(--muted)}
 .tagline b{color:var(--accent);font-weight:700}
-.aboutlink{margin-left:10px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;background:var(--card)}
-.aboutlink:hover{border-color:var(--accent)}
-@media(max-width:1099px){.tagline{display:flex!important;justify-content:flex-end}.tagline b{display:none}}
+.topbar{flex-wrap:nowrap}
+.tagline{flex:1;text-align:right}
+.menu{position:relative;flex:none}
+.hamb{width:40px;height:40px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);display:grid;place-items:center;gap:0;padding:0}
+.hamb span{display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;margin:2px 0}
+.hamb:hover{border-color:var(--accent)}
+.menulist{position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 34px -14px rgba(0,0,0,.4);padding:6px;min-width:170px;z-index:40;display:grid;gap:2px}
+.menulist a{text-decoration:none;color:var(--ink);font-size:13.5px;padding:9px 12px;border-radius:8px}
+.menulist a:hover{background:var(--soft2);color:var(--accent)}
+@media(max-width:1099px){.tagline{display:none}}
 main.wrap{padding-top:12px;padding-bottom:24px}
 
 /* steps */
@@ -284,7 +291,7 @@ dialog.guide{width:min(96vw,640px)}
 .mock-plus{width:24px;height:24px;border-radius:50%;border:1.5px solid #cfcfcf;display:grid;place-items:center;font-size:15px;color:#555;flex:none}
 .mock-text{flex:1;min-width:0;font-size:12px;line-height:1.4;height:30px;overflow:hidden;display:flex;align-items:center}
 .typed{display:inline-block;white-space:nowrap;overflow:hidden;max-width:0;animation:gType var(--T) infinite;vertical-align:middle}
-.caret{display:inline-block;width:2px;height:15px;background:#333;margin-left:2px;animation:gCaret .8s steps(1) infinite}
+.gcaret{display:inline-block;width:2px;height:15px;background:#333;margin-left:2px;animation:gCaret .8s steps(1) infinite}
 @keyframes gType{0%,25%{max-width:0}34%,65%{max-width:100%}66%,100%{max-width:0}}
 @keyframes gCaret{50%{opacity:0}}
 .mock-send{width:26px;height:26px;border-radius:50%;background:#222;color:#fff;display:grid;place-items:center;font-size:14px;flex:none;animation:gSend var(--T) infinite}
@@ -377,7 +384,8 @@ dialog.guide{width:min(96vw,640px)}
   dialog.guide::-webkit-scrollbar{display:none}
 }
 @media(max-width:760px){
-  header{padding:18px 0 10px}
+  header.wrap{padding:22px 16px 10px;padding-top:calc(22px + env(safe-area-inset-top))}
+  .brand{font-size:16px}
   .step-head{align-items:center}
   .step-head h2{font-size:15px}
   .step-choose .step-head .hint{display:none}
@@ -399,7 +407,8 @@ dialog.guide{width:min(96vw,640px)}
 <header class="wrap">
   <div class="topbar">
     <a class="brand" id="homeLink" href="#" title="홈으로"><img class="logo" src="assets/logo.svg" alt="" width="34" height="34">쌤플레이<small>AI마당 · 선생님 모여라</small></a>
-    <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b> <a class="aboutlink" href="about.html">사이트 소개 →</a></p>
+    <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b></p>
+    <div class="menu"><button id="menuBtn" class="hamb" aria-label="메뉴" aria-expanded="false"><span></span><span></span><span></span></button><nav id="menuList" class="menulist" hidden><a href="about.html">사이트 소개</a><a href="#" id="menuHome">쌤플 고르기</a></nav></div>
   </div>
 </header>
 
@@ -504,7 +513,7 @@ dialog.guide{width:min(96vw,640px)}
         <div class="mock-chat"><div class="mock-ai">무엇을 도와드릴까요?</div><div class="mock-user"><img id="gThumbU" alt=""><span>프롬프트…</span></div><div class="mock-result"><div class="mock-result-img"><img id="gThumbR" alt=""></div><span>완성된 학습 자료 이미지</span></div></div>
         <div class="mock-input">
           <div class="mock-attach"><img id="gThumb" alt=""><span class="mock-attach-x">✕</span></div>
-          <div class="mock-line"><span class="mock-plus">+</span><div class="mock-text"><span class="typed" id="gTyped">프롬프트…</span><span class="caret"></span></div><span class="mock-send">↑</span></div>
+          <div class="mock-line"><span class="mock-plus">+</span><div class="mock-text"><span class="typed" id="gTyped">프롬프트…</span><span class="gcaret"></span></div><span class="mock-send">↑</span></div>
         </div>
         <div class="kbd">Ctrl + V</div>
       </div>
@@ -729,6 +738,9 @@ function renderPreview(){
 function goHome(){$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
 $('changePick').onclick=()=>{$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
 $('homeLink').onclick=e=>{e.preventDefault();if($('dialog').open)$('dialog').close();goHome()};
+$('menuHome').onclick=e=>{e.preventDefault();$('menuList').hidden=true;if($('dialog').open)$('dialog').close();goHome()};
+$('menuBtn').onclick=e=>{e.stopPropagation();const o=$('menuList').hidden;$('menuList').hidden=!o;$('menuBtn').setAttribute('aria-expanded',o)};
+document.addEventListener('click',e=>{if(!document.querySelector('.menu').contains(e.target))$('menuList').hidden=true});
 $('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
 const REQUIRED=['grade','subject','topic'];
 const REQ_NAME={grade:'학년',subject:'과목',topic:'주제',content:'학습 내용'};

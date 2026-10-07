@@ -14,13 +14,25 @@ html{scroll-behavior:smooth}
 body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,'Noto Sans KR','Apple SD Gothic Neo',sans-serif;line-height:1.6;font-size:15px;background:var(--paper) radial-gradient(circle at 1px 1px,rgba(38,62,54,.07) 1px,transparent 0) 0 0/22px 22px}
 a{color:inherit}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
-header{padding:18px 0 8px}
+header.wrap{padding:18px 20px 8px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{font-weight:800;font-size:17px;display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand img{width:34px;height:34px;border-radius:10px;box-shadow:0 6px 14px -6px var(--accent)}
 .brand small{font-weight:500;color:var(--muted);font-size:12.5px}
-.nav a{font-size:13.5px;color:var(--muted);text-decoration:none;margin-left:14px}
-.nav a.cta{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:999px;padding:8px 14px;font-weight:700;box-shadow:0 6px 14px -7px var(--accent)}
+.menu{position:relative;flex:none}
+.hamb{width:40px;height:40px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);display:grid;place-items:center;padding:0;cursor:pointer}
+.hamb span{display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;margin:2px 0}
+.hamb:hover{border-color:var(--accent)}
+.menulist{position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 34px -14px rgba(0,0,0,.4);padding:6px;min-width:170px;z-index:40;display:grid;gap:2px}
+.menulist a{text-decoration:none;color:var(--ink);font-size:13.5px;padding:9px 12px;border-radius:8px}
+.menulist a:hover{background:var(--soft2);color:var(--accent)}
+/* slider arrows */
+.arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(255,254,250,.92);display:grid;place-items:center;font-size:20px;line-height:1;cursor:pointer;z-index:3;box-shadow:0 6px 14px -6px rgba(0,0,0,.4)}
+.arrow:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.arrow.prev{left:10px}.arrow.next{right:10px}
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
 
 /* hero */
 .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:36px 0 28px}
@@ -104,10 +116,9 @@ footer{padding:24px 0 36px;color:var(--muted);font-size:12.5px;text-align:center
   .hero{grid-template-columns:1fr;gap:20px;padding-top:22px}
   .slider{height:300px}
   .cols,.steps{grid-template-columns:1fr}
-  .nav a:not(.cta){display:none}
+  header.wrap{padding:22px 20px 8px;padding-top:calc(22px + env(safe-area-inset-top))}
   .brand{white-space:nowrap}
   .brand small{display:none}
-  .nav a.cta{padding:7px 11px;font-size:12.5px;white-space:nowrap}
 }
 </style>
 </head>
@@ -115,7 +126,7 @@ footer{padding:24px 0 36px;color:var(--muted);font-size:12.5px;text-align:center
 <header class="wrap">
   <div class="topbar">
     <a class="brand" href="index.html"><img src="assets/logo.svg" alt="">쌤플레이<small>AI마당 · 선생님 모여라</small></a>
-    <nav class="nav"><a href="#how">사용 방법</a><a href="#who">이런 분께</a><a class="cta" href="index.html">쌤플 고르러 가기 →</a></nav>
+    <div class="menu"><button id="menuBtn" class="hamb" aria-label="메뉴" aria-expanded="false"><span></span><span></span><span></span></button><nav id="menuList" class="menulist" hidden><a href="index.html">쌤플 고르기</a><a href="#how">사용 방법</a><a href="#who">이런 분께</a></nav></div>
   </div>
 </header>
 
@@ -129,19 +140,19 @@ footer{padding:24px 0 36px;color:var(--muted);font-size:12.5px;text-align:center
     </div>
     <div class="stage">
       <div class="stage-top"><i></i><i></i><i></i><span>쌤플 미리보기 · 자동 재생</span></div>
-      <div class="slider" id="slider"><div class="bar" id="bar"></div></div>
+      <div class="slider" id="slider"><div class="bar" id="bar"></div><button class="arrow prev" id="prev" aria-label="이전">‹</button><button class="arrow next" id="next" aria-label="다음">›</button></div>
       <div class="dots" id="dots"></div>
     </div>
   </section>
 
-  <section id="why">
+  <section id="why" class="reveal">
     <div class="quote">
       <p>수업 준비를 하다 보면 지도안, 학습지, 형성평가처럼 매번 비슷한 자료를 새로 만들게 됩니다. 학생도 마찬가지라서, 시험 전에는 정리 노트와 암기 카드를 또 만듭니다. ChatGPT에 이미지로 만들어 달라고 하면 빠른데, 어떻게 시켜야 원하는 모양이 나오는지가 늘 문제였습니다.</p>
       <p>그래서 잘 나온 결과물을 쌤플로 모아 두고, 그 쌤플대로 만들어 달라는 프롬프트를 자동으로 써 주는 페이지를 만들었습니다. 선생님만이 아니라 공부하는 누구나 쓸 수 있게 학습용 쌤플도 함께 넣었습니다.</p>
     </div>
   </section>
 
-  <section id="how">
+  <section id="how" class="reveal">
     <h2>세 단계면 끝납니다</h2>
     <p class="lead">그림을 고르고, 적고, 복사합니다. 아래 카드가 순서대로 켜지는 동안 실제 화면에서도 같은 일이 일어납니다.</p>
     <div class="steps" id="steps">
@@ -151,13 +162,13 @@ footer{padding:24px 0 36px;color:var(--muted);font-size:12.5px;text-align:center
     </div>
   </section>
 
-  <section>
+  <section class="reveal">
     <h2>쌤플은 이렇게 생겼습니다</h2>
     <p class="lead">손글씨 노트부터 인포그래픽, 칠판, 만화, 표까지. 전부 고3 국어 「구운몽」으로 만든 실제 결과물입니다.</p>
     <div class="strip"><div class="strip-track" id="strip"></div></div>
   </section>
 
-  <section id="who">
+  <section id="who" class="reveal">
     <h2>이런 분께</h2>
     <div class="cols">
       <div class="card t"><h3><span class="ic">🍎</span>선생님</h3><p>한 차시 수업에 필요한 자료를 한 번에.</p><ul><li>학습 목표, 수업 흐름, 50분 지도안</li><li>핵심 발문, 선수학습 진단</li><li>활동 학습지, 형성평가, 채점 기준표</li></ul></div>
@@ -165,7 +176,7 @@ footer{padding:24px 0 36px;color:var(--muted);font-size:12.5px;text-align:center
     </div>
   </section>
 
-  <section>
+  <section class="reveal">
     <div class="card" style="text-align:center;padding:28px">
       <h2 style="margin-bottom:6px">바로 써 보세요</h2>
       <p class="lead" style="margin:0 auto 16px">설치도, 가입도 없습니다. 입력한 내용은 저장되지 않습니다.</p>
@@ -184,7 +195,12 @@ show.forEach((s,i)=>{const d=document.createElement('div');d.className='slide'+(
 let cur=0,timer;const N=show.length;
 function go(n){cur=(n+N)%N;[...slider.querySelectorAll('.slide')].forEach((el,i)=>el.classList.toggle('on',i===cur));[...dots.children].forEach((el,i)=>el.classList.toggle('on',i===cur));bar.classList.remove('run');void bar.offsetWidth;bar.classList.add('run')}
 function start(){clearInterval(timer);timer=setInterval(()=>go(cur+1),3400);bar.classList.add('run')}
-start();slider.addEventListener('mouseenter',()=>{clearInterval(timer);bar.classList.remove('run')});slider.addEventListener('mouseleave',start);slider.addEventListener('click',()=>go(cur+1));
+start();slider.addEventListener('mouseenter',()=>{clearInterval(timer);bar.classList.remove('run')});slider.addEventListener('mouseleave',start);
+document.getElementById('prev').onclick=e=>{e.stopPropagation();go(cur-1);start()};document.getElementById('next').onclick=e=>{e.stopPropagation();go(cur+1);start()};
+let tx=null;slider.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});slider.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>40){go(cur+(dx<0?1:-1));start()}},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){go(cur-1);start()}if(e.key==='ArrowRight'){go(cur+1);start()}});
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{threshold:.15});document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const mb=document.getElementById('menuBtn'),ml=document.getElementById('menuList');mb.onclick=e=>{e.stopPropagation();const o=ml.hidden;ml.hidden=!o;mb.setAttribute('aria-expanded',o)};document.addEventListener('click',e=>{if(!document.querySelector('.menu').contains(e.target))ml.hidden=true});ml.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ml.hidden=true}));
 // steps cycle
 const steps=[...document.querySelectorAll('#steps .step')];let si=0;setInterval(()=>{si=(si+1)%steps.length;steps.forEach((s,i)=>s.classList.toggle('on',i===si))},2600);
 // marquee strip
