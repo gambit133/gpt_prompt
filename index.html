@@ -194,8 +194,9 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 .dside .box p{margin:0}
 .dside .dbtns{display:flex;flex-direction:column;gap:8px;margin-top:4px}
 .dside .dbtns .primary{flex:none;width:100%}
-.secondary.big{justify-content:center;padding:12px 20px;font-size:14.5px;font-weight:700;border-radius:12px}
-.dx{position:absolute;top:10px;right:10px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:18px;line-height:1;display:grid;place-items:center;z-index:2;box-shadow:0 6px 14px -8px rgba(0,0,0,.4);transition:all .2s}
+.primary.xl{padding:18px 22px;font-size:17px;border-radius:14px;box-shadow:0 6px 0 var(--accent-dark),0 18px 30px -12px rgba(0,0,0,.45)}
+.primary.xl:active{transform:translateY(5px);box-shadow:0 1px 0 var(--accent-dark)}
+.dx{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:18px;line-height:1;display:grid;place-items:center;z-index:2;box-shadow:0 6px 14px -8px rgba(0,0,0,.4);transition:all .2s}
 .dx:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .dside .counter{font-size:11.5px;color:var(--muted);text-align:center}
 
@@ -316,7 +317,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
       <div><span class="badge2" id="dTag"></span><h3 id="dialogTitle"></h3><p class="sub" id="dDesc"></p></div>
       <div class="box"><b>어떤 자료인가요</b><p id="dWhat"></p></div>
       <div class="box"><b>이럴 때 좋아요</b><p id="dWhen"></p></div>
-      <div class="dbtns"><button id="dialogPick" class="primary">✓ 이 그림으로 만들기</button><button id="dialogClose" class="secondary big">닫기</button></div>
+      <div class="dbtns"><button id="dialogPick" class="primary xl">✓ 이 그림으로 만들기</button></div>
       <div class="counter" id="dCounter"></div>
     </div>
   </div>
@@ -473,7 +474,7 @@ function openDialog(key){
 function dialogStep(d){const list=visibleKeys.length?visibleKeys:samples.map(s=>s.key);const i=list.indexOf(dialogKey);if(i<0)return;openDialog(list[(i+d+list.length)%list.length])}
 $('dPrev').onclick=()=>dialogStep(-1);$('dNext').onclick=()=>dialogStep(1);
 $('dialog').addEventListener('keydown',e=>{if(e.key==='ArrowLeft')dialogStep(-1);if(e.key==='ArrowRight')dialogStep(1)});
-$('dialogClose').onclick=$('dialogX').onclick=()=>$('dialog').close();
+$('dialogX').onclick=()=>$('dialog').close();
 $('dialog').onclick=e=>{if(e.target===$('dialog'))$('dialog').close()};
 $('dialogPick').onclick=()=>{if(!dialogKey)return;$('dialog').close();enterWork(dialogKey)};
 
