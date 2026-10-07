@@ -1,9 +1,25 @@
 ﻿역할,예시 유형,프롬프트 구분,이미지
-학생,상세 학습 노트,상세 · 실제 생성 지시,assets/s-notes.jpg
-학생,환몽 구조도,상세 · 실제 생성 지시,assets/s-map.jpg
-학생,암기 카드,기본 · 재현용 지시,assets/s-cards.jpg
-학생,선지 판단,기본 · 재현용 지시,assets/s-judgment.jpg
+학습용,상세 학습 노트,상세 · 실제 생성 지시,assets/s-notes.jpg
+학습용,환몽 구조도,상세 · 실제 생성 지시,assets/s-map.jpg
+학습용,암기 카드,기본 · 재현용 지시,assets/s-cards.jpg
+학습용,선지 판단,기본 · 재현용 지시,assets/s-judgment.jpg
 선생님,50분 수업 지도안,상세 · 실제 생성 지시,assets/t-plan.jpg
 선생님,학생 활동 학습지,상세 · 실제 생성 지시,assets/t-sheet.jpg
 선생님,형성평가,기본 · 재현용 지시,assets/t-quiz.jpg
 선생님,서술형 채점 기준,기본 · 재현용 지시,assets/t-rubric.jpg
+학습용,손글씨 학습 노트,상세 · 생성 지시,assets/s-hand.jpg
+학습용,포스트잇 요약,상세 · 생성 지시,assets/s-postit.jpg
+학습용,개념 시각화,상세 · 생성 지시,assets/s-visual.jpg
+학습용,단원 요약하기,상세 · 생성 지시,assets/s-summary.jpg
+학습용,기초 개념 확인하기,상세 · 생성 지시,assets/s-basics.jpg
+학습용,쉽게 설명하기,상세 · 생성 지시,assets/s-explain.jpg
+학습용,일상생활에 비유하기,상세 · 생성 지시,assets/s-analogy.jpg
+학습용,원리 이해하기,상세 · 생성 지시,assets/s-principle.jpg
+학습용,헷갈리는 개념 비교,상세 · 생성 지시,assets/s-compare.jpg
+학습용,반례와 적용 조건 찾기,상세 · 생성 지시,assets/s-counter.jpg
+학습용,오개념 바로잡기,상세 · 생성 지시,assets/s-misconception.jpg
+학습용,실제 사례 연결하기,상세 · 생성 지시,assets/s-realcase.jpg
+학습용,질문으로 이해하기,상세 · 생성 지시,assets/s-socratic.jpg
+학습용,내 설명 점검하기,상세 · 생성 지시,assets/s-selfcheck.jpg
+학습용,풀이 과정 이해하기,상세 · 생성 지시,assets/s-solving.jpg
+학습용,근거 기반 예상문제,상세 · 생성 지시,assets/s-questions.jpg
