@@ -1,0 +1,39 @@
+# GitHub Pages 배포 워크플로
+# main 브랜치에 푸시되면 저장소 최상위(index.html 등)를 그대로 GitHub Pages에 배포합니다.
+# Settings → Pages → Source 가 "GitHub Actions" 여야 합니다. (첫 실행 시 자동 설정을 시도합니다.)
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, ccr-51b528ed-et3bik]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
