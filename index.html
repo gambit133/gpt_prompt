@@ -817,7 +817,7 @@ function renderPreview(){
     b.onclick=()=>{enterWork(x.key,false)};return b}));
   const act=$('altStrip').querySelector('.alt.active');if(act)act.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
 }
-function goHome(){$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
+function goHome(){favOnly=false;$('favLink').classList.remove('active');$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
 $('changePick').onclick=e=>{e.preventDefault();$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
 $('homeLink').onclick=e=>{e.preventDefault();if($('dialog').open)$('dialog').close();goHome()};
 $('menuHome').onclick=e=>{e.preventDefault();setMenu(false);if($('dialog').open)$('dialog').close();goHome()};
