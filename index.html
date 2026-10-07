@@ -135,7 +135,9 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .examples span{font-size:11px;color:var(--muted);margin-right:2px}
 .examples button{border:1px dashed #c3cdbf;background:transparent;border-radius:999px;padding:2px 9px;font-size:11px;color:var(--accent);transition:all .15s}
 .examples button:hover{background:var(--soft);border-style:solid}
-.copyopt{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;margin:8px 2px 0;cursor:pointer;user-select:none}
+.copyopt{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;margin:8px 2px 0;cursor:pointer;user-select:none;flex-wrap:wrap}
+.copyopt .lbl{white-space:nowrap}
+.copyopt .hint{flex:1 1 100%;padding-left:23px;margin-top:-4px}
 .copyopt input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
 .copyopt .hint{font-weight:400}
 .actions.sub{margin-top:8px}
@@ -273,7 +275,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
           <div class="actions">
             <button id="copy" class="primary">📋 복사하기 (예시 이미지 + 프롬프트)</button>
           </div>
-          <label class="copyopt"><input id="withImage" type="checkbox" checked>예시 이미지 복사 포함 <span class="hint">· 함께 붙여넣으면 구성과 색감을 더 정확히 따릅니다</span></label>
+          <label class="copyopt"><input id="withImage" type="checkbox" checked><span class="lbl">예시 이미지 복사 포함</span><span class="hint">함께 붙여넣으면 구성과 색감을 더 정확히 따릅니다</span></label>
           <div class="actions sub">
             <button id="copyImage" class="secondary">🖼 예시 이미지만 복사</button>
             <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 예시 이미지 저장</a>
