@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#255c47">
 <title>배움의 도구 · GPT 이미지 프롬프트 생성기</title>
-<meta name="description" content="교사·학생용 ChatGPT 학습 이미지 프롬프트 생성기. 그림을 고르고 과목·주제만 적으면 첨부 자료를 정리하는 프롬프트가 완성됩니다.">
+<meta name="description" content="학습자·교사용 ChatGPT 학습 이미지 프롬프트 생성기. 예시 그림을 고르고 과목·주제만 적으면 첨부 자료를 정리하는 프롬프트가 완성됩니다.">
 <style>
-:root{--paper:#f4f3ec;--card:#fffefa;--ink:#263e36;--muted:#6a756d;--line:#dedfd5;--accent:#255c47;--accent2:#3f8f6e;--accent-dark:#1a4232;--ring:rgba(37,92,71,.18);--accent-ink:#fff;--soft:#e8eee2;--soft2:#f1f4ec;--warn:#ba793b;--peach:#f0c9a4}
+:root{--paper:#f4f3ec;--card:#fffefa;--ink:#263e36;--muted:#6a756d;--line:#dedfd5;--accent:#255c47;--accent2:#3f8f6e;--accent-dark:#1a4232;--ring:rgba(37,92,71,.18);--soft:#e8eee2;--soft2:#f1f4ec;--warn:#ba793b;--peach:#f0c9a4}
 body.teacher{--accent:#315774;--accent2:#5a8ab4;--accent-dark:#24405a;--ring:rgba(49,87,116,.18);--soft:#e7eef3;--soft2:#eef3f7}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -16,81 +16,103 @@ body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,'Noto Sans KR
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
 :is(button,a,select):focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+[hidden]{display:none!important}
 .wrap{max-width:1480px;margin:0 auto;padding:0 16px}
 header{padding:14px 0 4px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{font-weight:800;font-size:15px;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
 .brand .logo{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:15px;box-shadow:0 6px 14px -6px var(--accent)}
 .brand small{font-weight:500;color:var(--muted);font-size:12px}
-.tagline{margin:0;font-size:13px;color:var(--muted);max-width:640px}
-section.step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:0;box-shadow:0 1px 2px rgba(38,62,54,.04),0 14px 30px -24px rgba(38,62,54,.35)}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 410px;gap:14px;align-items:start;padding-top:12px;padding-bottom:20px}
-.side{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;padding-right:2px}
-.side section.step{padding:14px}
-.selected{display:flex;gap:12px;align-items:center;background:var(--soft2);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:12px}
-.selected img{width:78px;height:104px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line);cursor:zoom-in;background:#f5f0e7;flex:none;transition:transform .2s}
-.selected img:hover{transform:scale(1.04)}
-.selmeta{min-width:0}
-.selected strong{display:block;font-size:14px;line-height:1.3}
-.selected p{margin:2px 0 0;font-size:12px;color:var(--muted)}
-.badge2{display:inline-block;font-size:10.5px;background:var(--accent);color:#fff;border-radius:999px;padding:1px 8px;margin-bottom:4px}
-.sellinks{display:flex;gap:10px;margin-top:5px}
-.linkbtn{background:none;border:0;padding:0;font-size:12px;color:var(--accent);text-decoration:underline;font-weight:600}
-.side .form{grid-template-columns:1fr 1fr}
-.side .field.topic{grid-column:1/-1}
-.side .toggle{margin-top:8px;width:100%;justify-content:flex-start}
-.side .output{min-height:250px;font-size:12.5px;line-height:1.7}
-.side .actions .primary{flex-basis:100%}
-.hint.small{font-size:11.5px;color:var(--muted);margin:6px 0 0}
+.tagline{margin:0;font-size:13px;color:var(--muted)}
+main.wrap{padding-top:12px;padding-bottom:24px}
+
+/* steps */
+section.step{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 1px 2px rgba(38,62,54,.04),0 14px 30px -24px rgba(38,62,54,.35);transition:opacity .3s,box-shadow .3s,border-color .3s}
 .step-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .step-head h2{margin:0;font-size:16px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
-.step-head h2 b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;box-shadow:0 5px 12px -5px var(--accent)}
+.step-head h2 b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;box-shadow:0 5px 12px -5px var(--accent);transition:transform .3s}
 .step-head .hint{font-size:12px;color:var(--muted)}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 10px}
-.tab{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-size:13px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+section.step.current{border-color:var(--accent);animation:focusPulse 2s ease-in-out infinite}
+section.step.current .step-head h2 b{animation:bump 2s ease-in-out infinite}
+@keyframes focusPulse{0%,100%{box-shadow:0 0 0 3px var(--ring),0 14px 30px -24px rgba(38,62,54,.35)}50%{box-shadow:0 0 0 9px rgba(0,0,0,0),0 14px 30px -24px rgba(38,62,54,.35)}}
+@keyframes bump{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+section.step.pending{opacity:.62}
+section.step.pending:hover,section.step.pending:focus-within{opacity:1}
+section.step.done .step-head h2 b{background:linear-gradient(135deg,#3f8f6e,#5fb08d)}
+section.step.done .step-head h2 b::before{content:"✓"}
+section.step.done .step-head h2 b{font-size:0}
+section.step.done .step-head h2 b::before{font-size:13px}
+
+/* gallery */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 8px}
+.tab{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:all .2s}
 .tab:hover{border-color:#c3cdbf;transform:translateY(-1px)}
 .tab .n{font-size:11px;font-weight:600;background:var(--soft);border-radius:999px;padding:1px 7px;color:var(--muted)}
 .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;box-shadow:0 6px 14px -7px var(--accent)}
 .tab.active .n{background:rgba(255,255,255,.25);color:#fff}
-.filterbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.filterbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
 .chips{display:flex;gap:5px;flex-wrap:wrap;flex:1 1 320px}
-.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:4px 10px;font-size:11.5px;color:var(--muted);transition:all .15s}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:3px 10px;font-size:11.5px;color:var(--muted);transition:all .15s}
 .chip:hover{border-color:var(--accent);color:var(--accent)}
 .chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-#search{flex:0 1 240px;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;height:36px;background:#fff;font-size:12.5px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
+#search{flex:0 1 230px;border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;height:34px;background:#fff;font-size:12.5px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
 #search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--ring)}
 .group-label{display:flex;align-items:center;gap:8px;margin:12px 0 8px;font-weight:800;font-size:13px}
 .group-label span{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:999px;padding:3px 11px}
 .group-label .cnt{background:none;color:var(--muted);font-weight:600;font-size:12px;padding:0}
-.card .badge{position:absolute;right:8px;bottom:8px;background:rgba(38,62,54,.75);color:#fff;font-size:10.5px;font-weight:600;border-radius:999px;padding:2px 8px;backdrop-filter:blur(3px)}
-.thumbwrap{position:relative}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.card{position:relative;border:2px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;
-  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s}
-.card:hover{transform:translateY(-5px);box-shadow:0 18px 30px -16px rgba(38,62,54,.45);border-color:#c3cdbf}
-.card.active{border-color:transparent;background-image:linear-gradient(var(--card),var(--card)),linear-gradient(120deg,var(--accent),var(--accent2),var(--peach),var(--accent));background-origin:border-box;background-clip:padding-box,border-box;background-size:100% 100%,300% 100%;animation:flow 4s linear infinite;box-shadow:0 0 0 4px var(--ring),0 14px 26px -14px rgba(38,62,54,.4)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:10px}
+.card{position:relative;border:2px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 18px 30px -16px rgba(38,62,54,.45);border-color:#c3cdbf}
+.card.active{border-color:transparent;background-image:linear-gradient(var(--card),var(--card)),linear-gradient(120deg,var(--accent),var(--accent2),var(--peach),var(--accent));background-origin:border-box;background-clip:padding-box,border-box;background-size:100% 100%,300% 100%;animation:flow 4s linear infinite;box-shadow:0 0 0 4px var(--ring)}
 @keyframes flow{to{background-position:0 0,300% 0}}
-.card-pick{all:unset;display:block;cursor:pointer;width:100%}
-.card-pick:focus-visible{outline:3px solid var(--warn);outline-offset:-3px;border-radius:12px}
-.card .thumb{display:block;width:100%;height:210px;object-fit:cover;object-position:top;background:#f5f0e7;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.card-pick{all:unset;display:block;cursor:zoom-in;width:100%}
+.card-pick:focus-visible{outline:3px solid var(--warn);outline-offset:-3px;border-radius:10px}
+.thumbwrap{position:relative}
+.card .thumb{display:block;width:100%;height:168px;object-fit:cover;object-position:top;background:#f5f0e7;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .card:hover .thumb{transform:scale(1.04)}
-.card .meta{padding:9px 10px 10px;background:var(--card);position:relative}
-.card strong{display:block;font-size:13px;line-height:1.3;margin-bottom:3px}
-.card p{margin:0;font-size:11.5px;color:var(--muted);line-height:1.4}
-.card .check{position:absolute;top:8px;left:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:3px 9px;display:none;box-shadow:0 6px 12px -6px var(--accent-dark)}
+.card .badge{position:absolute;right:6px;bottom:6px;background:rgba(38,62,54,.75);color:#fff;font-size:10px;font-weight:600;border-radius:999px;padding:2px 7px;backdrop-filter:blur(3px)}
+.card .meta{padding:7px 9px 8px;background:var(--card);position:relative}
+.card strong{display:block;font-size:12.5px;line-height:1.3}
+.card p{margin:1px 0 0;font-size:11px;color:var(--muted);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .check{position:absolute;top:6px;left:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:10.5px;font-weight:700;border-radius:999px;padding:2px 8px;display:none;box-shadow:0 6px 12px -6px var(--accent-dark)}
 .card.active .check{display:inline-block;animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
 @keyframes pop{from{transform:scale(.5);opacity:0}}
-.card .zoom{position:absolute;top:8px;right:8px;border:1px solid rgba(255,255,255,.7);background:rgba(255,254,250,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:600;transition:all .2s}
-.card .zoom:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:scale(1.06)}
-.form{display:grid;grid-template-columns:150px 1fr 1.6fr;gap:8px}
+
+/* workspace */
+.selbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:12px;animation:fade .3s ease}
+.selbar .stepnum{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#3f8f6e,#5fb08d);color:#fff;font-size:12px}
+.selbar strong{font-size:14px}
+.selbar .spacer{flex:1}
+.badge2{display:inline-block;font-size:10.5px;background:var(--accent);color:#fff;border-radius:999px;padding:1px 8px}
+.work-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,470px);gap:14px;align-items:start;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.preview{position:sticky;top:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.editor{min-width:0}
+.alts{min-width:0}
+.preview-img{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:0 14px 30px -24px rgba(38,62,54,.35)}
+.preview-img img{display:block;width:100%;max-height:max(360px,calc(100vh - 300px));object-fit:contain;border-radius:10px;background:#f5f0e7;cursor:zoom-in}
+.preview-img .zoom{position:absolute;top:18px;right:18px;border:1px solid rgba(255,255,255,.7);background:rgba(255,254,250,.85);backdrop-filter:blur(6px);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;transition:all .2s}
+.preview-img .zoom:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.preview-what{margin:0;font-size:12.5px;color:var(--muted);padding:0 4px}
+.alts{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.alts-label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:7px}
+.alt-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.alt{flex:none;width:92px;border:2px solid var(--line);border-radius:9px;overflow:hidden;background:var(--card);padding:0;text-align:center;transition:transform .2s,border-color .2s}
+.alt:hover{transform:translateY(-2px);border-color:#c3cdbf}
+.alt.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+.alt img{display:block;width:100%;height:104px;object-fit:cover;object-position:top;background:#f5f0e7}
+.alt span{display:block;font-size:10.5px;padding:3px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.editor{display:flex;flex-direction:column;gap:12px}
+.editor section.step{padding:14px}
+
+/* form */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .field label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:3px}
-.field input,.field select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;height:40px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s,transform .2s}
+.field input,.field select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;height:38px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
 .field input:hover,.field select:hover{border-color:#c3cdbf}
 .field input:focus,.field select:focus,.output:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--ring),inset 0 1px 2px rgba(38,62,54,.05)}
-.field select{appearance:auto}
-.form-row2{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;margin-top:8px}
-.toggle{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;height:40px;background:var(--soft2);font-size:13px;white-space:nowrap;cursor:pointer;user-select:none;transition:border-color .2s,box-shadow .2s}
-.toggle:hover{border-color:#c3cdbf}
+.field.wide{grid-column:1/-1}
+.toggle{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;height:38px;background:var(--soft2);font-size:13px;cursor:pointer;user-select:none;margin-top:8px;transition:border-color .2s,box-shadow .2s}
 .toggle:has(input:focus-visible){box-shadow:0 0 0 4px var(--ring);border-color:var(--accent)}
 .switch{position:relative;width:44px;height:24px;flex:none}
 .switch input{position:absolute;opacity:0;width:0;height:0}
@@ -98,58 +120,79 @@ section.step{background:var(--card);border:1px solid var(--line);border-radius:1
 .slider::before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;box-shadow:0 2px 5px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
 .switch input:checked+.slider{background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .switch input:checked+.slider::before{transform:translateX(20px)}
-.attach{margin:8px 0 0;background:var(--soft2);border:1px dashed #b9c4b6;border-radius:10px;padding:8px 12px;font-size:12.5px;color:var(--accent);font-weight:600;line-height:1.5;animation:fade .3s ease}
-@keyframes fade{from{opacity:0;transform:translateY(-4px)}}
-.output{width:100%;min-height:230px;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:#fffefa;resize:vertical;line-height:1.75;font-size:13px;box-shadow:inset 0 1px 3px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
+.attach{margin:8px 0 0;font-size:12px;color:var(--accent);font-weight:600;animation:fade .3s ease}
+.tune{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--soft2);padding:0 12px}
+.tune summary{cursor:pointer;font-weight:700;font-size:13px;padding:9px 0;list-style:none;display:flex;align-items:center;gap:8px}
+.tune summary::-webkit-details-marker{display:none}
+.tune summary::after{content:"▾";margin-left:auto;color:var(--muted);transition:transform .2s}
+.tune[open] summary::after{transform:rotate(180deg)}
+.tune summary .n{font-size:11px;font-weight:600;background:var(--accent);color:#fff;border-radius:999px;padding:1px 7px}
+.tune summary .n:empty{display:none}
+.tune-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 0 12px}
+.tune-grid .field select{height:34px;padding:5px 9px;font-size:12.5px}
+.tune-grid .field label{font-size:11px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
-.primary{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0;border-radius:12px;padding:13px 22px;font-weight:800;font-size:15px;flex:1 1 220px;min-width:200px;letter-spacing:.01em;
-  box-shadow:0 5px 0 var(--accent-dark),0 14px 24px -10px rgba(0,0,0,.4);transition:transform .12s,box-shadow .12s,filter .2s}
+.primary{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0;border-radius:12px;padding:12px 20px;font-weight:800;font-size:14.5px;flex:1 1 200px;letter-spacing:.01em;box-shadow:0 5px 0 var(--accent-dark),0 14px 24px -10px rgba(0,0,0,.4);transition:transform .12s,box-shadow .12s,filter .2s}
 .primary::after{content:"";position:absolute;top:0;left:-80%;width:45%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);transition:left .65s ease}
 .primary:hover{transform:translateY(-1px);filter:brightness(1.05)}
 .primary:hover::after{left:130%}
 .primary:active{transform:translateY(4px);box-shadow:0 1px 0 var(--accent-dark),0 6px 12px -8px rgba(0,0,0,.4)}
-.secondary{background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:10px 14px;font-size:12.5px;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
-.secondary:hover{border-color:var(--accent);color:var(--accent);background:var(--soft2);transform:translateY(-1px);box-shadow:0 8px 16px -12px rgba(38,62,54,.5)}
-.secondary:active{transform:translateY(1px)}
-#status{min-height:18px;font-size:12.5px;color:var(--accent);margin-top:8px;font-weight:600}
-.secondary.accent{border-color:var(--accent);color:var(--accent);font-weight:700;background:var(--soft2)}
-footer{color:var(--muted);font-size:11.5px;padding:8px 0 28px;text-align:center}
-dialog{width:min(97vw,1500px);max-width:97vw;max-height:96vh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:14px 16px 16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
-dialog .dbtns{display:flex;gap:8px;align-items:center}
-.primary.small{flex:none;min-width:0;padding:9px 14px;font-size:13px;box-shadow:0 3px 0 var(--accent-dark),0 10px 18px -10px rgba(0,0,0,.4)}
+.primary.small{flex:none;padding:9px 14px;font-size:13px;box-shadow:0 3px 0 var(--accent-dark),0 10px 18px -10px rgba(0,0,0,.4)}
 .primary.small:active{transform:translateY(3px);box-shadow:0 0 0 var(--accent-dark)}
-dialog .dbody{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;align-items:start}
-@media(max-width:900px){dialog .dbody{grid-template-columns:1fr}dialog .dbtns{width:100%;margin-left:0}dialog .dbtns .primary.small{flex:1;padding:8px 10px;font-size:12px}dialog h3{font-size:14px}}
+.secondary{background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:9px 13px;font-size:12.5px;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.secondary:hover{border-color:var(--accent);color:var(--accent);background:var(--soft2);transform:translateY(-1px)}
+.secondary.accent{border-color:var(--accent);color:var(--accent);font-weight:700;background:var(--soft2)}
+.output{width:100%;min-height:260px;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:#fffefa;resize:vertical;line-height:1.7;font-size:12.5px;box-shadow:inset 0 1px 3px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
+#status{min-height:18px;font-size:12.5px;color:var(--accent);margin-top:8px;font-weight:600}
+.hint.small{font-size:11.5px;color:var(--muted);margin:6px 0 0}
+footer{color:var(--muted);font-size:11.5px;padding:8px 0 28px;text-align:center}
+
+/* dialog */
+dialog{width:min(97vw,1400px);max-width:97vw;max-height:96vh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:14px 16px 16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
 dialog[open]{animation:dpop .25s cubic-bezier(.2,.8,.2,1)}
 @keyframes dpop{from{opacity:0;transform:translateY(10px) scale(.98)}}
 dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
-dialog .dhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
-dialog .dbtns{margin-left:auto}
-dialog h3{margin:0;font-size:15px}
-dialog img{width:100%;max-height:86vh;object-fit:contain;display:block;border-radius:12px;background:#f5f0e7}
-dialog .dcontent{white-space:pre-wrap;font-size:12.5px;color:var(--muted);background:var(--paper);border-radius:10px;padding:10px 12px;line-height:1.7;max-height:86vh;overflow:auto}
+.dbody{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.dimg{position:relative}
+.dimg img{width:100%;max-height:88vh;object-fit:contain;display:block;border-radius:12px;background:#f5f0e7}
+.dnav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(255,254,250,.9);font-size:20px;line-height:1;display:grid;place-items:center;box-shadow:0 6px 14px -6px rgba(0,0,0,.4);transition:background .2s,color .2s}
+.dnav:hover{background:var(--accent);color:#fff}
+.dnav.prev{left:8px}.dnav.next{right:8px}
+.dside{display:flex;flex-direction:column;gap:12px;position:sticky;top:0}
+.dside h3{margin:4px 0 0;font-size:20px;letter-spacing:-.02em;line-height:1.3}
+.dside .sub{margin:0;color:var(--muted);font-size:13px}
+.dside .box{background:var(--soft2);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.6}
+.dside .box b{display:block;font-size:11.5px;color:var(--accent);margin-bottom:3px;letter-spacing:.02em}
+.dside .box p{margin:0}
+.dside .dbtns{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.dside .dbtns .primary{flex:none;width:100%}
+.dside .counter{font-size:11.5px;color:var(--muted);text-align:center}
+
+/* toast */
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px 10px 12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 16px 30px -12px rgba(0,0,0,.5);transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s;z-index:50}
 .toast.show{transform:translate(-50%,0);opacity:1}
 .toast .ok{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:12px}
-[hidden]{display:none!important}
+
 @media(max-width:1099px){
-  .layout{grid-template-columns:1fr}
-  .side{position:static;max-height:none;overflow:visible}
+  .work-grid{grid-template-columns:minmax(0,1fr)}
+  .preview{position:static}
+  .preview-img img{max-height:360px}
   .tagline{display:none}
+  .dbody{grid-template-columns:1fr}
+  .dside{position:static}
+  .dimg img{max-height:60vh}
 }
 @media(max-width:760px){
-  .tab{padding:7px 10px;font-size:12px}
+  .tab{padding:6px 10px;font-size:12px}
   #search{flex-basis:100%}
-  .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .card .thumb{height:170px}
-  .form{grid-template-columns:1fr 1fr}
-  .form .field.topic{grid-column:1/-1}
-  .form-row2{grid-template-columns:1fr}
-    .primary{flex-basis:100%}
+  .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .card .thumb{height:140px}
+  .tune-grid{grid-template-columns:1fr 1fr}
+  .primary{flex-basis:100%}
+  .dside h3{font-size:17px}
 }
-@media(max-width:420px){.card .thumb{height:140px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-@media print{.actions,.attach,footer,.step-choose,.toast,.selected{display:none}.layout{display:block}.output{min-height:600px}body{background:#fff}}
+@media print{.step-choose,.selbar,.alts,.actions,footer,.toast,.tune{display:none}.work-grid{display:block}.output{min-height:600px}body{background:#fff}}
 </style>
 </head>
 <body>
@@ -160,62 +203,89 @@ dialog .dcontent{white-space:pre-wrap;font-size:12.5px;color:var(--muted);backgr
   </div>
 </header>
 
-<main class="wrap layout">
-  <section class="step step-choose" aria-labelledby="h1">
-    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 🔍 크게 보기</span></div>
+<main class="wrap">
+  <section class="step step-choose current" id="choose" aria-labelledby="h1">
+    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 그림을 누르면 크게 보고 고를 수 있습니다</span></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="용도별 묶음"></div>
     <div class="filterbar"><div class="chips" id="styleChips" aria-label="스타일 필터"></div><input id="search" type="search" placeholder="검색: 암기, 표, 칠판, 발문…" aria-label="예시 검색"></div>
     <div id="groups"></div>
     <p id="noResult" class="hint" hidden>일치하는 예시가 없습니다.</p>
   </section>
 
-  <aside class="side" id="editor">
-    <section class="step" aria-labelledby="h2">
-      <div class="selected">
-        <img id="selThumb" alt="선택한 예시" title="크게 보기">
-        <div class="selmeta"><span class="badge2" id="selTag"></span><strong id="selName"></strong><p id="selDesc"></p>
-          <div class="sellinks"><button id="selZoom" class="linkbtn">크게 보기</button><button id="changePick" class="linkbtn">다른 그림 고르기</button></div></div>
-      </div>
-      <div class="step-head"><h2 id="h2"><b>2</b>간단히 적기</h2><span class="hint">비워 두면 첨부 자료 기준</span></div>
-      <div class="form">
-        <div class="field"><label for="grade">학년</label>
-          <select id="grade">
-            <option value="">선택 안 함</option>
-            <option>초등학교 저학년</option><option>초등학교 고학년</option>
-            <option>중학교 1학년</option><option>중학교 2학년</option><option>중학교 3학년</option>
-            <option>고등학교 1학년</option><option>고등학교 2학년</option><option>고등학교 3학년</option>
-            <option>대학생·성인</option>
-          </select></div>
-        <div class="field"><label for="subject">과목</label><input id="subject" list="subjects" placeholder="예: 국어" autocomplete="off">
-          <datalist id="subjects"><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option></datalist></div>
-        <div class="field topic"><label for="topic">주제·단원</label><input id="topic" placeholder="예: 구운몽, 광합성, 3·1 운동"></div>
-        <div class="field topic"><label for="extra">추가 요청 <span style="font-weight:400">(선택)</span></label><input id="extra" placeholder="예: 정답은 맨 뒤에, 영어 병기"></div>
-      </div>
-      <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료를 첨부할게요</label>
-      <p class="attach" id="attachInfo">✓ 첨부 자료 참조 문구 포함 · 예시 이미지도 함께 첨부하면 더 정확합니다.</p>
-    </section>
+  <section id="work" hidden aria-label="프롬프트 만들기">
+    <div class="selbar"><span class="stepnum">✓</span><span>선택한 자료</span><strong id="selName"></strong><span class="badge2" id="selTag"></span><span class="spacer"></span><button id="changePick" class="secondary">← 다른 자료 고르기</button></div>
+    <div class="work-grid">
+      <aside class="preview">
+        <div class="preview-img"><img id="selImage" alt="선택한 예시"><button id="selZoom" class="zoom">🔍 크게</button></div>
+        <p class="preview-what" id="selWhat"></p>
+        <div class="alts"><span class="alts-label">같은 묶음의 다른 예시</span><div id="altStrip" class="alt-strip"></div></div>
+      </aside>
 
-    <section class="step" aria-labelledby="h3">
-      <div class="step-head"><h2 id="h3"><b>3</b>복사해서 붙여넣기</h2><span class="hint" id="length"></span></div>
-      <textarea id="output" class="output" spellcheck="false" aria-label="완성 프롬프트 (직접 수정 가능)"></textarea>
-      <div class="actions">
-        <button id="copy" class="primary">📋 프롬프트 복사</button>
-        <button id="copyImage" class="secondary accent" title="ChatGPT 입력창에 Ctrl+V로 붙여넣으세요">🖼 예시 이미지 복사</button>
-        <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 저장</a>
-        <button id="reset" class="secondary">지우기</button>
+      <div class="editor" id="editor">
+        <section class="step" id="step2" aria-labelledby="h2">
+          <div class="step-head"><h2 id="h2"><b>2</b>간단히 적기</h2><span class="hint">비워 두면 첨부 자료 기준</span></div>
+          <div class="form">
+            <div class="field"><label for="grade">학년</label>
+              <select id="grade">
+                <option value="">선택 안 함</option>
+                <option>초등학교 저학년</option><option>초등학교 고학년</option>
+                <option>중학교 1학년</option><option>중학교 2학년</option><option>중학교 3학년</option>
+                <option>고등학교 1학년</option><option>고등학교 2학년</option><option>고등학교 3학년</option>
+                <option>대학생·성인</option>
+              </select></div>
+            <div class="field"><label for="subject">과목</label><input id="subject" list="subjects" placeholder="예: 국어" autocomplete="off">
+              <datalist id="subjects"><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option></datalist></div>
+            <div class="field wide"><label for="topic">주제·단원</label><input id="topic" placeholder="예: 구운몽, 광합성, 3·1 운동"></div>
+            <div class="field wide"><label for="extra">추가 요청 <span style="font-weight:400">(선택)</span></label><input id="extra" placeholder="예: 정답은 맨 뒤에, 영어 병기"></div>
+          </div>
+          <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료를 첨부할게요</label>
+          <p class="attach" id="attachInfo">✓ 첨부 자료 참조 문구 포함 · 예시 이미지도 함께 첨부하면 더 정확합니다.</p>
+          <details class="tune" id="tune">
+            <summary>🎨 세부 조정 <span class="n" id="tuneCount"></span><span class="hint" style="font-weight:400;margin-left:4px">톤·색감·글꼴·삽화·글자량·비율</span></summary>
+            <div class="tune-grid">
+              <div class="field"><label for="tTone">톤</label><select id="tTone" data-label="톤"><option value="">예시 그대로</option><option>차분하고 단정하게</option><option>밝고 발랄하게</option><option>진지하고 학술적으로</option><option>귀엽고 친근하게</option></select></div>
+              <div class="field"><label for="tColor">색감</label><select id="tColor" data-label="색감"><option value="">예시 그대로</option><option>파스텔 톤</option><option>선명한 원색</option><option>크림색 바탕에 초록 포인트</option><option>흑백·모노톤</option><option>어두운 배경(칠판·다크)</option></select></div>
+              <div class="field"><label for="tFont">글꼴 느낌</label><select id="tFont" data-label="글꼴 느낌"><option value="">예시 그대로</option><option>손글씨</option><option>깔끔한 고딕</option><option>단정한 명조</option><option>둥글고 귀여운 글씨</option></select></div>
+              <div class="field"><label for="tIllust">삽화</label><select id="tIllust" data-label="삽화"><option value="">예시 그대로</option><option>삽화 많이</option><option>삽화 조금</option><option>삽화 없이 글과 표만</option><option>캐릭터와 말풍선 추가</option></select></div>
+              <div class="field"><label for="tDensity">글자량</label><select id="tDensity" data-label="글자량"><option value="">예시 그대로</option><option>핵심만 간결하게</option><option>보통</option><option>최대한 상세하게</option></select></div>
+              <div class="field"><label for="tRatio">비율</label><select id="tRatio" data-label="비율"><option value="">예시 그대로(세로)</option><option>세로 A4</option><option>정사각형</option><option>가로 16:9(발표용)</option></select></div>
+              <div class="field"><label for="tLang">언어</label><select id="tLang" data-label="언어"><option value="">한글만</option><option>한글 + 영어 병기</option><option>한글 + 한자 병기</option></select></div>
+            </div>
+          </details>
+          <div class="actions"><button id="next" class="primary">다음 → 프롬프트 확인</button></div>
+        </section>
+
+        <section class="step pending" id="step3" aria-labelledby="h3">
+          <div class="step-head"><h2 id="h3"><b>3</b>복사해서 붙여넣기</h2><span class="hint" id="length"></span></div>
+          <textarea id="output" class="output" spellcheck="false" aria-label="완성 프롬프트 (직접 수정 가능)"></textarea>
+          <div class="actions">
+            <button id="copy" class="primary">📋 프롬프트 복사</button>
+            <button id="copyImage" class="secondary accent" title="ChatGPT 입력창에 Ctrl+V로 붙여넣으세요">🖼 예시 이미지 복사</button>
+            <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 저장</a>
+            <button id="reset" class="secondary">지우기</button>
+          </div>
+          <div id="status" role="status" aria-live="polite"></div>
+          <p class="hint small">예시 이미지를 함께 붙여넣으면 구성과 색감을 더 정확히 따릅니다.</p>
+        </section>
       </div>
-      <div id="status" role="status" aria-live="polite"></div>
-      <p class="hint small">예시 이미지를 함께 붙여넣으면 구성과 색감을 더 정확히 따릅니다.</p>
-    </section>
-  </aside>
+    </div>
+  </section>
 </main>
 
 <footer class="wrap">입력은 저장·전송되지 않습니다 · 예시는 모두 고3 국어 「구운몽」</footer>
 
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
-<dialog id="dialog">
-  <div class="dhead"><h3 id="dialogTitle"></h3><div class="dbtns"><button id="dialogPick" class="primary small">✓ 이 그림으로 만들기</button><button id="dialogClose" class="secondary">닫기</button></div></div>
-  <div class="dbody"><img id="dialogImage" alt=""><div id="dialogContent" class="dcontent"></div></div>
+<dialog id="dialog" aria-labelledby="dialogTitle">
+  <div class="dbody">
+    <div class="dimg"><img id="dialogImage" alt=""><button class="dnav prev" id="dPrev" aria-label="이전 예시">‹</button><button class="dnav next" id="dNext" aria-label="다음 예시">›</button></div>
+    <div class="dside">
+      <div><span class="badge2" id="dTag"></span><h3 id="dialogTitle"></h3><p class="sub" id="dDesc"></p></div>
+      <div class="box"><b>어떤 자료인가요</b><p id="dWhat"></p></div>
+      <div class="box"><b>이럴 때 좋아요</b><p id="dWhen"></p></div>
+      <div class="dbtns"><button id="dialogPick" class="primary">✓ 이 그림으로 만들기</button><button id="dialogClose" class="secondary">닫기</button></div>
+      <div class="counter" id="dCounter"></div>
+    </div>
+  </div>
 </dialog>
 
 <script>
@@ -266,18 +336,64 @@ const info={
   't-quiz':{name:'형성평가',desc:'수업 직후 이해 확인 + 정답',shape:'평가 목표, 다양한 유형의 문항, 배점을 넣은 형성평가'},
   't-rubric':{name:'채점 기준표',desc:'평가 요소·수준·배점 한눈에',shape:'평가 과제, 관찰 가능한 평가 요소, 수준별 기준, 배점과 총점을 표시한 서술형 채점 기준표'}
 };
-const GROUPS=[['organize','📘 정리하기','요약·노트·표·도식으로 내용을 정리하는 자료'],['understand','💡 이해하기','개념·원리·비유·질문으로 깊이 이해하는 자료'],['memorize','🧠 암기하기','카드·두문자·이야기·빈칸으로 외우는 자료'],['check','✅ 점검하기','문제 풀이·회상·대조로 내가 아는지 확인하는 자료'],['teacher','🍎 선생님용','학습 목표·수업 설계·발문·학습지·평가 자료']];
-let tab='organize',styleFilter='전체',query='';
-const isMobile=()=>window.matchMedia('(max-width:1099px)').matches;
+const GUIDE={
+  's-onepage':['개요·인물·흐름·핵심 개념·헷갈리는 점·자주 하는 실수를 한 장에 모은 인포그래픽형 요약','시험 직전에 단원 전체를 한 번에 훑을 때, 단원 마무리 정리'],
+  's-hand':['제목·번호 섹션·밑줄과 형광펜이 있는 손글씨 노트 한 장','교과서 내용을 내 필기처럼 정리하고 싶을 때'],
+  's-postit':['개념 하나에 메모 한 장씩, 3×3으로 붙인 포스트잇','용어·인물처럼 낱개 개념을 여러 개 외워야 할 때'],
+  's-cornell':['핵심 질문 열 + 학습 내용 열 + 요약 칸으로 된 코넬 노트','수업 필기를 질문 중심으로 다시 정리하거나 복습 질문지로 쓸 때'],
+  's-visual':['관계도와 흐름도, 읽는 순서를 함께 담은 개념도','관계·과정·순서가 중요한 내용을 그림으로 이해할 때'],
+  's-notes':['8개 섹션에 표·관계도·흐름·시험 포인트까지 빽빽하게 담은 정리 노트','출제 포인트까지 한 장에 다 담고 싶은 시험 대비'],
+  's-map':['큰 흐름과 각 단계의 변화를 도식으로 그린 구조도','구조나 변화 과정이 핵심인 단원'],
+  's-summary':['핵심 개념·분석 틀·예시·주의점 네 구역으로 나눈 요약','단원을 마치고 핵심만 압축해 두고 싶을 때'],
+  's-glossary':['용어·정의·예시·혼동 주의 4열로 정리한 표','비슷한 용어가 많아 헷갈리는 과목(과학·사회·문법)'],
+  's-formula':['핵심 틀 4개를 공식 카드로 만들고 변수·조건·예제를 붙인 자료','수학·과학 공식이나 분석 틀을 조건과 함께 외울 때'],
+  's-timeline':['사건을 순서대로 원인·결과와 함께 정리한 표','역사, 문학 줄거리처럼 시간 순서가 있는 내용'],
+  's-process':['단계별로 입력 → 변화 → 결과를 정리한 표','실험 과정, 생명 현상, 서사 전개처럼 단계가 있는 내용'],
+  's-comparetable':['기준별로 두 대상을 나란히 비교하고 칸마다 아이콘을 넣은 표','두 인물·두 개념·두 시대를 비교해 외울 때'],
+  's-keypoints':['학습 목표 기준으로 고른 핵심 10개와 선정 이유·자료 위치','범위가 넓어 무엇을 먼저 볼지 추려야 할 때'],
+  's-basics':['기초 개념 4~5개 정리와 각 개념의 확인 질문','새 단원 시작 전 기초 점검, 선수 개념 확인'],
+  's-explain':['쉬운 말 설명 + 핵심 정리 표 + 용어 뜻 + 주제','처음 배우는 내용이나 어려운 지문을 풀어서 이해할 때'],
+  's-analogy':['일상 비유 장면과 대응표, 비유의 한계까지 정리','추상적인 개념을 직관적으로 이해하고 싶을 때'],
+  's-principle':['원리가 성립하는 과정을 단계별 근거·적용 조건과 함께 설명','왜 그런지 이유를 따라가며 이해해야 할 때'],
+  's-compare':['두 개념의 정의·공통점·차이점·예시 표와 확인 질문','자주 혼동하는 개념 쌍을 확실히 구분할 때'],
+  's-counter':['흔한 주장 3개에 반례와 적용 조건을 붙인 자료','단정적인 설명의 예외를 익혀 서술형에 대비할 때'],
+  's-misconception':['오개념과 올바른 설명을 짝지은 표','자주 틀리는 선지 정리, 오답 노트'],
+  's-realcase':['실제 활용 사례 카드 4개와 연결되는 개념','배운 내용이 현실에서 어떻게 쓰이는지 연결할 때'],
+  's-socratic':['질문 → 답변 → 피드백 → 힌트 → 다음 질문으로 이어지는 문답','스스로 생각하며 이해를 깊게 하고 싶을 때'],
+  's-flashcards':['앞면 질문·뒷면 정답 카드 8쌍','용어·사실을 반복 암기할 때, 인쇄해 카드로 쓸 때'],
+  's-cards':['메모지 느낌의 Q·A 암기 카드','핵심 질문 몇 개를 빠르게 외울 때'],
+  's-acronym':['두문자 3가지 버전과 각 글자의 뜻','순서 있는 목록이나 여러 항목을 외울 때'],
+  's-story':['항목을 엮은 짧은 이야기와 대응표(칠판 스타일)','낱개 사실이 안 외워질 때, 흐름으로 기억하고 싶을 때'],
+  's-chunk':['정보를 의미 묶음 4개로 분류한 자료','외울 양이 많아 덩어리로 나눠야 할 때'],
+  's-blanks':['4컷 만화 말풍선 속 빈칸 문제와 정답 보기','핵심 용어 암기를 재미있게 확인할 때'],
+  's-retrieval':['질문 + 빈 답 칸 + 힌트(칠판 스타일)','보지 않고 떠올리는 인출 연습'],
+  's-recallcheck':['기억해 적은 내용을 원문과 비교해 틀린·빠진 내용을 표시','복습 후 내가 얼마나 기억하는지 점검할 때'],
+  's-selfcheck':['내 설명의 틀린 점·빠진 점 표와 수정된 설명','설명해 보기 공부법, 서술형 답안 점검'],
+  's-summarycheck':['내 요약과 원문의 대조표(오류·근거 없음 판정)','요약 과제나 정리 노트의 정확성을 확인할 때'],
+  's-solving':['예제 풀이 3단계와 그 방법을 고른 이유, 유사 문제','문제 접근법 자체를 배우고 싶을 때'],
+  's-questions':['예상문제 10개 표와 1번 예시·정답','시험 범위와 학습 목표로 문제를 뽑아 볼 때'],
+  's-judgment':['선지 문장마다 ○×와 근거를 단 자료','헷갈리는 선지를 판단하는 연습'],
+  't-goals':['성취기준에서 이해·지식·적용 수준 목표 3개를 뽑은 자료','수업 설계 첫 단계, 지도안 작성 전'],
+  't-flow':['도입·전개·정리 시간표와 핵심 질문 장면','한 차시 흐름을 빠르게 잡을 때'],
+  't-plan':['목표·발문·활동·평가까지 담은 50분 지도안','공개 수업처럼 상세 지도안이 필요할 때'],
+  't-questions':['도입부터 마무리까지 발문 5개와 의도·예상 답변·꼬리 질문','토의·탐구 수업의 질문을 미리 설계할 때'],
+  't-sheet':['빈칸·도식·비교표·서술형이 있는 학생 활동지','수업 중 학생이 직접 채우는 활동지'],
+  't-diagnosis':['선수 개념 3개와 객관식 진단 문제, 교사용 정답','새 단원 전 학생 수준 파악'],
+  't-quiz':['수업 직후 확인 문항과 교사용 정답','차시 마무리 형성평가'],
+  't-rubric':['평가 요소·수준·배점을 정리한 채점 기준표','서술형·수행평가 채점 기준 안내']
+};
+const GROUPS=[['organize','📘 정리하기'],['understand','💡 이해하기'],['memorize','🧠 암기하기'],['check','✅ 점검하기'],['teacher','🍎 선생님용']];
 const HAND='크림색 모눈 종이 질감에 검은 펜 손글씨, 노랑·초록·분홍 형광펜 제목, 얇은 테두리, 작은 고전 인물 수채 일러스트';
 const $=id=>document.getElementById(id);
-let role='student',active='s-onepage';
+let role='student',active=null,tab='organize',styleFilter='전체',query='',visibleKeys=[],dialogKey=null;
 const sample=()=>samples.find(s=>s.key===active);
 const val=id=>$(id).value.trim();
+const byKey=k=>samples.find(s=>s.key===k);
 
-function matches(s){const q=query.trim().toLowerCase();if(!q)return true;const f=info[s.key];return (f.name+' '+f.desc+' '+s.tag+' '+s.title+' '+f.shape).toLowerCase().includes(q)}
+/* ---------- gallery ---------- */
+function matches(s){const q=query.trim().toLowerCase();if(!q)return true;const f=info[s.key],g=GUIDE[s.key]||['',''];return (f.name+' '+f.desc+' '+s.tag+' '+s.title+' '+f.shape+' '+g[0]+' '+g[1]).toLowerCase().includes(q)}
 function renderTabs(){
-  const el=$('tabs');el.replaceChildren(...GROUPS.map(([g,label])=>{const b=document.createElement('button');b.className='tab'+(g===tab&&!query.trim()?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',g===tab&&!query.trim());
+  $('tabs').replaceChildren(...GROUPS.map(([g,label])=>{const b=document.createElement('button');b.className='tab'+(g===tab&&!query.trim()?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',g===tab&&!query.trim());
     const n=document.createElement('span');n.className='n';n.textContent=samples.filter(s=>s.group===g).length;b.append(document.createTextNode(label+' '),n);b.onclick=()=>{tab=g;query='';$('search').value='';renderGallery()};return b}));
   const tagsAll=['전체','손글씨','인포그래픽','표','카드','만화·캐릭터','칠판','수채'].filter(tg=>tg==='전체'||samples.some(s=>s.tag===tg));
   $('styleChips').replaceChildren(...tagsAll.map(tg=>{const b=document.createElement('button');b.className='chip'+(tg===styleFilter?' active':'');b.textContent=tg;b.setAttribute('aria-pressed',tg===styleFilter);b.onclick=()=>{styleFilter=tg;renderGallery()};return b}));
@@ -285,41 +401,81 @@ function renderTabs(){
 function renderGallery(){
   renderTabs();
   const wrap=$('groups');wrap.replaceChildren();$('countAll').textContent=samples.length;
-  const searching=!!query.trim();let shown=0;
-  for(const [g,label,desc] of GROUPS){
+  const searching=!!query.trim();visibleKeys=[];
+  for(const [g,label] of GROUPS){
     if(!searching&&g!==tab)continue;
-    const list=samples.filter(s=>s.group===g&&(styleFilter==='전체'||s.tag===styleFilter)&&matches(s));if(!list.length)continue;shown+=list.length;
-    if(searching){const lab=document.createElement('div');lab.className='group-label active';lab.innerHTML=`<span></span><span class="cnt"></span>`;lab.children[0].textContent=label;lab.children[1].textContent=list.length+'종';wrap.append(lab)}
-    const grid=document.createElement('div');grid.className='gallery';renderGroup(list,grid);wrap.append(grid);
+    const list=samples.filter(s=>s.group===g&&(styleFilter==='전체'||s.tag===styleFilter)&&matches(s));if(!list.length)continue;
+    visibleKeys.push(...list.map(s=>s.key));
+    if(searching){const lab=document.createElement('div');lab.className='group-label';lab.innerHTML=`<span></span><span class="cnt"></span>`;lab.children[0].textContent=label;lab.children[1].textContent=list.length+'종';wrap.append(lab)}
+    const grid=document.createElement('div');grid.className='gallery';
+    grid.replaceChildren(...list.map(s=>{
+      const f=info[s.key];
+      const card=document.createElement('div');card.className='card'+(s.key===active?' active':'');
+      const pick=document.createElement('button');pick.className='card-pick';pick.setAttribute('aria-label',f.name+' 크게 보기');
+      const tw=document.createElement('div');tw.className='thumbwrap';
+      const img=document.createElement('img');img.className='thumb';img.src=s.thumb;img.alt=f.name+' 예시';img.loading='lazy';img.decoding='async';img.width=440;img.height=600;
+      const badge=document.createElement('span');badge.className='badge';badge.textContent=s.tag;tw.append(img,badge);
+      const meta=document.createElement('div');meta.className='meta';
+      const t=document.createElement('strong');t.textContent=f.name;const d=document.createElement('p');d.textContent=f.desc;meta.append(t,d);
+      pick.append(tw,meta);pick.onclick=()=>openDialog(s.key);
+      const check=document.createElement('span');check.className='check';check.textContent='✓ 선택됨';
+      card.append(pick,check);return card;
+    }));
+    wrap.append(grid);
   }
-  $('noResult').hidden=shown>0;
+  $('noResult').hidden=visibleKeys.length>0;
 }
 $('search').addEventListener('input',()=>{query=$('search').value;renderGallery()});
-function renderGroup(list,el){
-  el.replaceChildren(...list.map(s=>{
-    const card=document.createElement('div');card.className='card'+(s.key===active?' active':'');
-    const pick=document.createElement('button');pick.className='card-pick';
-    pick.setAttribute('aria-pressed',s.key===active);pick.setAttribute('aria-label',info[s.key].name+' 선택');
-    const tw=document.createElement('div');tw.className='thumbwrap';
-    const img=document.createElement('img');img.className='thumb';img.src=s.thumb;img.alt=info[s.key].name+' 예시';img.loading='lazy';img.decoding='async';img.width=440;img.height=600;
-    const badge=document.createElement('span');badge.className='badge';badge.textContent=s.tag;tw.append(img,badge);
-    const meta=document.createElement('div');meta.className='meta';
-    const t=document.createElement('strong');t.textContent=info[s.key].name;
-    const d=document.createElement('p');d.textContent=info[s.key].desc;
-    meta.append(t,d);pick.append(tw,meta);pick.onclick=()=>{if(isMobile())openDialog(s);else{active=s.key;setRole(s.role);}};
-    const check=document.createElement('span');check.className='check';check.textContent='✓ 선택됨';
-    const zoom=document.createElement('button');zoom.className='zoom';zoom.textContent='🔍 크게';zoom.setAttribute('aria-label',info[s.key].name+' 예시 크게 보기');
-    zoom.onclick=e=>{e.stopPropagation();openDialog(s)};
-    card.append(pick,check,zoom);return card;
-  }));
-}
-let dialogKey=null;
-function openDialog(s){dialogKey=s.key;$('dialogImage').src=s.image;$('dialogImage').alt=s.title;$('dialogTitle').textContent=info[s.key].name+' · '+s.title;$('dialogContent').textContent='이미지 속 내용\n'+s.content;$('dialog').showModal()}
-$('dialogPick').onclick=()=>{if(dialogKey){active=dialogKey;tab=sample().group;$('dialog').close();setRole(sample().role);if(isMobile())$('editor').scrollIntoView({behavior:'smooth',block:'start'})}};
-$('selThumb').onclick=$('selZoom').onclick=()=>openDialog(sample());
-$('changePick').onclick=()=>$('h1').scrollIntoView({behavior:'smooth',block:'start'});
 
+/* ---------- dialog ---------- */
+function openDialog(key){
+  dialogKey=key;const s=byKey(key),f=info[key],g=GUIDE[key]||['',''];
+  $('dialogImage').src=s.image;$('dialogImage').alt=f.name+' 예시';$('dTag').textContent=s.tag;$('dialogTitle').textContent=f.name;$('dDesc').textContent=f.desc;
+  $('dWhat').textContent=g[0];$('dWhen').textContent=g[1];
+  const list=visibleKeys.length?visibleKeys:samples.map(s=>s.key);const i=list.indexOf(key);
+  $('dCounter').textContent=i>=0?`${i+1} / ${list.length}`:'';$('dPrev').hidden=$('dNext').hidden=list.length<2;
+  if(!$('dialog').open)$('dialog').showModal();
+}
+function dialogStep(d){const list=visibleKeys.length?visibleKeys:samples.map(s=>s.key);const i=list.indexOf(dialogKey);if(i<0)return;openDialog(list[(i+d+list.length)%list.length])}
+$('dPrev').onclick=()=>dialogStep(-1);$('dNext').onclick=()=>dialogStep(1);
+$('dialog').addEventListener('keydown',e=>{if(e.key==='ArrowLeft')dialogStep(-1);if(e.key==='ArrowRight')dialogStep(1)});
+$('dialogClose').onclick=()=>$('dialog').close();
+$('dialog').onclick=e=>{if(e.target===$('dialog'))$('dialog').close()};
+$('dialogPick').onclick=()=>{if(!dialogKey)return;$('dialog').close();enterWork(dialogKey)};
+
+/* ---------- workspace ---------- */
+function setCurrent(n){
+  const steps={1:$('choose'),2:$('step2'),3:$('step3')};
+  for(const [k,el] of Object.entries(steps)){el.classList.toggle('current',+k===n);el.classList.toggle('pending',+k>n)}
+}
+function enterWork(key,scroll=true){
+  active=key;const s=sample();role=s.role;tab=s.group;
+  document.body.classList.toggle('teacher',role==='teacher');
+  $('choose').hidden=true;$('work').hidden=false;
+  $('step3').classList.remove('done');setCurrent(2);
+  renderPreview();build();
+  if(scroll)window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderPreview(){
+  const s=sample(),f=info[s.key];
+  $('selImage').src=s.image;$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
+  const alts=samples.filter(x=>x.group===s.group);
+  $('altStrip').replaceChildren(...alts.map(x=>{const b=document.createElement('button');b.className='alt'+(x.key===s.key?' active':'');b.title=info[x.key].name;
+    const im=document.createElement('img');im.src=x.thumb;im.alt='';im.loading='lazy';const sp=document.createElement('span');sp.textContent=info[x.key].name;b.append(im,sp);
+    b.onclick=()=>{enterWork(x.key,false)};return b}));
+  const act=$('altStrip').querySelector('.alt.active');if(act)act.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+}
+$('changePick').onclick=()=>{$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
+$('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
+$('next').onclick=()=>{setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('output').focus({preventScroll:true}),400)};
+$('output').addEventListener('focus',()=>setCurrent(3));
+['grade','subject','topic','extra'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
+
+/* ---------- prompt ---------- */
+const TUNES=['tTone','tColor','tFont','tIllust','tDensity','tRatio','tLang'];
+function tuneLines(){const out=[];for(const id of TUNES){const el=$(id);if(el.value)out.push(`- ${el.dataset.label}: ${el.value}`)}$('tuneCount').textContent=out.length?out.length:'';return out}
 function build(){
+  if(!active)return;
   const s=sample(),f=info[s.key];
   const grade=val('grade'),subject=val('subject'),topic=val('topic'),extra=val('extra'),attach=$('attach').checked;
   const who=[grade,subject].filter(Boolean).join(' ');
@@ -341,7 +497,7 @@ function build(){
     }else{
       parts.push(`[자료 없음]\n첨부 자료가 없으므로 ${topic?`'${topic}'의 `:''}교과서 수준의 일반적인 내용을 기준으로 작성해 주세요. 자료를 분석했다고 말하지 말고, 확실하지 않은 내용은 넣지 마세요.`);
     }
-    parts.push(`[스타일]\n${(s.style||f.style||HAND)}. 실제로 읽을 수 있는 정확한 한글을 쓰고 장식보다 내용과 가독성을 우선하세요. 글자가 잘리거나 겹치지 않게 여백을 두세요. 함께 첨부한 예시 이미지가 있다면 그 시각 스타일(색·글꼴 느낌·배치)을 따르되, 예시 속 문구와 내용은 복사하지 마세요.`);
+    parts.push(`[스타일]\n${(s.style||HAND)}. 실제로 읽을 수 있는 정확한 한글을 쓰고 장식보다 내용과 가독성을 우선하세요. 글자가 잘리거나 겹치지 않게 여백을 두세요. 함께 첨부한 예시 이미지가 있다면 그 시각 스타일(색·글꼴 느낌·배치)을 따르되, 예시 속 문구와 내용은 복사하지 마세요.`);
     if(role==='teacher'){
       const forStudents=['t-sheet','t-quiz','t-diagnosis','t-rubric'].includes(s.key);
       parts.push(forStudents
@@ -349,46 +505,39 @@ function build(){
         :`[교사용 안내]\n교사가 보는 수업 설계 자료입니다. 성취기준 번호·교과서 쪽수·차시 번호는 지어내지 말고 '(가상 예시)'로 표시하거나 비워 두세요. 활동과 시간 배분은 일반적인 교실 수업에서 실행 가능하게 구성해 주세요.`);
     }
   }
+  const tl=tuneLines();
+  if(tl.length)parts.push(`[세부 조정]\n${tl.join('\n')}\n세부 조정이 예시 이미지의 스타일과 다르면 세부 조정을 우선 적용하세요.`);
   if(extra)parts.push(`[추가 요청]\n${extra}`);
   parts.push(`완성 후 한글 오탈자와 내용 오류를 한 번 더 점검해 주세요. 이미지 생성이 어려우면 같은 구성의 텍스트 초안을 먼저 보여 주세요.`);
   $('refDownload').href=s.image;$('refDownload').download=s.key+'.jpg';
-  $('selThumb').src=s.thumb;$('selName').textContent=f.name;$('selDesc').textContent=f.desc;$('selTag').textContent=s.tag;
   $('output').value=parts.join('\n\n');
   $('length').textContent=$('output').value.length.toLocaleString()+'자';
   $('status').textContent='';
 }
-
-function setRole(r){
-  role=r;document.body.classList.toggle('teacher',r==='teacher');
-  if(sample().role!==r)active=r==='teacher'?'t-plan':'s-notes';
-  renderGallery();build();
-}
-['grade','subject','topic','extra'].forEach(id=>$(id).addEventListener('input',build));
+TUNES.forEach(id=>$(id).addEventListener('change',()=>{setCurrent(2);build()}));
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
+
+let toastTimer;function toast(msg){$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
 $('copy').onclick=async()=>{
   const text=$('output').value;if(!text.trim()){$('status').textContent='복사할 내용이 없습니다.';return}
   try{await navigator.clipboard.writeText(text);$('status').textContent='✓ 프롬프트를 복사했습니다.';toast('프롬프트 복사 완료')}
   catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}
     $('status').textContent=ok?'✓ 프롬프트를 복사했습니다.':'자동 복사가 막혔습니다. Ctrl+C로 복사하세요.'}
+  $('step3').classList.add('done');$('step3').classList.remove('current');
 };
 $('copyImage').onclick=async()=>{
-  const s=sample();
+  const s=sample();if(!s)return;
   try{
     if(!window.ClipboardItem)throw new Error('no ClipboardItem');
     const blobPromise=fetch(s.image).then(r=>r.blob()).then(b=>createImageBitmap(b)).then(bm=>{const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))});
     await navigator.clipboard.write([new ClipboardItem({'image/png':blobPromise})]);
     $('status').textContent='✓ 예시 이미지를 복사했습니다. ChatGPT에 Ctrl+V로 붙여넣으세요.';toast('예시 이미지 복사 완료');
-  }catch(e){
-    $('refDownload').click();
-    $('status').textContent='이미지 복사가 지원되지 않아 파일로 저장했습니다.';
-  }
+  }catch(e){$('refDownload').click();$('status').textContent='이미지 복사가 지원되지 않아 파일로 저장했습니다.';}
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('attach').checked=true;$('attachInfo').hidden=false;build();$('status').textContent='';};
-let toastTimer;function toast(msg){$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
-$('dialogClose').onclick=()=>$('dialog').close();
-$('dialog').onclick=e=>{if(e.target===$('dialog'))$('dialog').close()};
-renderGallery();build();
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');TUNES.forEach(id=>$(id).value='');$('attach').checked=true;$('attachInfo').hidden=false;setCurrent(2);build();};
+
+renderGallery();setCurrent(1);
 </script>
 </body>
 </html>
