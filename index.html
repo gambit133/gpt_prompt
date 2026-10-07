@@ -139,6 +139,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .switch input:checked+.slider{background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .switch input:checked+.slider::before{transform:translateX(20px)}
 .attach{margin:8px 0 0;font-size:12px;color:var(--accent);font-weight:600;animation:fade .3s ease}
+.attach-sub{font-weight:400;color:var(--muted);font-size:11.5px}
 .tune{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--soft2);padding:0 12px}
 .tune summary{cursor:pointer;font-weight:700;font-size:13px;padding:9px 0;list-style:none;display:flex;align-items:center;gap:8px}
 .tune summary::-webkit-details-marker{display:none}
@@ -165,8 +166,8 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .extra-grid textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;background:#fff;font-size:12.5px;line-height:1.6;resize:vertical;min-height:96px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
 .extra-grid textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--ring)}
 .extra-grid textarea::placeholder{color:#9aa39c}
-.extra-wrap.content label{color:var(--accent)}
-.extra-wrap.content textarea{border-color:#b9c4b6;background:var(--soft2)}
+.content-wrap label{color:var(--accent)}
+.content-wrap textarea{border-color:#b9c4b6;background:var(--soft2)}
 .examples button{border:1px dashed #c3cdbf;background:transparent;border-radius:999px;padding:2px 9px;font-size:11px;color:var(--accent);transition:all .15s}
 .examples button:hover{background:var(--soft);border-style:solid}
 .copyopt input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
@@ -384,14 +385,17 @@ dialog.guide{width:min(96vw,760px)}
             <div class="field"><label for="subjectSel">과목 <i class="req">*</i></label>
               <select id="subjectSel" autocomplete="off"><option value="">과목 선택</option><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option><option value="__custom">직접 입력…</option></select>
               <input id="subject" placeholder="과목 직접 입력" autocomplete="off" hidden style="margin-top:6px"></div>
-            <div class="field wide"><label for="topic">주제·단원 <i class="req">*</i></label><input id="topic" placeholder="예: 단원명과 다룰 범위 (과목을 고르면 아래 예시가 과목에 맞게 바뀌어요)">
+            <div class="field wide"><label for="topic">주제 <i class="req">*</i></label><input id="topic" placeholder="예: 단원명 또는 다룰 범위">
               <details class="exbox" id="topicEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="topic">🎲 다른 예시</button></summary><div class="examples" id="topicExList"></div></details></div>
-            <div class="field wide extra-wrap"><label id="extraLabel">추가 요청 <span style="font-weight:400">(선택)</span></label>
-              <div class="extra-grid"><textarea id="extra" rows="4"></textarea></div>
+            <div class="field wide extra-wrap"><label for="extra">추가 가이드라인 <span style="font-weight:400">(선택)</span></label>
+              <div class="extra-grid"><textarea id="extra" rows="3" placeholder="예) 범위: 2단원 중 ○○ 소단원만&#10;형식: 정답·해설은 맨 뒤에 따로, 객관식 7개 + 서술형 3개&#10;강조: 자주 틀리는 개념 비교를 표로, 핵심 용어 병기"></textarea></div>
               <details class="exbox" id="extraEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="extra">🎲 다른 예시</button></summary><div class="examples" id="extraExList"></div></details></div>
+            <div class="field wide content-wrap" id="contentWrap" hidden><label for="content">학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span></label>
+              <div class="extra-grid"><textarea id="content" rows="5" placeholder="예) 핵심 내용: 자료의 중심 내용을 2~3문장으로&#10;용어·공식·인물: 꼭 들어갈 것을 쉼표로 나열&#10;시험 포인트: 자주 틀리는 것, 주의점을 한 줄씩"></textarea></div>
+              <details class="exbox" id="contentEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="content">🎲 다른 예시</button></summary><div class="examples" id="contentExList"></div></details></div>
           </div>
-          <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료 첨부</label>
-          <p class="attach" id="attachInfo">첨부 자료 참고 문구가 프롬프트에 포함됩니다.</p>
+          <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료 첨부할게요!</label>
+          <p class="attach" id="attachInfo">첨부 자료 참고 문구가 프롬프트에 포함됩니다.<br><span class="attach-sub">첨부할 자료: 교과서·필기 사진, 학습지, 요약본, PDF·한글 문서, 수업 PPT 중 있는 것</span></p>
           <details class="tune" id="tune">
             <summary>🎨 세부 조정 <span class="n" id="tuneCount"></span><span class="hint" style="font-weight:400;margin-left:4px">톤·색감·글꼴·삽화·글자량·비율</span></summary>
             <div class="tune-groups" id="tuneGroups"></div>
@@ -657,14 +661,14 @@ $('changePick').onclick=()=>{$('work').hidden=true;$('choose').hidden=false;setC
 $('homeLink').onclick=e=>{e.preventDefault();if($('dialog').open)$('dialog').close();goHome()};
 $('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
 const REQUIRED=['grade','subject','topic'];
-const REQ_NAME={grade:'학년',subject:'과목',topic:'주제·단원'};
+const REQ_NAME={grade:'학년',subject:'과목',topic:'주제',content:'학습 내용'};
 function syncSubject(){const v=$('subjectSel').value;if(v&&v!=='__custom'){$('subject').value=v;$('subject').hidden=true}else if(v==='__custom'){$('subject').hidden=false}}
-function validate(){syncSubject();const missing=[];for(const id of REQUIRED){const bad=!val(id);$(id).closest('.field').classList.toggle('invalid',bad);if(bad)missing.push(REQ_NAME[id])}
+function validate(){syncSubject();const missing=[];const req=$('attach').checked?REQUIRED:[...REQUIRED,'content'];for(const id of req){const bad=!val(id);$(id).closest('.field').classList.toggle('invalid',bad);if(bad)missing.push(REQ_NAME[id])}
   $('reqMsg').hidden=!missing.length;if(missing.length)$('reqMsg').textContent=missing.join(', ')+(missing.length>1?'을(를)':'을(를)')+' 입력해 주세요.';return !missing.length}
-$('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step2 .field.invalid input,#step2 .field.invalid select');if(first){if(isMobile())first.scrollIntoView({behavior:'smooth',block:'center'});else first.focus()}return}
+$('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step2 .field.invalid input,#step2 .field.invalid select,#step2 .field.invalid textarea');if(first){if(isMobile())first.scrollIntoView({behavior:'smooth',block:'center'});else first.focus()}return}
   unlocked=true;setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});if(!isMobile())setTimeout(()=>$('output').focus({preventScroll:true}),400)};
-$('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';if(!isMobile())$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'));renderExamples('topic');renderExamples('extra')});
-REQUIRED.forEach(id=>$(id).addEventListener('input',()=>{if(val(id))$(id).closest('.field').classList.remove('invalid');if(REQUIRED.every(i=>val(i)))$('reqMsg').hidden=true}));
+$('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';if(!isMobile())$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'));renderExamples('topic');renderExamples('extra');renderExamples('content')});
+REQUIRED.forEach(id=>$(id).addEventListener('input',()=>{if(val(id))$(id).closest('.field').classList.remove('invalid');if(REQUIRED.every(i=>val(i))&&($('attach').checked||val('content')))$('reqMsg').hidden=true}));
 $('output').addEventListener('focus',()=>setCurrent(3));
 ['grade','subject','topic'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
 
@@ -691,6 +695,7 @@ function build(){
   const s=sample(),f=info[s.key];
   const grade=val('grade'),subject=val('subject'),topic=val('topic'),attach=$('attach').checked;
   const extras=val('extra').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const contents=attach?[]:val('content').split(/\n+/).map(s=>s.trim()).filter(Boolean);
   const who=[grade,subject].filter(Boolean).join(' ');
   const demo=topic.replace(/[「」『』\s]/g,'')==='구운몽'&&(subject.replace(/\s/g,'')==='국어'||!subject);
   const parts=[];
@@ -708,7 +713,7 @@ function build(){
     if(attach){
       parts.push(`[첨부 자료 활용]\n함께 첨부한 자료(교과서·필기 사진, 학습지, 요약본, PDF, 수업 자료 등)를 먼저 꼼꼼히 읽고 핵심 내용을 뽑아 정리해 주세요.\n- 자료에 나온 용어·표기·순서·강조점을 그대로 우선 사용하세요.\n- 자료가 여러 개면 겹치는 내용은 합치고 빠진 부분은 보충하되, 자료에 없는 내용은 '보충'이라고 표시하세요.\n- 글씨가 흐릿하거나 범위가 불분명하면 만들기 전에 먼저 질문해 주세요.\n- 함께 첨부한 예시 이미지는 시각 스타일의 기준으로만 사용하고, 그 안의 문구와 내용은 복사하지 마세요.`);
     }else{
-      if(extras.length)parts.push(`[학습 내용]\n첨부 자료 대신 아래 내용을 근거로 작성해 주세요. 아래에 없는 내용을 보충할 때는 '보충'이라고 표시하고, 확실하지 않은 사실은 넣지 마세요.\n${extras.map(x=>'- '+x).join('\n')}`);
+      if(contents.length)parts.push(`[학습 내용]\n첨부 자료 대신 아래 내용을 근거로 작성해 주세요. 아래에 없는 내용을 보충할 때는 '보충'이라고 표시하고, 확실하지 않은 사실은 넣지 마세요.\n${contents.map(x=>'- '+x).join('\n')}`);
       else parts.push(`[자료 없음]\n첨부 자료가 없으므로 ${topic?`'${topic}'의 `:''}교과서 수준의 일반적인 내용을 기준으로 작성해 주세요. 자료를 분석했다고 말하지 말고, 확실하지 않은 내용은 넣지 마세요.`);
     }
     parts.push(`[스타일]\n${(s.style||HAND)}. 실제로 읽을 수 있는 정확한 한글을 쓰고 장식보다 내용과 가독성을 우선하세요. 글자가 잘리거나 겹치지 않게 여백을 두세요. 함께 첨부한 예시 이미지가 있다면 그 시각 스타일(색·글꼴 느낌·배치)을 따르되, 예시 속 문구와 내용은 복사하지 마세요.`);
@@ -721,8 +726,7 @@ function build(){
   }
   const tl=tuneLines();
   if(tl.length)parts.push(`[세부 조정]\n${tl.join('\n')}\n세부 조정이 예시 이미지의 스타일과 다르면 세부 조정을 우선 적용하세요.`);
-  if(attach&&extras.length)parts.push(`[추가 요청]\n${extras.map(x=>'- '+x).join('\n')}`);
-  else if(demo&&extras.length)parts.push(`[추가 요청]\n${extras.map(x=>'- '+x).join('\n')}`);
+  if(extras.length)parts.push(`[추가 가이드라인]\n${extras.map(x=>'- '+x).join('\n')}`);
   parts.push(`완성 후 한글 오탈자와 내용 오류를 한 번 더 점검해 주세요. 이미지 생성이 어려우면 같은 구성의 텍스트 초안을 먼저 보여 주세요.`);
   $('refDownload').href=s.image;$('refDownload').download=s.key+'.jpg';$('refDownload').onclick=()=>setTimeout(()=>imgDone('예시 이미지 저장 완료. 파일로 첨부 후 프롬프트 붙여넣기.'),100);
   $('output').value=parts.join('\n\n');
@@ -778,27 +782,64 @@ function poolFor(kind){const sub=val('subject');const sp=POOLS[sub];let list=sp?
   if(kind==='extra')list=[...list,...GENERIC.extra];
   if(!list.length)list=[...GENERIC[kind]];return list}
 function pick(pool,n){const a=[...pool];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
+const TOPIC_CONTENT=[
+ {k:['구운몽'],items:['핵심 내용: 성진(현실, 승려)이 꿈속에서 양소유로 살며 부귀공명을 누리다 깨어나 덧없음을 깨닫는 환몽 구조의 고전 소설','꼭 들어갈 용어·인물: 김만중, 성진, 양소유, 육관대사, 팔선녀, 환몽 구조, 전지적 작가 시점','시험 포인트: 성진=양소유(한 인물), 팔선녀↔여덟 여성 대응, 주제는 부귀영화의 덧없음과 삶의 성찰']},
+ {k:['춘향'],items:['핵심 내용: 신분을 넘은 춘향과 이몽룡의 사랑, 변학도의 수청 요구와 춘향의 저항, 암행어사 출두로 해결','용어·인물: 판소리계 소설, 춘향·이몽룡·변학도·월매·방자, 해학과 풍자','시험 포인트: 표면적 주제(사랑·정절) vs 이면적 주제(신분 질서 비판), 적층 문학']},
+ {k:['서시','윤동주'],items:['핵심 내용: 죽는 날까지 부끄럼 없이 살겠다는 다짐과 현실의 고뇌, 별·바람·잎새의 상징','시어: 하늘=양심, 별=이상, 바람=시련, 잎새=연약한 존재','시험 포인트: 화자의 태도(성찰·의지), 1연과 2연의 시간 구조, 대조적 이미지']},
+ {k:['진달래'],items:['핵심 내용: 이별의 상황을 가정하고 슬픔을 참으며 보내 주겠다는 화자의 정서','표현: 반어(죽어도 아니 눈물 흘리오리다), 수미상관, 7·5조 3음보','시험 포인트: 반어적 표현의 효과, 전통적 한의 정서, 수미상관 구조']},
+ {k:['문장 성분','호응'],items:['핵심 내용: 주성분(주어·서술어·목적어·보어), 부속 성분(관형어·부사어), 독립 성분(독립어)','호응: 주어-서술어, 부사어-서술어(결코~않다, 비록~일지라도), 시간 표현 호응','시험 포인트: 성분 생략·중복 오류 고치기, 필수 부사어 판별']},
+ {k:['음운'],items:['핵심 내용: 교체(비음화·유음화·구개음화·된소리되기), 탈락, 첨가, 축약','예시: 국물[궁물](비음화), 신라[실라](유음화), 굳이[구지](구개음화)','시험 포인트: 변동의 종류 구분, 음운 개수 변화(탈락·첨가·축약), 표준 발음']},
+ {k:['현재완료'],items:['핵심 문법: have/has + p.p. / 경험·계속·완료·결과 네 용법','함께 쓰는 표현: ever, never, since, for, just, already, yet','시험 포인트: 과거 특정 시점(yesterday, in 2019)과 함께 쓰지 않음, 현재완료 vs 과거 구분']},
+ {k:['관계대명사'],items:['핵심 문법: who(사람 주격/목적격), which(사물), that(둘 다), whose(소유격)','예문: The boy who is running is my brother. / This is the book which I bought.','시험 포인트: 목적격 생략 가능, 전치사 뒤·계속적 용법(콤마)에는 that 불가']},
+ {k:['to부정사'],items:['핵심 문법: 명사적(주어·목적어·보어), 형용사적(명사 수식), 부사적(목적·결과·원인·판단 근거) 용법','예문: I want to go. / something to eat / He came to see me.','시험 포인트: 용법 구분, to부정사 vs 동명사 목적어(want·hope vs enjoy·finish)']},
+ {k:['가정법'],items:['핵심 문법: 가정법 과거 If+S+과거, S+would+동사원형 / 가정법 과거완료 If+S+had p.p., S+would have p.p.','예문: If I were you, I would go. / If he had studied, he would have passed.','시험 포인트: 시제 일치, were의 사용, 직설법으로 바꾸기']},
+ {k:['수동태'],items:['핵심 문법: be + p.p. (+ by 행위자), 시제별 형태(is made / was made / will be made)','예문: The window was broken by him. / English is spoken in many countries.','시험 포인트: 4형식·5형식 수동태, by 이외 전치사(be interested in, be covered with)']},
+ {k:['이차방정식','근의 공식'],items:['공식과 조건: ax²+bx+c=0 (a≠0), x=(−b±√(b²−4ac))/2a, 판별식 D=b²−4ac','예제: x²−5x+6=0 → (x−2)(x−3)=0 → x=2 또는 3','시험 포인트: D>0 서로 다른 두 실근, D=0 중근, D<0 실근 없음 / a의 부호 실수 주의']},
+ {k:['일차함수'],items:['핵심 내용: y=ax+b, 기울기 a=(y의 증가량)/(x의 증가량), y절편 b','그래프: a>0 오른쪽 위로, a<0 오른쪽 아래로, 평행한 두 직선은 기울기가 같음','시험 포인트: 두 점으로 식 구하기, x절편·y절편, 일차방정식과의 관계']},
+ {k:['삼각비'],items:['핵심 내용: sinA=높이/빗변, cosA=밑변/빗변, tanA=높이/밑변 (직각삼각형)','특수각: sin30°=1/2, cos30°=√3/2, tan45°=1, sin60°=√3/2','시험 포인트: 삼각비 표 활용, 높이·거리 구하기 실생활 문제']},
+ {k:['확률'],items:['핵심 내용: 확률 = (사건의 경우의 수)/(모든 경우의 수), 0≤p≤1, 여사건 확률 1−p','덧셈 정리(동시에 일어나지 않는 사건: p+q), 곱셈 정리(독립 사건: p×q)','시험 포인트: 적어도 하나 → 여사건 이용, 순서 유무(순열·조합) 구분']},
+ {k:['인수분해'],items:['공식: a²+2ab+b²=(a+b)², a²−b²=(a+b)(a−b), x²+(a+b)x+ab=(x+a)(x+b)','예제: x²+5x+6=(x+2)(x+3), 4x²−9=(2x+3)(2x−3)','시험 포인트: 공통인수 먼저 묶기, acx²+(ad+bc)x+bd 꼴 십자 곱셈']},
+ {k:['피타고라스'],items:['핵심 내용: 직각삼각형에서 a²+b²=c² (c는 빗변)','예제: 두 변이 3, 4이면 빗변은 5 / 정사각형 대각선 = 변×√2','시험 포인트: 직각삼각형 판별(세 변의 길이), 좌표평면 두 점 사이 거리']},
+ {k:['광합성'],items:['핵심 내용: 빛에너지를 화학에너지로 바꾸는 과정, 엽록체의 틸라코이드에서 명반응·스트로마에서 암반응','용어·공식: 6CO₂+6H₂O → C₆H₁₂O₆+6O₂, 엽록소, ATP, NADPH, 캘빈 회로','시험 포인트: 빛의 세기·CO₂ 농도·온도에 따른 광합성량 그래프, 한계 요인']},
+ {k:['세포 분열','체세포','감수'],items:['핵심 내용: 체세포 분열(1회, 2개 딸세포, 염색체 수 유지) vs 감수 분열(2회, 4개 생식세포, 염색체 수 절반)','용어: 염색체, 염색 분체, 상동 염색체, 2가 염색체, 간기·전기·중기·후기·말기','시험 포인트: 감수 1분열에서 상동 염색체 분리, DNA양 변화 그래프']},
+ {k:['뉴턴','힘과 운동'],items:['핵심 내용: 1법칙 관성, 2법칙 F=ma, 3법칙 작용·반작용','예시: 버스 급정거 시 몸이 앞으로 쏠림(관성), 로켓 추진(작용·반작용)','시험 포인트: 알짜힘 0이면 등속 직선 운동, 질량과 가속도의 반비례, 작용·반작용은 서로 다른 물체에 작용']},
+ {k:['중화'],items:['핵심 내용: 산(H⁺)+염기(OH⁻) → 물+염, 발열 반응','예시: HCl+NaOH → NaCl+H₂O, 지시약 색 변화(페놀프탈레인·BTB)','시험 포인트: 중화점에서 온도 최고, 혼합 비율에 따른 이온 수 그래프']},
+ {k:['자전','공전','계절'],items:['핵심 내용: 자전(하루, 낮과 밤·일주 운동), 공전(1년, 연주 운동·계절 변화)','계절 원인: 자전축이 공전 궤도면에 대해 23.5° 기울어진 채 공전 → 태양 남중 고도·낮 길이 변화','시험 포인트: 하지·동지 남중 고도, 별자리 변화, 거리 변화가 원인이 아님']},
+ {k:['옴','전류','전압','저항'],items:['핵심 내용: V=IR, 전류(A)·전압(V)·저항(Ω)','직렬: 전류 같음, 전압 분배, 저항 합 R₁+R₂ / 병렬: 전압 같음, 전류 분배, 1/R=1/R₁+1/R₂','시험 포인트: 회로도 해석, 전력 P=VI, 전열기 발열량']},
+ {k:['소화'],items:['핵심 내용: 입(아밀레이스)→위(펩신)→소장(이자액·장액, 융털 흡수)→대장(물 흡수)','영양소별 최종 분해: 탄수화물→포도당, 단백질→아미노산, 지방→지방산+모노글리세리드','시험 포인트: 소화 효소와 작용 장소, 융털 구조(모세혈관·암죽관)']},
+ {k:['판 구조','지진','화산'],items:['핵심 내용: 지각판이 맨틀 대류로 이동, 판 경계(발산·수렴·보존)에서 지진·화산 발생','예시: 해령(발산), 해구·습곡 산맥(수렴), 변환 단층(보존)','시험 포인트: 경계 유형별 지형, 판 이동 증거(대륙 이동설·해저 확장설)']},
+ {k:['수요','공급','시장 가격'],items:['핵심 내용: 수요 법칙(가격↑ 수요량↓), 공급 법칙(가격↑ 공급량↑), 균형 가격은 두 곡선의 교점','용어: 초과 수요, 초과 공급, 대체재·보완재, 수요 곡선 이동 요인(소득·기호·관련재 가격·인구)','시험 포인트: 곡선 위 이동(가격 변화) vs 곡선 자체 이동(가격 외 요인)']},
+ {k:['선거'],items:['핵심 내용: 보통·평등·직접·비밀 선거의 4대 원칙','용어: 선거구, 비례대표, 선거 공영제, 선거관리위원회','시험 포인트: 각 원칙이 보장하는 것과 위반 사례']},
+ {k:['헌법','기본권'],items:['핵심 내용: 국민 주권, 권력 분립, 기본권 보장 / 자유권·평등권·참정권·청구권·사회권','제한: 국가 안전 보장·질서 유지·공공복리를 위해 법률로만 제한, 본질적 내용 침해 금지','시험 포인트: 기본권 종류 구분 사례, 헌법 개정 절차']},
+ {k:['3·1','삼일'],items:['핵심 내용: 1919년 3월 1일 민족 대표 33인의 독립 선언으로 시작된 전국적 비폭력 만세 운동','배경: 윌슨의 민족 자결주의, 2·8 독립 선언, 고종 서거 / 결과: 대한민국 임시 정부 수립, 문화 통치 전환','시험 포인트: 전개 단계(도시→농촌→해외), 유관순, 제암리 사건']},
+ {k:['실학'],items:['핵심 내용: 조선 후기 사회 모순 속에서 실용·개혁을 추구한 학문, 중농학파(유형원·이익·정약용)와 중상학파(유수원·박지원·박제가)','주장: 토지 제도 개혁(균전론·한전론·여전론), 상공업 진흥·청 문물 수용(북학)','시험 포인트: 학파별 인물과 저서, 실학의 한계(정책 반영 미흡)']},
+ {k:['프랑스 혁명'],items:['핵심 내용: 1789년 구제도 모순·재정 위기 → 삼부회 → 국민 의회 → 바스티유 습격 → 인권 선언 → 공화정','전개: 입법 의회, 국민 공회(루이 16세 처형), 공포 정치(로베스피에르), 총재 정부, 나폴레옹','시험 포인트: 인권 선언의 내용(자유·평등·국민 주권), 혁명의 의의와 한계']},
+ {k:['냉전'],items:['핵심 내용: 미국 중심 자본주의 진영 vs 소련 중심 공산주의 진영의 대립(1947~1991)','주요 사건: 트루먼 독트린, 마셜 계획, NATO·바르샤바 조약 기구, 쿠바 미사일 위기, 베를린 장벽','시험 포인트: 해체 과정(고르바초프 개혁, 동유럽 민주화, 소련 해체)']},
+ {k:['임진왜란'],items:['핵심 내용: 1592년 일본의 침략, 이순신의 수군 활약·의병·명 원군으로 극복(1598년 종결)','주요 전투: 한산도 대첩, 행주 대첩, 진주 대첩 / 인물: 이순신, 권율, 곽재우','시험 포인트: 전쟁의 영향(인구·토지 감소, 신분제 동요, 동아시아 정세 변화)']},
+ {k:['고려','후삼국'],items:['핵심 내용: 918년 왕건 건국 → 신라 항복(935) → 후백제 멸망(936) 후삼국 통일','정책: 호족 통합(혼인·사성), 북진 정책, 훈요 10조','시험 포인트: 통일의 의의(민족 재통합), 광종 노비안검법·과거제']},
+ {k:['정의','공정'],items:['핵심 개념: 정의=각자에게 마땅한 몫 / 분배 기준: 능력·노력·필요·업적','롤스: 평등한 자유의 원칙, 차등의 원칙 / 절차적 정의 vs 결과적 정의','시험 포인트: 사례별 분배 기준 적용, 공정한 절차의 조건']},
+ {k:['영양소'],items:['핵심 내용: 5대 영양소 — 탄수화물·단백질·지방(열량), 비타민·무기질(조절), 물','열량: 탄수화물 4, 단백질 4, 지방 9 kcal/g','시험 포인트: 영양소별 급원 식품과 기능, 결핍증']},
+ {k:['알고리즘','순서도'],items:['핵심 내용: 문제 해결 절차 / 조건: 입력·출력·명확성·유한성·효율성','표현: 자연어, 순서도(시작·처리·판단·입출력 기호), 의사코드','시험 포인트: 순서도 흐름 읽기, 반복·조건 구조 구분']},
+ {k:['조건문','반복문'],items:['핵심 내용: 조건문 if/elif/else, 반복문 for(횟수)·while(조건)','예제(파이썬): for i in range(1,11): total+=i / while n>0: n-=1','시험 포인트: 들여쓰기, 무한 반복 조건, break·continue']},
+];
+function contentExamples(){const topic=val('topic');const hit=TOPIC_CONTENT.filter(e=>e.k.some(kw=>topic.includes(kw)));return hit.length?{items:hit.flatMap(e=>e.items),ordered:true}:{items:GENERIC.content,ordered:true}}
 function renderExamples(which){
-  const attach=$('attach').checked;
-  const list=which==='topic'?$('topicExList'):$('extraExList');
-  const pool=poolFor(which==='topic'?'topic':(attach?'extra':'content'));
-  list.replaceChildren(...pick(pool,which==='topic'?6:5).map(txt=>{const b=document.createElement('button');b.type='button';b.textContent=txt;b.onclick=()=>{
+  const list=which==='topic'?$('topicExList'):which==='extra'?$('extraExList'):$('contentExList');
+  const ce=which==='content'?contentExamples():null;const pool=ce?ce.items:poolFor(which);
+  list.replaceChildren(...(ce?pool.slice(0,3):pick(pool,which==='topic'?6:5)).map(txt=>{const b=document.createElement('button');b.type='button';b.textContent=txt;b.onclick=()=>{
     if(which==='topic'){$('topic').value=txt;$('topic').dispatchEvent(new Event('input'));if(!isMobile())$('topic').focus()}
-    else{const el=$('extra');const cur=el.value.trim();if(!cur.includes(txt))el.value=cur?cur+'\n'+txt:txt;el.dispatchEvent(new Event('input'));if(!isMobile())el.focus()}
+    else{const el=$(which==='extra'?'extra':'content');const cur=el.value.trim();if(!cur.includes(txt))el.value=cur?cur+'\n'+txt:txt;el.dispatchEvent(new Event('input'));if(!isMobile())el.focus()}
   };return b}));
 }
 document.querySelectorAll('.shuffle').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();renderExamples(b.dataset.pool)});
 function applyAttachMode(){
   const attach=$('attach').checked;
-  $('extraLabel').innerHTML=attach?'추가 요청 <span style="font-weight:400">(선택)</span>':'학습 내용 <span style="font-weight:400">(첨부 대신 여기에 핵심 내용을 적어요)</span>';
-  document.querySelector('.extra-wrap').classList.toggle('content',!attach);
-  $('extra').placeholder=attach
-    ?'예) 범위: 2단원 중 ○○ 소단원만\n형식: 정답·해설은 맨 뒤에 따로, 객관식 7개 + 서술형 3개\n강조: 자주 틀리는 개념 비교를 표로, 핵심 용어 병기'
-    :'예) 핵심 내용: 자료의 중심 내용을 2~3문장으로\n용어·공식·인물: 꼭 들어갈 것을 쉼표로 나열\n시험 포인트: 자주 틀리는 것, 주의점을 한 줄씩';
-  renderExamples('extra');
+  $('contentWrap').hidden=attach;
+  renderExamples('extra');renderExamples('content');
 }
 renderExamples('topic');applyAttachMode();
-$('extra').addEventListener('input',()=>{setCurrent(2);build()});
+$('extra').addEventListener('input',()=>{setCurrent(2);build()});$('content').addEventListener('input',()=>{setCurrent(2);build();if(val('content'))$('contentWrap').classList.remove('invalid')});
+$('topic').addEventListener('input',()=>{if(!$('attach').checked)renderExamples('content')});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
@@ -829,7 +870,7 @@ $('copyImage').onclick=async()=>{
     $('refDownload').click();imgDone('이 브라우저는 이미지 복사가 안 되어 파일로 저장했습니다. 저장된 파일을 첨부하세요.');
   }
 };
-function resetInputs(){['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);build();}
+function resetInputs(){['grade','subject','topic','extra','content'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);build();}
 $('reset').onclick=()=>{resetInputs();toast('모두 지웠어요')};
 
 window.addEventListener('pageshow',()=>{syncSubject();renderExamples('topic');renderExamples('extra');if(active)build()});
