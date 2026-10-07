@@ -504,9 +504,9 @@ $('changePick').onclick=()=>{$('work').hidden=true;$('choose').hidden=false;setC
 $('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
 const REQUIRED=['grade','subject','topic'];
 function validate(){let ok=true;for(const id of REQUIRED){const bad=!val(id);$(id).closest('.field').classList.toggle('invalid',bad);if(bad)ok=false}$('reqMsg').hidden=ok;return ok}
-$('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step2 .field.invalid input,#step2 .field.invalid select');if(first)first.focus();return}
-  setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('output').focus({preventScroll:true}),400)};
-$('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'))});
+$('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step2 .field.invalid input,#step2 .field.invalid select');if(first){if(isMobile())first.scrollIntoView({behavior:'smooth',block:'center'});else first.focus()}return}
+  setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});if(!isMobile())setTimeout(()=>$('output').focus({preventScroll:true}),400)};
+$('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';if(!isMobile())$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'))});
 REQUIRED.forEach(id=>$(id).addEventListener('input',()=>{if(val(id))$(id).closest('.field').classList.remove('invalid');if(REQUIRED.every(i=>val(i)))$('reqMsg').hidden=true}));
 $('output').addEventListener('focus',()=>setCurrent(3));
 ['grade','subject','topic','extra'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
@@ -573,7 +573,7 @@ renderTunes();
 document.querySelectorAll('.examples').forEach(ex=>{const target=$(ex.dataset.for);ex.querySelectorAll('button').forEach(b=>b.onclick=()=>{
   if(ex.dataset.mode==='append'){const cur=target.value.trim();if(!cur.includes(b.textContent))target.value=cur?cur+', '+b.textContent:b.textContent}
   else target.value=b.textContent;
-  target.dispatchEvent(new Event('input'));target.focus()})});
+  target.dispatchEvent(new Event('input'));if(!isMobile())target.focus()})});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
