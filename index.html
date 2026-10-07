@@ -60,7 +60,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .group-label{display:flex;align-items:center;gap:8px;margin:12px 0 8px;font-weight:800;font-size:13px}
 .group-label span{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:999px;padding:3px 11px}
 .group-label .cnt{background:none;color:var(--muted);font-weight:600;font-size:12px;padding:0}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:10px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 .card{position:relative;border:2px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s}
 .card:hover{transform:translateY(-4px);box-shadow:0 18px 30px -16px rgba(38,62,54,.45);border-color:#c3cdbf}
 .card.active{border-color:transparent;background-image:linear-gradient(var(--card),var(--card)),linear-gradient(120deg,var(--accent),var(--accent2),var(--peach),var(--accent));background-origin:border-box;background-clip:padding-box,border-box;background-size:100% 100%,300% 100%;animation:flow 4s linear infinite;box-shadow:0 0 0 4px var(--ring)}
@@ -68,12 +68,12 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .card-pick{all:unset;display:block;cursor:zoom-in;width:100%}
 .card-pick:focus-visible{outline:3px solid var(--warn);outline-offset:-3px;border-radius:10px}
 .thumbwrap{position:relative}
-.card .thumb{display:block;width:100%;height:168px;object-fit:cover;object-position:top;background:#f5f0e7;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.card .thumb{display:block;width:100%;height:215px;object-fit:cover;object-position:top;background:#f5f0e7;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .card:hover .thumb{transform:scale(1.04)}
 .card .badge{position:absolute;right:6px;bottom:6px;background:rgba(38,62,54,.75);color:#fff;font-size:10px;font-weight:600;border-radius:999px;padding:2px 7px;backdrop-filter:blur(3px)}
-.card .meta{padding:7px 9px 8px;background:var(--card);position:relative}
-.card strong{display:block;font-size:12.5px;line-height:1.3}
-.card p{margin:1px 0 0;font-size:11px;color:var(--muted);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .meta{padding:8px 10px 9px;background:var(--card);position:relative}
+.card strong{display:block;font-size:13px;line-height:1.3}
+.card p{margin:1px 0 0;font-size:11.5px;color:var(--muted);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card .check{position:absolute;top:6px;left:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:10.5px;font-weight:700;border-radius:999px;padding:2px 8px;display:none;box-shadow:0 6px 12px -6px var(--accent-dark)}
 .card.active .check{display:inline-block;animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
 @keyframes pop{from{transform:scale(.5);opacity:0}}
@@ -134,16 +134,20 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .tune[open] summary::after{transform:rotate(180deg)}
 .tune summary .n{font-size:11px;font-weight:600;background:var(--accent);color:#fff;border-radius:999px;padding:1px 7px}
 .tune summary .n:empty{display:none}
-.tune-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 0 12px}
-.tune-grid .field select{height:34px;padding:5px 28px 5px 9px;font-size:12.5px;background-position:right 9px center}
-.tune-grid .field label{font-size:11px}
+.tune-groups{display:flex;flex-direction:column;gap:9px;padding:2px 0 12px}
+.tune-row{display:flex;align-items:flex-start;gap:8px}
+.tune-row>b{flex:none;width:58px;font-size:11.5px;color:var(--muted);padding-top:5px}
+.tune-row .tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 11px;font-size:12px;color:var(--ink);transition:all .15s}
+.tag:hover{border-color:var(--accent);color:var(--accent)}
+.tag.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;box-shadow:0 4px 10px -6px var(--accent)}
 .examples{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:5px}
 .examples span{font-size:11px;color:var(--muted);margin-right:2px}
 .examples button{border:1px dashed #c3cdbf;background:transparent;border-radius:999px;padding:2px 9px;font-size:11px;color:var(--accent);transition:all .15s}
 .examples button:hover{background:var(--soft);border-style:solid}
-.copyopt{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;margin:8px 2px 0;cursor:pointer;user-select:none;flex-wrap:wrap}
+.copyopt{height:auto;min-height:38px;padding:6px 12px;flex-wrap:wrap;font-weight:600}
 .copyopt .lbl{white-space:nowrap}
-.copyopt .hint{flex:1 1 100%;padding-left:23px;margin-top:-4px}
+.copyopt .hint{font-weight:400;font-size:11.5px}
 .copyopt input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
 .copyopt .hint{font-weight:400}
 .actions.sub{margin-top:8px}
@@ -204,8 +208,9 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
   .tab{padding:6px 10px;font-size:12px}
   #search{flex-basis:100%}
   .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .card .thumb{height:140px}
-  .tune-grid{grid-template-columns:1fr 1fr}
+  .card .thumb{height:175px}
+  .tune-row{flex-direction:column;gap:4px}
+  .tune-row>b{width:auto;padding-top:0}
   .primary{flex-basis:100%}
   .dside h3{font-size:17px}
 }
@@ -262,15 +267,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
           <p class="attach" id="attachInfo">✓ 첨부 자료 참조 문구 포함 · 예시 이미지도 함께 첨부하면 더 정확합니다.</p>
           <details class="tune" id="tune">
             <summary>🎨 세부 조정 <span class="n" id="tuneCount"></span><span class="hint" style="font-weight:400;margin-left:4px">톤·색감·글꼴·삽화·글자량·비율</span></summary>
-            <div class="tune-grid">
-              <div class="field"><label for="tTone">톤</label><select id="tTone" data-label="톤"><option value="">예시 그대로</option><option>차분하고 단정하게</option><option>밝고 발랄하게</option><option>진지하고 학술적으로</option><option>귀엽고 친근하게</option></select></div>
-              <div class="field"><label for="tColor">색감</label><select id="tColor" data-label="색감"><option value="">예시 그대로</option><option>파스텔 톤</option><option>선명한 원색</option><option>크림색 바탕에 초록 포인트</option><option>흑백·모노톤</option><option>어두운 배경(칠판·다크)</option></select></div>
-              <div class="field"><label for="tFont">글꼴 느낌</label><select id="tFont" data-label="글꼴 느낌"><option value="">예시 그대로</option><option>손글씨</option><option>깔끔한 고딕</option><option>단정한 명조</option><option>둥글고 귀여운 글씨</option></select></div>
-              <div class="field"><label for="tIllust">삽화</label><select id="tIllust" data-label="삽화"><option value="">예시 그대로</option><option>삽화 많이</option><option>삽화 조금</option><option>삽화 없이 글과 표만</option><option>캐릭터와 말풍선 추가</option></select></div>
-              <div class="field"><label for="tDensity">글자량</label><select id="tDensity" data-label="글자량"><option value="">예시 그대로</option><option>핵심만 간결하게</option><option>보통</option><option>최대한 상세하게</option></select></div>
-              <div class="field"><label for="tRatio">비율</label><select id="tRatio" data-label="비율"><option value="">예시 그대로</option><option>세로 A4</option><option>정사각형</option><option>가로 16:9(발표용)</option></select></div>
-              <div class="field"><label for="tLang">언어</label><select id="tLang" data-label="언어"><option value="">한글만</option><option>한글 + 영어 병기</option><option>한글 + 한자 병기</option></select></div>
-            </div>
+            <div class="tune-groups" id="tuneGroups"></div>
           </details>
           <p class="req-msg" id="reqMsg" hidden>표시된 필수 항목을 입력해 주세요.</p>
           <div class="actions"><button id="next" class="primary">다음 → 프롬프트 확인</button></div>
@@ -282,9 +279,10 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
           <div class="actions">
             <button id="copy" class="primary">📋 복사하기 (예시 이미지 + 프롬프트)</button>
           </div>
-          <label class="copyopt"><input id="withImage" type="checkbox" checked><span class="lbl">예시 이미지 복사 포함</span><span class="hint">함께 붙여넣으면 구성과 색감을 더 정확히 따릅니다</span></label>
+          <label class="toggle copyopt"><span class="switch"><input id="withImage" type="checkbox" checked><span class="slider"></span></span><span class="lbl">예시 이미지 복사 포함</span><span class="hint">함께 붙여넣으면 더 정확합니다</span></label>
           <div class="actions sub">
             <button id="copyImage" class="secondary">🖼 예시 이미지만 복사</button>
+            <button id="shareImage" class="secondary" hidden>📤 예시 이미지 공유</button>
             <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 예시 이미지 저장</a>
             <button id="reset" class="secondary danger">🗑 전체 지우기</button>
           </div>
@@ -499,8 +497,23 @@ $('output').addEventListener('focus',()=>setCurrent(3));
 ['grade','subject','topic','extra'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
 
 /* ---------- prompt ---------- */
-const TUNES=['tTone','tColor','tFont','tIllust','tDensity','tRatio','tLang'];
-function tuneLines(){const out=[];for(const id of TUNES){const el=$(id);if(el.value)out.push(`- ${el.dataset.label}: ${el.value}`)}$('tuneCount').textContent=out.length?out.length:'';return out}
+const TUNE_DEFS=[
+  ['톤',['차분하고 단정하게','밝고 발랄하게','진지하고 학술적으로','귀엽고 친근하게']],
+  ['색감',['파스텔 톤','선명한 원색','크림색 바탕에 초록 포인트','흑백·모노톤','어두운 배경(칠판·다크)']],
+  ['글꼴 느낌',['손글씨','깔끔한 고딕','단정한 명조','둥글고 귀여운 글씨']],
+  ['삽화',['삽화 많이','삽화 조금','삽화 없이 글과 표만','캐릭터와 말풍선 추가']],
+  ['글자량',['핵심만 간결하게','보통','최대한 상세하게']],
+  ['비율',['세로 A4','정사각형','가로 16:9(발표용)']],
+  ['언어',['한글 + 영어 병기','한글 + 한자 병기']]];
+const tune={};
+function renderTunes(){
+  $('tuneGroups').replaceChildren(...TUNE_DEFS.map(([label,opts])=>{const row=document.createElement('div');row.className='tune-row';const b=document.createElement('b');b.textContent=label;const tags=document.createElement('div');tags.className='tags';
+    const all=[label==='언어'?'한글만':'예시 그대로',...opts];
+    tags.replaceChildren(...all.map((o,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='tag'+((tune[label]||'')===(i?o:'')?' active':'');btn.textContent=o;btn.setAttribute('aria-pressed',btn.classList.contains('active'));
+      btn.onclick=()=>{if(i)tune[label]=o;else delete tune[label];renderTunes();setCurrent(2);build()};return btn}));
+    row.append(b,tags);return row}));
+}
+function tuneLines(){const out=Object.entries(tune).map(([k,v])=>`- ${k}: ${v}`);$('tuneCount').textContent=out.length?out.length:'';return out}
 function build(){
   if(!active)return;
   const s=sample(),f=info[s.key];
@@ -541,7 +554,7 @@ function build(){
   $('length').textContent=$('output').value.length.toLocaleString()+'자';
   $('status').textContent='';
 }
-TUNES.forEach(id=>$(id).addEventListener('change',()=>{setCurrent(2);build()}));
+renderTunes();
 document.querySelectorAll('.examples').forEach(ex=>{const target=$(ex.dataset.for);ex.querySelectorAll('button').forEach(b=>b.onclick=()=>{
   if(ex.dataset.mode==='append'){const cur=target.value.trim();if(!cur.includes(b.textContent))target.value=cur?cur+', '+b.textContent:b.textContent}
   else target.value=b.textContent;
@@ -564,21 +577,28 @@ $('copy').onclick=async()=>{
       await navigator.clipboard.writeText(text);$('status').textContent='✓ 프롬프트를 복사했습니다.';toast('프롬프트 복사 완료');
     }
   }catch{
-    try{await navigator.clipboard.writeText(text);$('status').textContent=withImg?'✓ 프롬프트만 복사했습니다. 예시 이미지는 아래 버튼으로 따로 복사하세요.':'✓ 프롬프트를 복사했습니다.'}
+    try{await navigator.clipboard.writeText(text);$('status').textContent=withImg?(canShareFiles()?'✓ 프롬프트를 복사했습니다. 이 기기는 이미지 복사를 막아, 예시 이미지는 「공유」나 「저장」으로 첨부하세요.':'✓ 프롬프트만 복사했습니다. 예시 이미지는 아래 버튼으로 따로 복사하세요.'):'✓ 프롬프트를 복사했습니다.';toast('프롬프트 복사 완료')}
     catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}$('status').textContent=ok?'✓ 프롬프트를 복사했습니다.':'자동 복사가 막혔습니다. Ctrl+C로 복사하세요.'}
   }
   $('step3').classList.add('done');$('step3').classList.remove('current');
 };
 $('copyImage').textContent='🖼 예시 이미지만 복사';
+async function imageFile(s){const b=await imageBlob(s.image);return new File([b],s.key+'.png',{type:'image/png'})}
+const canShareFiles=()=>{try{return !!(navigator.canShare&&navigator.canShare({files:[new File([''],'x.png',{type:'image/png'})]}))}catch{return false}};
+$('shareImage').hidden=!canShareFiles();
+$('shareImage').onclick=async()=>{const s=sample();if(!s)return;try{const f=await imageFile(s);await navigator.share({files:[f],title:info[s.key].name+' 예시'});$('status').textContent='✓ 공유 창에서 ChatGPT를 선택하면 이미지가 첨부됩니다.'}catch(e){if(e&&e.name!=='AbortError'){$('refDownload').click();$('status').textContent='공유가 지원되지 않아 파일로 저장했습니다.'}}};
 $('copyImage').onclick=async()=>{
   const s=sample();if(!s)return;
   try{
     if(!window.ClipboardItem)throw new Error('no ClipboardItem');
     await navigator.clipboard.write([new ClipboardItem({'image/png':imageBlob(s.image)})]);
-    $('status').textContent='✓ 예시 이미지를 복사했습니다. ChatGPT에 Ctrl+V로 붙여넣으세요.';toast('예시 이미지 복사 완료');
-  }catch(e){$('refDownload').click();$('status').textContent='이미지 복사가 지원되지 않아 파일로 저장했습니다.';}
+    $('status').textContent='✓ 예시 이미지를 복사했습니다. ChatGPT 입력창에 붙여넣으세요.';toast('예시 이미지 복사 완료');
+  }catch(e){
+    if(canShareFiles()){$('status').textContent='이 브라우저는 이미지 복사를 막습니다. 「예시 이미지 공유」로 ChatGPT에 보내거나 저장 후 첨부하세요.';$('shareImage').classList.add('accent')}
+    else{$('refDownload').click();$('status').textContent='이미지 복사가 지원되지 않아 파일로 저장했습니다. 저장된 그림을 첨부하세요.'}
+  }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;TUNES.forEach(id=>$(id).value='');$('attach').checked=true;$('attachInfo').hidden=false;$('withImage').checked=true;updateCopyLabel();$('step3').classList.remove('done');setCurrent(2);build();toast('입력을 모두 지웠습니다')};
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('withImage').checked=true;updateCopyLabel();$('step3').classList.remove('done');setCurrent(2);build();toast('입력을 모두 지웠습니다')};
 
 renderGallery();setCurrent(1);
 </script>
