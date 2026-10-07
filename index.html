@@ -60,7 +60,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .group-label{display:flex;align-items:center;gap:8px;margin:12px 0 8px;font-weight:800;font-size:13px}
 .group-label span{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:999px;padding:3px 11px}
 .group-label .cnt{background:none;color:var(--muted);font-weight:600;font-size:12px;padding:0}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
 .card{position:relative;border:2px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s}
 .card:hover{transform:translateY(-4px);box-shadow:0 18px 30px -16px rgba(38,62,54,.45);border-color:#c3cdbf}
 .card.active{border-color:transparent;background-image:linear-gradient(var(--card),var(--card)),linear-gradient(120deg,var(--accent),var(--accent2),var(--peach),var(--accent));background-origin:border-box;background-clip:padding-box,border-box;background-size:100% 100%,300% 100%;animation:flow 4s linear infinite;box-shadow:0 0 0 4px var(--ring)}
@@ -68,7 +68,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .card-pick{all:unset;display:block;cursor:zoom-in;width:100%}
 .card-pick:focus-visible{outline:3px solid var(--warn);outline-offset:-3px;border-radius:10px}
 .thumbwrap{position:relative}
-.card .thumb{display:block;width:100%;height:215px;object-fit:cover;object-position:top;background:#f5f0e7;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.card .thumb{display:block;width:100%;height:272px;object-fit:cover;object-position:top;background:#f5f0e7;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .card:hover .thumb{transform:scale(1.04)}
 .card .badge{position:absolute;right:6px;bottom:6px;background:rgba(38,62,54,.75);color:#fff;font-size:10px;font-weight:600;border-radius:999px;padding:2px 7px;backdrop-filter:blur(3px)}
 .card .meta{padding:8px 10px 9px;background:var(--card);position:relative}
@@ -208,7 +208,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
   .tab{padding:6px 10px;font-size:12px}
   #search{flex-basis:100%}
   .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .card .thumb{height:175px}
+  .card .thumb{height:200px}
   .tune-row{flex-direction:column;gap:4px}
   .tune-row>b{width:auto;padding-top:0}
   .primary{flex-basis:100%}
@@ -256,8 +256,9 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
                 <option>고등학교 1학년</option><option>고등학교 2학년</option><option>고등학교 3학년</option>
                 <option>대학생·성인</option>
               </select></div>
-            <div class="field"><label for="subject">과목 <i class="req">*</i></label><input id="subject" list="subjects" placeholder="예: 국어" autocomplete="off">
-              <datalist id="subjects"><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option></datalist></div>
+            <div class="field"><label for="subjectSel">과목 <i class="req">*</i></label>
+              <select id="subjectSel"><option value="">과목 선택</option><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option><option value="__custom">직접 입력…</option></select>
+              <input id="subject" placeholder="과목 직접 입력" autocomplete="off" hidden style="margin-top:6px"></div>
             <div class="field wide"><label for="topic">주제·단원 <i class="req">*</i></label><input id="topic" placeholder="예: 구운몽의 환몽 구조와 인물 관계 · 광합성의 과정과 조건 · 3·1 운동의 배경과 전개">
               <div class="examples" data-for="topic" data-mode="set"><span>예시</span><button type="button">「구운몽」 환몽 구조와 인물 관계</button><button type="button">광합성의 과정과 영향 요인</button><button type="button">3·1 운동의 배경·전개·의의</button><button type="button">이차방정식 근의 공식과 활용</button><button type="button">현재완료 시제의 쓰임</button></div></div>
             <div class="field wide"><label for="extra">추가 요청 <span style="font-weight:400">(선택)</span></label><input id="extra" placeholder="예: 1~3단원 범위만 · 정답은 맨 뒤에 따로 · 서술형 대비 위주 · 영어 용어 병기">
@@ -492,6 +493,7 @@ const REQUIRED=['grade','subject','topic'];
 function validate(){let ok=true;for(const id of REQUIRED){const bad=!val(id);$(id).closest('.field').classList.toggle('invalid',bad);if(bad)ok=false}$('reqMsg').hidden=ok;return ok}
 $('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step2 .field.invalid input,#step2 .field.invalid select');if(first)first.focus();return}
   setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('output').focus({preventScroll:true}),400)};
+$('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'))});
 REQUIRED.forEach(id=>$(id).addEventListener('input',()=>{if(val(id))$(id).closest('.field').classList.remove('invalid');if(REQUIRED.every(i=>val(i)))$('reqMsg').hidden=true}));
 $('output').addEventListener('focus',()=>setCurrent(3));
 ['grade','subject','topic','extra'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
@@ -598,7 +600,7 @@ $('copyImage').onclick=async()=>{
     else{$('refDownload').click();$('status').textContent='이미지 복사가 지원되지 않아 파일로 저장했습니다. 저장된 그림을 첨부하세요.'}
   }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('withImage').checked=true;updateCopyLabel();$('step3').classList.remove('done');setCurrent(2);build();toast('입력을 모두 지웠습니다')};
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('withImage').checked=true;updateCopyLabel();$('step3').classList.remove('done');setCurrent(2);build();toast('입력을 모두 지웠습니다')};
 
 renderGallery();setCurrent(1);
 </script>
