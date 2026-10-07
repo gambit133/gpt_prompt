@@ -131,6 +131,16 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .tune-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 0 12px}
 .tune-grid .field select{height:34px;padding:5px 9px;font-size:12.5px}
 .tune-grid .field label{font-size:11px}
+.examples{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:5px}
+.examples span{font-size:11px;color:var(--muted);margin-right:2px}
+.examples button{border:1px dashed #c3cdbf;background:transparent;border-radius:999px;padding:2px 9px;font-size:11px;color:var(--accent);transition:all .15s}
+.examples button:hover{background:var(--soft);border-style:solid}
+.copyopt{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;margin:8px 2px 0;cursor:pointer;user-select:none}
+.copyopt input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
+.copyopt .hint{font-weight:400}
+.actions.sub{margin-top:8px}
+.actions.sub .secondary{padding:7px 11px;font-size:12px}
+.secondary.danger:hover{border-color:#b84a3a;color:#b84a3a;background:#fbefed}
 .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
 .primary{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0;border-radius:12px;padding:12px 20px;font-weight:800;font-size:14.5px;flex:1 1 200px;letter-spacing:.01em;box-shadow:0 5px 0 var(--accent-dark),0 14px 24px -10px rgba(0,0,0,.4);transition:transform .12s,box-shadow .12s,filter .2s}
 .primary::after{content:"";position:absolute;top:0;left:-80%;width:45%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);transition:left .65s ease}
@@ -235,8 +245,10 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
               </select></div>
             <div class="field"><label for="subject">과목</label><input id="subject" list="subjects" placeholder="예: 국어" autocomplete="off">
               <datalist id="subjects"><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option></datalist></div>
-            <div class="field wide"><label for="topic">주제·단원</label><input id="topic" placeholder="예: 구운몽, 광합성, 3·1 운동"></div>
-            <div class="field wide"><label for="extra">추가 요청 <span style="font-weight:400">(선택)</span></label><input id="extra" placeholder="예: 정답은 맨 뒤에, 영어 병기"></div>
+            <div class="field wide"><label for="topic">주제·단원</label><input id="topic" placeholder="예: 구운몽의 환몽 구조와 인물 관계 · 광합성의 과정과 조건 · 3·1 운동의 배경과 전개">
+              <div class="examples" data-for="topic" data-mode="set"><span>예시</span><button type="button">「구운몽」 환몽 구조와 인물 관계</button><button type="button">광합성의 과정과 영향 요인</button><button type="button">3·1 운동의 배경·전개·의의</button><button type="button">이차방정식 근의 공식과 활용</button><button type="button">현재완료 시제의 쓰임</button></div></div>
+            <div class="field wide"><label for="extra">추가 요청 <span style="font-weight:400">(선택)</span></label><input id="extra" placeholder="예: 1~3단원 범위만 · 정답은 맨 뒤에 따로 · 서술형 대비 위주 · 영어 용어 병기">
+              <div class="examples" data-for="extra" data-mode="append"><span>예시</span><button type="button">1~3단원 범위만</button><button type="button">정답은 맨 뒤에 따로</button><button type="button">서술형 대비 위주로</button><button type="button">영어 용어 병기</button><button type="button">표 위주로, 그림은 적게</button><button type="button">시험에 자주 나오는 것만</button></div></div>
           </div>
           <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료를 첨부할게요</label>
           <p class="attach" id="attachInfo">✓ 첨부 자료 참조 문구 포함 · 예시 이미지도 함께 첨부하면 더 정확합니다.</p>
@@ -259,13 +271,15 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
           <div class="step-head"><h2 id="h3"><b>3</b>복사해서 붙여넣기</h2><span class="hint" id="length"></span></div>
           <textarea id="output" class="output" spellcheck="false" aria-label="완성 프롬프트 (직접 수정 가능)"></textarea>
           <div class="actions">
-            <button id="copy" class="primary">📋 프롬프트 복사</button>
-            <button id="copyImage" class="secondary accent" title="ChatGPT 입력창에 Ctrl+V로 붙여넣으세요">🖼 예시 이미지 복사</button>
-            <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 저장</a>
-            <button id="reset" class="secondary">지우기</button>
+            <button id="copy" class="primary">📋 복사하기 (예시 이미지 + 프롬프트)</button>
+          </div>
+          <label class="copyopt"><input id="withImage" type="checkbox" checked>예시 이미지 복사 포함 <span class="hint">· 함께 붙여넣으면 구성과 색감을 더 정확히 따릅니다</span></label>
+          <div class="actions sub">
+            <button id="copyImage" class="secondary">🖼 예시 이미지만 복사</button>
+            <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 예시 이미지 저장</a>
+            <button id="reset" class="secondary danger">🗑 전체 지우기</button>
           </div>
           <div id="status" role="status" aria-live="polite"></div>
-          <p class="hint small">예시 이미지를 함께 붙여넣으면 구성과 색감을 더 정확히 따릅니다.</p>
         </section>
       </div>
     </div>
@@ -515,27 +529,43 @@ function build(){
   $('status').textContent='';
 }
 TUNES.forEach(id=>$(id).addEventListener('change',()=>{setCurrent(2);build()}));
+document.querySelectorAll('.examples').forEach(ex=>{const target=$(ex.dataset.for);ex.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  if(ex.dataset.mode==='append'){const cur=target.value.trim();if(!cur.includes(b.textContent))target.value=cur?cur+', '+b.textContent:b.textContent}
+  else target.value=b.textContent;
+  target.dispatchEvent(new Event('input'));target.focus()})});
+async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
+function updateCopyLabel(){$('copy').textContent=$('withImage').checked?'📋 복사하기 (예시 이미지 + 프롬프트)':'📋 복사하기 (프롬프트)'}
+$('withImage').addEventListener('change',updateCopyLabel);
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
 
 let toastTimer;function toast(msg){$('toastText').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2200)}
 $('copy').onclick=async()=>{
   const text=$('output').value;if(!text.trim()){$('status').textContent='복사할 내용이 없습니다.';return}
-  try{await navigator.clipboard.writeText(text);$('status').textContent='✓ 프롬프트를 복사했습니다.';toast('프롬프트 복사 완료')}
-  catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}
-    $('status').textContent=ok?'✓ 프롬프트를 복사했습니다.':'자동 복사가 막혔습니다. Ctrl+C로 복사하세요.'}
+  const withImg=$('withImage').checked&&sample();
+  try{
+    if(withImg&&window.ClipboardItem){
+      await navigator.clipboard.write([new ClipboardItem({'text/plain':new Blob([text],{type:'text/plain'}),'image/png':imageBlob(sample().image)})]);
+      $('status').textContent='✓ 예시 이미지와 프롬프트를 복사했습니다. ChatGPT에 붙여넣으세요. 이미지만 붙으면 아래 프롬프트 복사를 한 번 더 누르세요.';toast('예시 이미지 + 프롬프트 복사 완료');
+    }else{
+      await navigator.clipboard.writeText(text);$('status').textContent='✓ 프롬프트를 복사했습니다.';toast('프롬프트 복사 완료');
+    }
+  }catch{
+    try{await navigator.clipboard.writeText(text);$('status').textContent=withImg?'✓ 프롬프트만 복사했습니다. 예시 이미지는 아래 버튼으로 따로 복사하세요.':'✓ 프롬프트를 복사했습니다.'}
+    catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}$('status').textContent=ok?'✓ 프롬프트를 복사했습니다.':'자동 복사가 막혔습니다. Ctrl+C로 복사하세요.'}
+  }
   $('step3').classList.add('done');$('step3').classList.remove('current');
 };
+$('copyImage').textContent='🖼 예시 이미지만 복사';
 $('copyImage').onclick=async()=>{
   const s=sample();if(!s)return;
   try{
     if(!window.ClipboardItem)throw new Error('no ClipboardItem');
-    const blobPromise=fetch(s.image).then(r=>r.blob()).then(b=>createImageBitmap(b)).then(bm=>{const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))});
-    await navigator.clipboard.write([new ClipboardItem({'image/png':blobPromise})]);
+    await navigator.clipboard.write([new ClipboardItem({'image/png':imageBlob(s.image)})]);
     $('status').textContent='✓ 예시 이미지를 복사했습니다. ChatGPT에 Ctrl+V로 붙여넣으세요.';toast('예시 이미지 복사 완료');
   }catch(e){$('refDownload').click();$('status').textContent='이미지 복사가 지원되지 않아 파일로 저장했습니다.';}
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');TUNES.forEach(id=>$(id).value='');$('attach').checked=true;$('attachInfo').hidden=false;setCurrent(2);build();};
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');TUNES.forEach(id=>$(id).value='');$('attach').checked=true;$('attachInfo').hidden=false;$('withImage').checked=true;updateCopyLabel();$('step3').classList.remove('done');setCurrent(2);build();toast('입력을 모두 지웠습니다')};
 
 renderGallery();setCurrent(1);
 </script>
