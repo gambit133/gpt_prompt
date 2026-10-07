@@ -228,7 +228,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 /* guide dialog */
 dialog.guide{width:min(96vw,640px)}
 .gwrap{display:flex;flex-direction:column;gap:10px;padding-top:2px}
-.howbtn{margin-left:auto;margin-right:44px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;font-size:11.5px;color:var(--muted);flex:none}
+.howbtn{align-self:flex-start;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:12px;color:var(--accent);font-weight:700}
 .howbtn:hover{border-color:var(--accent);color:var(--accent)}
 #howto{display:flex;flex-direction:column;gap:10px}
 #howto[hidden]{display:none}
@@ -299,7 +299,8 @@ dialog.guide{width:min(96vw,640px)}
 @keyframes lab3{0%,38%{opacity:0;transform:translateY(4px)}41%,57%{opacity:1;transform:translateY(0)}60%,100%{opacity:0}}
 @keyframes lab4{0%,60%{opacity:0;transform:translateY(4px)}63%,96%{opacity:1;transform:translateY(0)}99%,100%{opacity:0}}
 .gsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.gsteps li{display:flex;gap:10px;align-items:flex-start;background:var(--soft2);border:1px solid var(--line);border-radius:12px;padding:7px 10px;animation:st1 16s infinite}
+.gsteps li{display:flex;gap:10px;align-items:flex-start;background:var(--soft2);border:1px solid var(--line);border-radius:12px;padding:7px 10px}
+.gwrap.anim .gsteps li{animation:st1 16s infinite}
 .gsteps li.s1{animation-name:st1}.gsteps li.s2{animation-name:st2}.gsteps li.s3{animation-name:st3}
 @keyframes st1{0%,17%{border-color:var(--line);background:var(--soft2);box-shadow:none}20%,33%{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--ring)}36%,100%{border-color:var(--line);background:var(--soft2);box-shadow:none}}
 @keyframes st2{0%,38%{border-color:var(--line);background:var(--soft2);box-shadow:none}41%,57%{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--ring)}60%,100%{border-color:var(--line);background:var(--soft2);box-shadow:none}}
@@ -332,6 +333,7 @@ dialog.guide{width:min(96vw,640px)}
   dialog.guide[open]{animation:sheet .3s cubic-bezier(.2,.8,.2,1)}
   dialog.guide .dx{position:absolute;top:10px;right:10px}
   dialog.guide .ghead{padding-right:48px}
+  dialog.guide .ghead h3{font-size:16px}
   .gsteps li{padding:8px 10px}
   .gsteps li strong{font-size:13px}
   .gsteps li span{font-size:12px}
@@ -479,8 +481,14 @@ dialog.guide{width:min(96vw,640px)}
 <dialog id="guide" class="guide" aria-labelledby="gTitle">
   <button id="guideX" class="dx" aria-label="닫기">✕</button>
   <div class="gwrap">
-    <div class="ghead"><span class="gcheck">✓</span><div><h3 id="gTitle">프롬프트가 복사됐어요</h3><p class="sub">ChatGPT에 붙여넣는 순서</p></div><button id="howToggle" class="howbtn" aria-expanded="true">사용법 접기</button></div>
-    <div id="howto">
+    <div class="ghead"><span class="gcheck">✓</span><div><h3 id="gTitle">프롬프트가 복사됐어요</h3><p class="sub">ChatGPT에 붙여넣는 순서</p></div></div>
+    <ol class="gsteps">
+      <li class="s1"><b>1</b><div><strong>ChatGPT 입력창에 붙여넣기</strong><span>Ctrl+V(⌘V). 휴대폰은 입력창 길게 눌러 ‘붙여넣기’.</span></div></li>
+      <li class="s2"><b>2</b><div><strong>예시 이미지도 넣기</strong><span>복사한 이미지를 붙여넣거나, 저장한 파일을 [+] 버튼으로 첨부.</span></div></li>
+      <li class="s3"><b>3</b><div><strong>전송</strong><span>틀린 글자는 "○○를 △△로 고쳐 줘"로 이어서 요청.</span></div></li>
+    </ol>
+    <button id="howToggle" class="howbtn" aria-expanded="false">▶ 사용법 자세히 보기</button>
+    <div id="howto" hidden>
     <div class="mock" aria-hidden="true">
       <div class="page pa">
         <div class="mock-top"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-title">쌤플레이</span></div>
@@ -503,11 +511,6 @@ dialog.guide{width:min(96vw,640px)}
       <div class="mock-label l3">③ 예시 이미지 복사 → 붙여넣기</div>
       <div class="mock-label l4">④ 전송 → 학습 자료 생성</div>
     </div>
-    <ol class="gsteps">
-      <li class="s1"><b>1</b><div><strong>ChatGPT 입력창에 붙여넣기</strong><span>Ctrl+V(⌘V). 휴대폰은 입력창 길게 눌러 ‘붙여넣기’.</span></div></li>
-      <li class="s2"><b>2</b><div><strong>예시 이미지도 넣기</strong><span>복사한 이미지를 붙여넣거나, 저장한 파일을 <i class="plus">+</i> 로 첨부.</span></div></li>
-      <li class="s3"><b>3</b><div><strong>전송</strong><span>틀린 글자는 "○○를 △△로 고쳐 줘"로 이어서 요청.</span></div></li>
-    </ol>
     </div>
     <hr class="gdiv">
     <div class="gact">
@@ -941,11 +944,11 @@ $('copy').onclick=async()=>{
 };
 let floatTimer;function showFloat(title,text,btn=true,ms=15000){$('floatTitle').textContent=title||'프롬프트 복사 완료';$('floatText').textContent=text||'프롬프트를 붙여넣으셨으면, 정확한 생성을 위해 예시 이미지도 넣어 주세요!';$('floatImg').hidden=!btn;$('float').hidden=false;clearTimeout(floatTimer);floatTimer=setTimeout(hideFloat,ms)}function hideFloat(){$('float').hidden=true}
 $('floatX').onclick=hideFloat;$('floatImg').onclick=()=>$('copyImage').click();
-let noGuide=false,howOpen=true;try{noGuide=localStorage.getItem('noGuide')==='1';howOpen=localStorage.getItem('howOpen')!=='0'}catch{}
-function applyHow(){$('howto').hidden=!howOpen;$('howToggle').textContent=howOpen?'사용법 접기':'사용법 보기';$('howToggle').setAttribute('aria-expanded',howOpen)}
-$('howToggle').onclick=()=>{howOpen=!howOpen;try{localStorage.setItem('howOpen',howOpen?'1':'0')}catch{}applyHow()};
+let noGuide=false,howOpen=false;try{noGuide=localStorage.getItem('noGuide')==='1'}catch{}
+function applyHow(){$('howto').hidden=!howOpen;document.querySelector('.gwrap').classList.toggle('anim',howOpen);$('howToggle').textContent=howOpen?'▼ 사용법 접기':'▶ 사용법 자세히 보기';$('howToggle').setAttribute('aria-expanded',howOpen)}
+$('howToggle').onclick=()=>{howOpen=!howOpen;applyHow();if(howOpen)$('howto').scrollIntoView({behavior:'smooth',block:'nearest'})};
 $('noGuide').onchange=()=>{noGuide=$('noGuide').checked;try{localStorage.setItem('noGuide',noGuide?'1':'0')}catch{}};
-function openGuide(){const s=sample();if(!s)return;if(noGuide)return;$('noGuide').checked=noGuide;applyHow();$('gThumb').src=s.thumb;$('gThumbU').src=s.thumb;$('gThumbR').src=s.thumb;$('gOpen').href='https://chatgpt.com/?q='+encodeURIComponent($('output').value);$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';if(!$('guide').open)$('guide').showModal()}
+function openGuide(){const s=sample();if(!s)return;if(noGuide)return;$('noGuide').checked=noGuide;howOpen=false;applyHow();$('gThumb').src=s.thumb;$('gThumbU').src=s.thumb;$('gThumbR').src=s.thumb;$('gOpen').href='https://chatgpt.com/?q='+encodeURIComponent($('output').value);$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';if(!$('guide').open)$('guide').showModal()}
 $('guideX').onclick=$('guideClose').onclick=()=>$('guide').close();
 $('guide').onclick=e=>{if(e.target===$('guide'))$('guide').close()};
 $('gCopyImage').onclick=()=>$('copyImage').click();$('gSave').onclick=()=>$('refDownload').click();
