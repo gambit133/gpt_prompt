@@ -10,7 +10,7 @@
 세 단계면 끝납니다. 입력은 과목·주제 정도면 충분하고, 모두 비워 두어도 됩니다.
 
 1. **1. 어떤 자료를 만들까요?** 에서 예시 그림 8개 중 하나를 누릅니다. 🔍 버튼으로 예시를 크게 볼 수 있습니다.
-   - 학생용: 학습 노트 · 구조도/흐름도 · 암기 카드 · OX 선지 판단
+   - 학습용: 학습 노트 · 구조도/흐름도 · 암기 카드 · OX 선지 판단
    - 선생님용: 수업 지도안 · 활동 학습지 · 형성평가 · 채점 기준표 (고르면 교사용 지시가 자동으로 붙습니다)
 2. **2. 간단히 적기** 에서 학년·과목·주제를 적습니다. 필요하면 추가 요청 한 줄을 덧붙입니다.
 3. **3. 복사해서 붙여넣기** 의 **프롬프트 복사**를 누른 뒤, ChatGPT에 자료를 첨부하고 붙여넣습니다.
@@ -34,10 +34,10 @@ ChatGPT 입력창의 **+** 버튼으로 교과서·필기 사진, 학습지, 요
 
 | 역할 | 예시 유형 | 프롬프트 구분 | 이미지 |
 | --- | --- | --- | --- |
-| 학생 | 상세 학습 노트 | 상세 · 실제 생성 지시 | [assets/s-notes.jpg](assets/s-notes.jpg) |
-| 학생 | 환몽 구조도 | 상세 · 실제 생성 지시 | [assets/s-map.jpg](assets/s-map.jpg) |
-| 학생 | 암기 카드 | 기본 · 재현용 지시 | [assets/s-cards.jpg](assets/s-cards.jpg) |
-| 학생 | 선지 판단 | 기본 · 재현용 지시 | [assets/s-judgment.jpg](assets/s-judgment.jpg) |
+| 학습용 | 상세 학습 노트 | 상세 · 실제 생성 지시 | [assets/s-notes.jpg](assets/s-notes.jpg) |
+| 학습용 | 환몽 구조도 | 상세 · 실제 생성 지시 | [assets/s-map.jpg](assets/s-map.jpg) |
+| 학습용 | 암기 카드 | 기본 · 재현용 지시 | [assets/s-cards.jpg](assets/s-cards.jpg) |
+| 학습용 | 선지 판단 | 기본 · 재현용 지시 | [assets/s-judgment.jpg](assets/s-judgment.jpg) |
 | 선생님 | 50분 수업 지도안 | 상세 · 실제 생성 지시 | [assets/t-plan.jpg](assets/t-plan.jpg) |
 | 선생님 | 학생 활동 학습지 | 상세 · 실제 생성 지시 | [assets/t-sheet.jpg](assets/t-sheet.jpg) |
 | 선생님 | 형성평가 | 기본 · 재현용 지시 | [assets/t-quiz.jpg](assets/t-quiz.jpg) |
