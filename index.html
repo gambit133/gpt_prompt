@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#255c47">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <title>쌤플레이 · AI마당 선생님모여라 학습자료 프롬프트 sample 생성기</title>
 <meta name="description" content="쌤플레이 — AI마당, 선생님 모여라. 학습자료 프롬프트 sample 생성기. 예시 그림을 고르고 과목·주제만 적으면 ChatGPT용 학습 이미지 프롬프트가 완성됩니다.">
 <style>
@@ -24,7 +25,7 @@ header{padding:16px 0 8px}
 .brand:hover{opacity:.8}
 .brand:hover .logo{transform:rotate(-8deg) scale(1.05)}
 .brand .logo{transition:transform .2s}
-.brand .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:15px;box-shadow:0 6px 14px -6px var(--accent)}
+.brand .logo{width:34px;height:34px;border-radius:10px;display:block;box-shadow:0 6px 14px -6px var(--accent)}
 .brand small{font-weight:500;color:var(--muted);font-size:12.5px}
 .tagline{margin:0;font-size:13px;color:var(--muted)}
 .tagline b{color:var(--accent);font-weight:700}
@@ -322,7 +323,6 @@ dialog.guide{width:min(96vw,760px)}
   .step-choose .step-head .hint{display:none}
   .step-choose .step-head{margin-bottom:6px}
   .tab{padding:6px 11px;font-size:12.5px}
-  .tab .n{display:none}
   .ddbtn{padding:0 10px}
   .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .card .thumb{height:200px}
@@ -338,7 +338,7 @@ dialog.guide{width:min(96vw,760px)}
 <body>
 <header class="wrap">
   <div class="topbar">
-    <a class="brand" id="homeLink" href="#" title="홈으로"><span class="logo" aria-hidden="true">▶</span>쌤플레이<small>AI마당 · 선생님 모여라</small></a>
+    <a class="brand" id="homeLink" href="#" title="홈으로"><img class="logo" src="assets/logo.svg" alt="" width="34" height="34">쌤플레이<small>AI마당 · 선생님 모여라</small></a>
     <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b></p>
   </div>
 </header>
@@ -346,7 +346,7 @@ dialog.guide{width:min(96vw,760px)}
 <main class="wrap">
   <section class="step step-choose current" id="choose" aria-labelledby="h1">
     <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2>
-      <div class="headright"><span class="hint"><b id="countAll"></b>종</span>
+      <div class="headright">
         <div class="dd" id="styleDd"><button id="styleBtn" class="ddbtn" aria-haspopup="listbox" aria-expanded="false">스타일 <span id="styleCur">전체</span> <span class="caret" aria-hidden="true"></span></button><div class="ddmenu" id="styleMenu" role="listbox" hidden></div></div>
       </div></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="용도별 묶음"></div>
@@ -568,22 +568,22 @@ const byKey=k=>samples.find(s=>s.key===k);
 function matches(s){const q=query.trim().toLowerCase();if(!q)return true;const f=info[s.key],g=GUIDE[s.key]||['',''];return (f.name+' '+f.desc+' '+s.tag+' '+s.title+' '+f.shape+' '+g[0]+' '+g[1]).toLowerCase().includes(q)}
 function renderTabs(){
   $('tabs').replaceChildren(...[['all','전체'],...GROUPS].map(([g,label])=>{const b=document.createElement('button');b.className='tab'+(g===tab&&!query.trim()?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',g===tab&&!query.trim());
-    const n=document.createElement('span');n.className='n';n.textContent=g==='all'?samples.length:samples.filter(s=>s.group===g).length;b.append(document.createTextNode(label+' '),n);b.onclick=()=>{tab=g;query='';renderGallery()};return b}));
+    b.append(document.createTextNode(label));b.onclick=()=>{tab=g;query='';renderGallery()};return b}));
   const tagsAll=['전체','손글씨','인포그래픽','표','카드','만화·캐릭터','칠판','수채'].filter(tg=>tg==='전체'||samples.some(s=>s.tag===tg));
   $('styleMenu').replaceChildren(...tagsAll.map(tg=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','option');b.className=tg===styleFilter?'active':'';
-    const n=document.createElement('span');n.className='n';n.textContent=tg==='전체'?samples.length:samples.filter(s=>s.tag===tg).length;b.append(document.createTextNode(tg),n);
+    b.append(document.createTextNode(tg));
     b.onclick=()=>{styleFilter=tg;closeMenu();renderGallery()};return b}));
   $('styleCur').textContent=styleFilter;$('styleBtn').classList.toggle('active',styleFilter!=='전체');
 }
 function renderGallery(){
   renderTabs();
-  const wrap=$('groups');wrap.replaceChildren();$('countAll').textContent=samples.length;
+  const wrap=$('groups');wrap.replaceChildren();
   const searching=!!query.trim(),showAll=searching||tab==='all';visibleKeys=[];
   for(const [g,label] of GROUPS){
     if(!showAll&&g!==tab)continue;
     const list=samples.filter(s=>s.group===g&&(styleFilter==='전체'||s.tag===styleFilter)&&matches(s));if(!list.length)continue;
     visibleKeys.push(...list.map(s=>s.key));
-    if(showAll){const lab=document.createElement('div');lab.className='group-label';lab.innerHTML=`<span></span><span class="cnt"></span>`;lab.children[0].textContent=label;lab.children[1].textContent=list.length+'종';wrap.append(lab)}
+    if(showAll){const lab=document.createElement('div');lab.className='group-label';lab.innerHTML=`<span></span>`;lab.children[0].textContent=label;wrap.append(lab)}
     const grid=document.createElement('div');grid.className='gallery';
     grid.replaceChildren(...list.map(s=>{
       const f=info[s.key];
@@ -613,7 +613,7 @@ function openDialog(key){
   $('dialogImage').src=s.image;$('dialogImage').alt=f.name+' 예시';$('dTag').textContent=s.tag;$('dialogTitle').textContent=f.name;$('dDesc').textContent=f.desc;
   $('dWhat').textContent=g[0];$('dWhen').textContent=g[1];
   const list=visibleKeys.length?visibleKeys:samples.map(s=>s.key);const i=list.indexOf(key);
-  $('dCounter').textContent=i>=0?`${i+1} / ${list.length}`:'';$('dPrev').hidden=$('dNext').hidden=list.length<2;
+  $('dCounter').textContent='';$('dPrev').hidden=$('dNext').hidden=list.length<2;
   if(!$('dialog').open)$('dialog').showModal();
 }
 function dialogStep(d){const list=visibleKeys.length?visibleKeys:samples.map(s=>s.key);const i=list.indexOf(dialogKey);if(i<0)return;openDialog(list[(i+d+list.length)%list.length])}
