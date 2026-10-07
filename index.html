@@ -407,7 +407,7 @@ const GUIDE={
 const GROUPS=[['organize','📘 정리하기'],['understand','💡 이해하기'],['memorize','🧠 암기하기'],['check','✅ 점검하기'],['teacher','🍎 선생님용']];
 const HAND='크림색 모눈 종이 질감에 검은 펜 손글씨, 노랑·초록·분홍 형광펜 제목, 얇은 테두리, 작은 고전 인물 수채 일러스트';
 const $=id=>document.getElementById(id);
-let role='student',active=null,tab='organize',styleFilter='전체',query='',visibleKeys=[],dialogKey=null;
+let role='student',active=null,tab='all',styleFilter='전체',query='',visibleKeys=[],dialogKey=null;
 const sample=()=>samples.find(s=>s.key===active);
 const val=id=>$(id).value.trim();
 const byKey=k=>samples.find(s=>s.key===k);
@@ -415,20 +415,20 @@ const byKey=k=>samples.find(s=>s.key===k);
 /* ---------- gallery ---------- */
 function matches(s){const q=query.trim().toLowerCase();if(!q)return true;const f=info[s.key],g=GUIDE[s.key]||['',''];return (f.name+' '+f.desc+' '+s.tag+' '+s.title+' '+f.shape+' '+g[0]+' '+g[1]).toLowerCase().includes(q)}
 function renderTabs(){
-  $('tabs').replaceChildren(...GROUPS.map(([g,label])=>{const b=document.createElement('button');b.className='tab'+(g===tab&&!query.trim()?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',g===tab&&!query.trim());
-    const n=document.createElement('span');n.className='n';n.textContent=samples.filter(s=>s.group===g).length;b.append(document.createTextNode(label+' '),n);b.onclick=()=>{tab=g;query='';$('search').value='';renderGallery()};return b}));
+  $('tabs').replaceChildren(...[['all','전체'],...GROUPS].map(([g,label])=>{const b=document.createElement('button');b.className='tab'+(g===tab&&!query.trim()?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',g===tab&&!query.trim());
+    const n=document.createElement('span');n.className='n';n.textContent=g==='all'?samples.length:samples.filter(s=>s.group===g).length;b.append(document.createTextNode(label+' '),n);b.onclick=()=>{tab=g;query='';$('search').value='';renderGallery()};return b}));
   const tagsAll=['전체','손글씨','인포그래픽','표','카드','만화·캐릭터','칠판','수채'].filter(tg=>tg==='전체'||samples.some(s=>s.tag===tg));
   $('styleChips').replaceChildren(...tagsAll.map(tg=>{const b=document.createElement('button');b.className='chip'+(tg===styleFilter?' active':'');b.textContent=tg;b.setAttribute('aria-pressed',tg===styleFilter);b.onclick=()=>{styleFilter=tg;renderGallery()};return b}));
 }
 function renderGallery(){
   renderTabs();
   const wrap=$('groups');wrap.replaceChildren();$('countAll').textContent=samples.length;
-  const searching=!!query.trim();visibleKeys=[];
+  const searching=!!query.trim(),showAll=searching||tab==='all';visibleKeys=[];
   for(const [g,label] of GROUPS){
-    if(!searching&&g!==tab)continue;
+    if(!showAll&&g!==tab)continue;
     const list=samples.filter(s=>s.group===g&&(styleFilter==='전체'||s.tag===styleFilter)&&matches(s));if(!list.length)continue;
     visibleKeys.push(...list.map(s=>s.key));
-    if(searching){const lab=document.createElement('div');lab.className='group-label';lab.innerHTML=`<span></span><span class="cnt"></span>`;lab.children[0].textContent=label;lab.children[1].textContent=list.length+'종';wrap.append(lab)}
+    if(showAll){const lab=document.createElement('div');lab.className='group-label';lab.innerHTML=`<span></span><span class="cnt"></span>`;lab.children[0].textContent=label;lab.children[1].textContent=list.length+'종';wrap.append(lab)}
     const grid=document.createElement('div');grid.className='gallery';
     grid.replaceChildren(...list.map(s=>{
       const f=info[s.key];
@@ -471,7 +471,7 @@ function setCurrent(n){
   for(const [k,el] of Object.entries(steps)){el.classList.toggle('current',+k===n);el.classList.toggle('pending',+k>n)}
 }
 function enterWork(key,scroll=true){
-  active=key;const s=sample();role=s.role;tab=s.group;
+  active=key;const s=sample();role=s.role;if(tab!=='all')tab=s.group;
   document.body.classList.toggle('teacher',role==='teacher');
   $('choose').hidden=true;$('work').hidden=false;
   $('step3').classList.remove('done');setCurrent(2);
