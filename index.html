@@ -18,14 +18,14 @@ button{cursor:pointer}
 :is(button,a,select):focus-visible{outline:3px solid var(--warn);outline-offset:2px}
 [hidden]{display:none!important}
 .wrap{max-width:1480px;margin:0 auto;padding:0 16px}
-header{padding:14px 0 4px}
+header{padding:16px 0 8px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{font-weight:800;font-size:15px;letter-spacing:.02em;display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;border-radius:10px;transition:opacity .2s}
+.brand{font-weight:800;font-size:17px;letter-spacing:.02em;display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;border-radius:10px;transition:opacity .2s;padding:4px 0}
 .brand:hover{opacity:.8}
 .brand:hover .logo{transform:rotate(-8deg) scale(1.05)}
 .brand .logo{transition:transform .2s}
-.brand .logo{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:15px;box-shadow:0 6px 14px -6px var(--accent)}
-.brand small{font-weight:500;color:var(--muted);font-size:12px}
+.brand .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:15px;box-shadow:0 6px 14px -6px var(--accent)}
+.brand small{font-weight:500;color:var(--muted);font-size:12.5px}
 .tagline{margin:0;font-size:13px;color:var(--muted)}
 .tagline b{color:var(--accent);font-weight:700}
 main.wrap{padding-top:12px;padding-bottom:24px}
@@ -50,9 +50,9 @@ section.step.done .step-head h2 b{font-size:0}
 section.step.done .step-head h2 b::before{font-size:13px}
 
 /* gallery */
-.tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;margin:2px -16px 8px;padding:2px 16px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;margin:2px 0 8px;padding:3px 2px 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:none;scroll-snap-align:start;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.tab{flex:none;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:all .2s}
 .tab:hover{border-color:#c3cdbf;transform:translateY(-1px)}
 .tab .n{font-size:11px;font-weight:600;background:var(--soft);border-radius:999px;padding:1px 7px;color:var(--muted)}
 .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;box-shadow:0 6px 14px -7px var(--accent)}
@@ -61,7 +61,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .dd{position:relative;flex:none}
 .ddbtn{height:38px;border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:0 12px;font-size:13px;color:var(--ink);white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .2s}
 .ddbtn:hover{border-color:#c3cdbf}
-.ddbtn .caret{color:var(--muted);font-size:11px}
+.ddbtn .caret{width:0;height:0;border-left:4.5px solid transparent;border-right:4.5px solid transparent;border-top:6px solid var(--muted);margin-left:2px}
 .ddbtn.active{border-color:var(--accent);color:var(--accent);font-weight:700;background:var(--soft2)}
 .ddmenu{position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 34px -14px rgba(0,0,0,.4);padding:6px;min-width:180px;z-index:30;display:grid;gap:2px;animation:fade .15s ease}
 .ddmenu button{text-align:left;border:0;background:none;border-radius:8px;padding:9px 11px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
@@ -316,6 +316,7 @@ dialog.guide{width:min(96vw,760px)}
   dialog.guide::-webkit-scrollbar{display:none}
 }
 @media(max-width:760px){
+  header{padding:18px 0 10px}
   .step-head{align-items:flex-start}
   .step-head h2{font-size:15px}
   .step-choose .step-head .hint{display:none}
@@ -346,7 +347,7 @@ dialog.guide{width:min(96vw,760px)}
     <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 누르면 크게 보기</span></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="용도별 묶음"></div>
     <div class="toolbar">
-      <div class="dd" id="styleDd"><button id="styleBtn" class="ddbtn" aria-haspopup="listbox" aria-expanded="false">스타일 <span id="styleCur">전체</span> <span class="caret">▾</span></button><div class="ddmenu" id="styleMenu" role="listbox" hidden></div></div>
+      <div class="dd" id="styleDd"><button id="styleBtn" class="ddbtn" aria-haspopup="listbox" aria-expanded="false">스타일 <span id="styleCur">전체</span> <span class="caret" aria-hidden="true"></span></button><div class="ddmenu" id="styleMenu" role="listbox" hidden></div></div>
     </div>
     <div id="groups"></div>
     <p id="noResult" class="hint" hidden>해당하는 예시가 없어요.</p>
