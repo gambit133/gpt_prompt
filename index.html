@@ -267,13 +267,16 @@ dialog.guide{width:min(96vw,760px)}
 .gsteps li strong{display:block;font-size:14px}
 .gsteps li span{font-size:12.5px;color:var(--muted)}
 .gsteps .plus{font-style:normal;display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid #999;font-size:13px;color:#555;vertical-align:middle}
-.gbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.gstatus{margin:6px 0 0;font-size:12.5px;color:var(--accent);font-weight:700}
+.gsteps{opacity:.95}
+.gact{border:2px solid var(--accent);border-radius:14px;padding:12px;background:#fff;display:flex;flex-direction:column;gap:8px;box-shadow:0 10px 24px -18px var(--accent)}
+.gact-head{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.04em;display:flex;align-items:center;gap:6px}
+.gact-head::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);animation:bump 1.6s ease-in-out infinite}
+.gact-row{display:flex;gap:8px;flex-wrap:wrap}
+.gbig{flex:1 1 180px;justify-content:center;text-align:center;padding:13px 14px;font-size:14px;font-weight:700;text-decoration:none}
+.primary.small.gbig{font-size:14.5px;padding:13px 14px}
+.gstatus{margin:0;font-size:12.5px;color:var(--accent);font-weight:700;background:var(--soft2);border-radius:8px;padding:6px 10px}
 .gstatus:empty{display:none}
-.gfoot{display:flex;gap:8px;flex-wrap:wrap}
-.gfoot .primary{text-decoration:none;text-align:center;display:inline-flex;align-items:center;justify-content:center;flex:2 1 200px}
-.gfoot .secondary.big{flex:1 1 120px;justify-content:center;padding:12px 16px;font-size:14px}
-@media(max-width:1099px){dialog.guide{width:100vw}.gfoot .primary{flex-basis:100%}}
+@media(max-width:1099px){dialog.guide{width:100vw}}
 /* toast */
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px 10px 12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 16px 30px -12px rgba(0,0,0,.5);transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s;z-index:50}
 .toast.show{transform:translate(-50%,0);opacity:1}
@@ -414,12 +417,19 @@ dialog.guide{width:min(96vw,760px)}
     </div>
     <ol class="gsteps">
       <li class="s1"><b>1</b><div><strong>ChatGPT 입력창에 붙여넣기</strong><span>방금 복사한 프롬프트를 Ctrl+V(⌘V)로 넣어요. 휴대폰은 입력창을 길게 눌러 ‘붙여넣기’.</span></div></li>
-      <li class="s2"><b>2</b><div><strong>예시 이미지도 넣기</strong><span>아래 버튼으로 복사해서 같은 입력창에 붙여넣거나, 저장한 파일을 <i class="plus">+</i> 버튼으로 첨부해요.</span>
-        <div class="gbtns"><button id="gCopyImage" class="secondary accent">🖼 예시 이미지 복사</button><button id="gShare" class="secondary" hidden>📤 공유</button><button id="gSave" class="secondary">⬇ 저장</button></div>
-        <p class="gstatus" id="gStatus"></p></div></li>
+      <li class="s2"><b>2</b><div><strong>예시 이미지도 넣기</strong><span>복사한 이미지를 같은 입력창에 붙여넣거나, 저장한 파일을 <i class="plus">+</i> 버튼으로 첨부해요.</span></div></li>
       <li class="s3"><b>3</b><div><strong>전송</strong><span>결과가 나오면 틀린 글자는 "○○를 △△로 고쳐 줘"라고 이어서 요청하면 돼요.</span></div></li>
     </ol>
-    <div class="gfoot"><a id="gOpen" class="primary" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT 열기 ↗</a><button id="guideClose" class="secondary big">닫기</button></div>
+    <div class="gact">
+      <div class="gact-head">지금 누르세요</div>
+      <div class="gact-row">
+        <button id="gCopyImage" class="primary small gbig">🖼 예시 이미지 복사</button>
+        <button id="gShare" class="primary small gbig" hidden>📤 예시 이미지 공유</button>
+        <button id="gSave" class="secondary gbig">⬇ 예시 이미지 저장</button>
+      </div>
+      <p class="gstatus" id="gStatus"></p>
+      <div class="gact-row"><a id="gOpen" class="secondary gbig" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT 열기 ↗</a><button id="guideClose" class="secondary gbig">닫기</button></div>
+    </div>
   </div>
 </dialog>
 <dialog id="dialog" aria-labelledby="dialogTitle">
