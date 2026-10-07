@@ -36,23 +36,21 @@ header.wrap{padding:18px 16px 8px}
 .hamb{width:44px;height:44px;border:0;border-radius:50%;background:linear-gradient(145deg,#fffefa,#eef2e9);box-shadow:inset 0 1px 0 #fff,0 6px 14px -6px rgba(38,62,54,.45),0 0 0 1px var(--line);display:grid;place-items:center;padding:0;cursor:pointer;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s,background .3s}
 .hamb:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 #fff,0 10px 18px -8px rgba(38,62,54,.5),0 0 0 1px var(--accent)}
 .hamb:active{transform:scale(.94)}
-.hamb .hb{position:relative;width:20px;height:14px;display:block}
-.hamb .hb i{position:absolute;left:0;height:2.5px;border-radius:3px;background:var(--ink);transition:transform .4s cubic-bezier(.68,-.55,.27,1.55),opacity .25s,width .3s,top .3s,background .3s}
-.hamb .hb i:nth-child(1){top:0;width:20px}
-.hamb .hb i:nth-child(2){top:50%;transform:translateY(-50%);width:14px}
-.hamb .hb i:nth-child(3){top:100%;transform:translateY(-100%);width:20px}
+.hamb .hb{position:relative;width:22px;height:22px;display:block}
+.hamb .hb i{position:absolute;top:50%;left:50%;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;background:var(--ink);transition:transform .4s cubic-bezier(.68,-.55,.27,1.55),width .3s,height .3s,margin .3s,border-radius .3s,opacity .25s,background .3s}
+.hamb .hb i:nth-child(1){transform:translateX(-7px)}
+.hamb .hb i:nth-child(3){transform:translateX(7px)}
 .hamb.open{background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 16px -8px var(--accent)}
-.hamb.open .hb i{background:#fff;width:20px}
-.hamb.open .hb i:nth-child(1){top:50%;transform:translateY(-50%) rotate(45deg)}
-.hamb.open .hb i:nth-child(2){opacity:0;transform:translateY(-50%) scaleX(0)}
-.hamb.open .hb i:nth-child(3){top:50%;transform:translateY(-50%) rotate(-45deg)}
-.menulist{position:absolute;right:0;top:calc(100% + 10px);background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 22px 40px -16px rgba(0,0,0,.45);padding:8px;min-width:200px;z-index:40;display:grid;gap:2px;transform-origin:top right;animation:menuIn .28s cubic-bezier(.2,.9,.3,1.2)}
+.hamb.open .hb i{background:#fff}
+.hamb.open .hb i:nth-child(1){width:18px;height:2.5px;margin:-1.25px 0 0 -9px;border-radius:3px;transform:rotate(45deg)}
+.hamb.open .hb i:nth-child(2){opacity:0;transform:scale(0)}
+.hamb.open .hb i:nth-child(3){width:18px;height:2.5px;margin:-1.25px 0 0 -9px;border-radius:3px;transform:rotate(-45deg)}
+.menulist{position:absolute;right:0;top:calc(100% + 10px);background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:0 18px 34px -16px rgba(0,0,0,.4);padding:4px;min-width:128px;z-index:40;display:grid;gap:0;transform-origin:top right;animation:menuIn .28s cubic-bezier(.2,.9,.3,1.2)}
 .menulist[hidden]{display:none}
-.menulist::before{content:"";position:absolute;top:-6px;right:16px;width:11px;height:11px;background:var(--card);border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+.menulist::before{content:"";position:absolute;top:-6px;right:17px;width:11px;height:11px;background:var(--card);border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
 @keyframes menuIn{from{opacity:0;transform:translateY(-6px) scale(.9)}}
-.menulist a{text-decoration:none;color:var(--ink);font-size:14px;font-weight:600;padding:9px 12px 9px 9px;border-radius:10px;display:flex;align-items:center;gap:10px;transition:background .2s,color .2s,transform .2s}
-.menulist a .mi{width:28px;height:28px;border-radius:8px;background:var(--soft2);display:grid;place-items:center;font-size:14px;flex:none}
-.menulist a:hover{background:var(--soft2);color:var(--accent);transform:translateX(2px)}
+.menulist a{text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:7px;display:block;line-height:1.4;transition:background .2s,color .2s}
+.menulist a:hover{background:var(--soft2);color:var(--accent)}
 @media(max-width:1099px){.tagline{display:none}}
 main.wrap{padding-top:12px;padding-bottom:24px}
 
@@ -62,6 +60,8 @@ section.step{position:relative;background:var(--card);border:1px solid var(--lin
 .step-head h2{margin:0;font-size:16px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
 .step-head h2 b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;box-shadow:0 5px 12px -5px var(--accent);transition:transform .3s}
 .step-head .hint{font-size:12px;color:var(--muted)}
+.tip{margin:-4px 0 12px;font-size:12.5px;line-height:1.5;color:var(--accent);background:var(--soft2);border-radius:10px;padding:7px 11px}
+.tip b{font-weight:800}
 section.step.current{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring),0 14px 30px -24px rgba(38,62,54,.35)}
 @keyframes focusPulse{0%,100%{box-shadow:0 0 0 3px var(--ring),0 14px 30px -24px rgba(38,62,54,.35)}50%{box-shadow:0 0 0 9px rgba(0,0,0,0),0 14px 30px -24px rgba(38,62,54,.35)}}
 @keyframes bump{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
@@ -116,6 +116,14 @@ section.step.done .step-head h2 b::before{font-size:13px}
 @keyframes pop{from{transform:scale(.5);opacity:0}}
 
 /* workspace */
+.stickysel{position:fixed;top:8px;left:50%;transform:translateX(-50%);width:min(100% - 20px,720px);z-index:35;display:flex;align-items:center;gap:10px;background:rgba(255,254,250,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:5px 10px 5px 5px;box-shadow:0 12px 24px -12px rgba(0,0,0,.45);animation:ssIn .25s ease;text-align:left;color:var(--ink);font:inherit;cursor:zoom-in}
+.stickysel[hidden]{display:none}
+.stickysel img{width:38px;height:38px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line);background:#f5f0e7;flex:none}
+.stickysel strong{flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.stickysel .badge2{flex:none}
+@keyframes ssIn{from{opacity:0;transform:translate(-50%,-8px)}}
+.backlink{display:inline-block;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;margin:0 0 8px;padding:2px 0}
+.backlink:hover{color:var(--accent);text-decoration:underline}
 .selbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:12px;animation:fade .3s ease}
 .selbar .stepnum{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#3f8f6e,#5fb08d);color:#fff;font-size:12px}
 .selbar strong{font-size:14px}
@@ -399,6 +407,7 @@ dialog.guide{width:min(96vw,640px)}
 }
 @media(max-width:760px){
   header.wrap{padding:22px 16px 10px;padding-top:calc(22px + env(safe-area-inset-top))}
+  .stickysel{top:calc(6px + env(safe-area-inset-top))}
   .brand{font-size:16px}
   .step-head{align-items:center}
   .step-head h2{font-size:15px}
@@ -422,7 +431,7 @@ dialog.guide{width:min(96vw,640px)}
   <div class="topbar">
     <a class="brand" id="homeLink" href="#" title="홈으로"><img class="logo" src="assets/logo.svg" alt="" width="34" height="34">쌤플레이<small>AI마당 · 선생님 모여라</small></a>
     <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b></p>
-    <div class="menu"><button id="menuBtn" class="hamb" aria-label="메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="about.html"><span class="mi">📖</span>사이트 소개</a><a href="#" id="menuHome"><span class="mi">🖼️</span>쌤플 고르기</a></nav></div>
+    <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="about.html">사이트 소개</a><a href="#" id="menuHome">쌤플 고르기</a></nav></div>
   </div>
 </header>
 
@@ -438,7 +447,9 @@ dialog.guide{width:min(96vw,640px)}
   </section>
 
   <section id="work" hidden aria-label="프롬프트 만들기">
-    <div class="selbar"><span class="stepnum">✓</span><span>선택한 쌤플</span><strong id="selName"></strong><span class="badge2" id="selTag"></span><span class="spacer"></span><button id="changePick" class="secondary">← 다른 쌤플 고르기</button></div>
+    <button class="stickysel" id="stickySel" hidden type="button" title="크게 보기"><img id="ssImg" alt=""><strong id="ssName"></strong><span class="badge2" id="ssTag"></span></button>
+    <a href="#" id="changePick" class="backlink">← 다른 쌤플 고르기</a>
+    <div class="selbar"><span class="stepnum">✓</span><span>선택한 쌤플</span><strong id="selName"></strong><span class="badge2" id="selTag"></span></div>
     <div class="work-grid">
       <aside class="preview">
         <div class="preview-img"><img id="selImage" alt="선택한 예시"><button id="selZoom" class="zoom">🔍 크게</button></div>
@@ -449,6 +460,7 @@ dialog.guide{width:min(96vw,640px)}
       <div class="editor" id="editor">
         <section class="step" id="step2" aria-labelledby="h2">
           <div class="step-head"><h2 id="h2"><b>2</b>간단히 적기</h2><span class="hint"><i class="req">*</i> 필수</span></div>
+          <p class="tip">주제·학습 내용·추가 가이드라인은 칸마다 <b>예시 보기</b>에 과목과 쌤플에 맞는 예시가 있습니다. 보고 고르기만 해도 됩니다.</p>
           <div class="form">
             <div class="field"><label for="grade">학년 <i class="req">*</i></label>
               <select id="grade" autocomplete="off">
@@ -489,7 +501,7 @@ dialog.guide{width:min(96vw,640px)}
             <button id="copy" class="primary">📋 프롬프트 복사</button>
           </div>
           <div class="actions sub imgbtns">
-            <button id="copyImage" class="secondary">🖼 예시 이미지 복사</button>
+            <button id="copyImage" class="secondary">🖼️ 예시 이미지 복사</button>
             <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 예시 이미지 저장</a>
           </div>
           <div id="status" role="status" aria-live="polite"></div>
@@ -503,7 +515,7 @@ dialog.guide{width:min(96vw,640px)}
 <footer class="wrap">쌤플레이 · 입력 내용은 저장되지 않습니다</footer>
 
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
-<div id="float" class="float" hidden role="status"><span class="ok">✓</span><div class="ftext"><b id="floatTitle">프롬프트 복사 완료</b><span id="floatText">프롬프트를 붙여넣으셨으면, 정확한 생성을 위해 예시 이미지도 넣어 주세요!</span></div><button id="floatImg" class="primary small">🖼 예시 이미지 복사</button><button id="floatX" aria-label="닫기">✕</button></div>
+<div id="float" class="float" hidden role="status"><span class="ok">✓</span><div class="ftext"><b id="floatTitle">프롬프트 복사 완료</b><span id="floatText">프롬프트를 붙여넣으셨으면, 정확한 생성을 위해 예시 이미지도 넣어 주세요!</span></div><button id="floatImg" class="primary small">🖼️ 예시 이미지 복사</button><button id="floatX" aria-label="닫기">✕</button></div>
 <dialog id="guide" class="guide" aria-labelledby="gTitle">
   <button id="guideX" class="dx" aria-label="닫기">✕</button>
   <div class="gwrap">
@@ -520,7 +532,7 @@ dialog.guide{width:min(96vw,640px)}
         <div class="mock-top"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-title">쌤플레이</span></div>
         <div class="pa-box"><div class="pa-line"></div><div class="pa-line short"></div><div class="pa-line"></div></div>
         <div class="pa-btn copy">📋 프롬프트 복사<span class="pa-badge">복사됨</span></div>
-        <div class="pa-row"><div class="pa-btn img">🖼 예시 이미지 복사<span class="pa-badge">복사됨</span></div><div class="pa-btn ghost">⬇ 예시 이미지 저장</div></div>
+        <div class="pa-row"><div class="pa-btn img">🖼️ 예시 이미지 복사<span class="pa-badge">복사됨</span></div><div class="pa-btn ghost">⬇ 예시 이미지 저장</div></div>
       </div>
       <div class="page pb">
         <div class="mock-top"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-title">ChatGPT</span></div>
@@ -541,7 +553,7 @@ dialog.guide{width:min(96vw,640px)}
     <hr class="gdiv">
     <div class="gact">
       <p class="gnote">프롬프트를 붙여넣으셨으면, <b>정확한 생성을 위해 예시 이미지도 넣어 주세요!</b></p>
-      <div class="gact-row"><button id="gCopyImage" class="primary gbig">🖼 예시 이미지 복사</button><button id="gSave" class="secondary gbig">⬇ 예시 이미지 저장</button></div>
+      <div class="gact-row"><button id="gCopyImage" class="primary gbig">🖼️ 예시 이미지 복사</button><button id="gSave" class="secondary gbig">⬇ 예시 이미지 저장</button></div>
       <p class="gstatus" id="gStatus"></p>
       <div class="gact-row"><a id="gOpen" class="secondary gbig" href="https://chatgpt.com/" target="_blank" rel="noopener" title="프롬프트가 입력된 상태로 열립니다">ChatGPT 열기 (프롬프트 자동 입력) ↗</a><button id="guideClose" class="secondary gbig">닫기</button></div>
       <label class="noshow"><input id="noGuide" type="checkbox">다음부터 이 안내 띄우지 않기 (복사 후 플로팅 안내만 표시)</label>
@@ -742,21 +754,22 @@ function enterWork(key,scroll=true){
 }
 function renderPreview(){
   const s=sample(),f=info[s.key];$('alts').open=!isMobile();
-  $('selImage').src=s.image;$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
+  $('selImage').src=s.image;$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('ssImg').src=s.thumb;$('ssName').textContent=f.name;$('ssTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
   const alts=samples.filter(x=>x.group===s.group);
   $('altStrip').replaceChildren(...alts.map(x=>{const b=document.createElement('button');b.className='alt'+(x.key===s.key?' active':'');b.title=info[x.key].name;
     const im=document.createElement('img');im.src=x.thumb;im.alt='';im.loading='lazy';const sp=document.createElement('span');sp.textContent=info[x.key].name;b.append(im,sp);
     b.onclick=()=>{enterWork(x.key,false)};return b}));
   const act=$('altStrip').querySelector('.alt.active');if(act)act.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
 }
-function goHome(){$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
-$('changePick').onclick=()=>{$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
+function goHome(){$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
+$('changePick').onclick=e=>{e.preventDefault();$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
 $('homeLink').onclick=e=>{e.preventDefault();if($('dialog').open)$('dialog').close();goHome()};
 $('menuHome').onclick=e=>{e.preventDefault();setMenu(false);if($('dialog').open)$('dialog').close();goHome()};
 function setMenu(open){$('menuList').hidden=!open;$('menuBtn').classList.toggle('open',open);$('menuBtn').setAttribute('aria-expanded',open)}
 $('menuBtn').onclick=e=>{e.stopPropagation();setMenu($('menuList').hidden)};
 document.addEventListener('click',e=>{if(!document.querySelector('.menu').contains(e.target))setMenu(false)});
-$('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
+$('selImage').onclick=$('selZoom').onclick=$('stickySel').onclick=()=>openDialog(active);
+const ssIO=new IntersectionObserver(es=>{const en=es[es.length-1];$('stickySel').hidden=$('work').hidden||en.isIntersecting||en.boundingClientRect.top>0},{threshold:0});ssIO.observe(document.querySelector('.preview-img'));
 const REQUIRED=['grade','subject','topic'];
 const REQ_NAME={grade:'학년',subject:'과목',topic:'주제',content:'학습 내용'};
 function syncSubject(){const v=$('subjectSel').value;if(v&&v!=='__custom'){$('subject').value=v;$('subject').hidden=true}else if(v==='__custom'){$('subject').hidden=false}}
