@@ -53,12 +53,7 @@ section.step{background:var(--card);border:1px solid var(--line);border-radius:1
 .form-row2{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;margin-top:8px}
 .toggle{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:9px;padding:0 12px;height:38px;background:var(--soft2);font-size:13px;white-space:nowrap;cursor:pointer;user-select:none}
 .toggle input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
-.attach{display:flex;gap:12px;align-items:flex-start;background:var(--soft2);border:1px dashed #b9c4b6;border-radius:12px;padding:12px 14px;margin-top:10px;font-size:12.5px}
-.attach .icon{font-size:22px;line-height:1}
-.attach strong{display:block;font-size:13px;margin-bottom:2px}
-.attach p{margin:0;color:var(--muted)}
-.attach .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
-.attach .chips span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:11.5px;color:var(--ink)}
+.attach{margin:8px 0 0;background:var(--soft2);border:1px dashed #b9c4b6;border-radius:10px;padding:8px 12px;font-size:12.5px;color:var(--accent);font-weight:600;line-height:1.5}
 .output{width:100%;min-height:230px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fffefa;resize:vertical;line-height:1.75;font-size:13px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
 .primary{background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);border-radius:11px;padding:12px 22px;font-weight:800;font-size:15px;flex:1 1 220px;min-width:200px}
@@ -132,14 +127,7 @@ dialog .dcontent{white-space:pre-wrap;font-size:12.5px;color:var(--muted);backgr
       <div class="field"><label for="extra">추가 요청 <span style="font-weight:400">(선택)</span></label><input id="extra" placeholder="예: 정답은 맨 뒤에, 그림 많이, 영어 단어 병기"></div>
       <label class="toggle"><input id="attach" type="checkbox" checked>📎 ChatGPT에 자료를 첨부할게요</label>
     </div>
-    <div class="attach" id="attachInfo">
-      <div class="icon">📎</div>
-      <div>
-        <strong>자료를 첨부하면 알아서 정리합니다</strong>
-        <p>ChatGPT 입력창의 <b>+</b> 버튼으로 파일을 올리고 이 프롬프트를 붙여넣으세요. 자료의 핵심을 뽑아 선택한 형식으로 정리하고, 자료에 쓰인 용어와 순서를 그대로 따릅니다.</p>
-        <div class="chips"><span>교과서·필기 사진</span><span>학습지</span><span>요약본</span><span>PDF·한글 문서</span><span>수업 PPT</span><span>참고 이미지</span></div>
-      </div>
-    </div>
+    <p class="attach" id="attachInfo">✓ 첨부파일 참조 프롬프트 문구가 추가되었습니다. ChatGPT에 자료(교과서 사진·학습지·요약본·PDF 등)를 첨부하면 이를 참고하여 이미지가 생성됩니다.</p>
   </section>
 
   <section class="step" aria-labelledby="h3">
