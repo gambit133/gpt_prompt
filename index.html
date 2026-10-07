@@ -150,7 +150,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .exbox[open] .shuffle{display:inline-block}
 .examples{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:6px}
 .extra-grid{display:grid;grid-template-columns:1fr;gap:6px}
-.extra-grid textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;font-size:12.5px;line-height:1.5;resize:vertical;min-height:54px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
+.extra-grid textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;background:#fff;font-size:12.5px;line-height:1.6;resize:vertical;min-height:96px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
 .extra-grid textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--ring)}
 .extra-grid textarea::placeholder{color:#9aa39c}
 .extra-wrap.content label{color:var(--accent)}
@@ -290,11 +290,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
             <div class="field wide"><label for="topic">주제·단원 <i class="req">*</i></label><input id="topic" placeholder="예: 구운몽의 환몽 구조와 인물 관계 · 광합성의 과정과 조건 · 3·1 운동의 배경과 전개">
               <details class="exbox" id="topicEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="topic">🎲 다른 예시</button></summary><div class="examples" id="topicExList"></div></details></div>
             <div class="field wide extra-wrap"><label id="extraLabel">추가 요청 <span style="font-weight:400">(선택)</span></label>
-              <div class="extra-grid">
-                <textarea id="extra1" rows="2"></textarea>
-                <textarea id="extra2" rows="2"></textarea>
-                <textarea id="extra3" rows="2"></textarea>
-              </div>
+              <div class="extra-grid"><textarea id="extra" rows="4"></textarea></div>
               <details class="exbox" id="extraEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="extra">🎲 다른 예시</button></summary><div class="examples" id="extraExList"></div></details></div>
           </div>
           <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료를 첨부할게요</label>
@@ -557,7 +553,7 @@ function build(){
   if(!active)return;
   const s=sample(),f=info[s.key];
   const grade=val('grade'),subject=val('subject'),topic=val('topic'),attach=$('attach').checked;
-  const extras=['extra1','extra2','extra3'].map(val).filter(Boolean);
+  const extras=val('extra').split(/\n+/).map(s=>s.trim()).filter(Boolean);
   const who=[grade,subject].filter(Boolean).join(' ');
   const demo=topic.replace(/[「」『』\s]/g,'')==='구운몽'&&(subject.replace(/\s/g,'')==='국어'||!subject);
   const parts=[];
@@ -607,7 +603,7 @@ function renderExamples(which){
   const pool=which==='topic'?TOPIC_POOL:(attach?EXTRA_POOL:CONTENT_POOL);
   list.replaceChildren(...pick(pool,which==='topic'?6:5).map(txt=>{const b=document.createElement('button');b.type='button';b.textContent=txt;b.onclick=()=>{
     if(which==='topic'){$('topic').value=txt;$('topic').dispatchEvent(new Event('input'));if(!isMobile())$('topic').focus()}
-    else{const slot=['extra1','extra2','extra3'].map(id=>$(id)).find(el=>!el.value.trim())||$('extra3');slot.value=txt;slot.dispatchEvent(new Event('input'));if(!isMobile())slot.focus()}
+    else{const el=$('extra');const cur=el.value.trim();if(!cur.includes(txt))el.value=cur?cur+'\n'+txt:txt;el.dispatchEvent(new Event('input'));if(!isMobile())el.focus()}
   };return b}));
 }
 document.querySelectorAll('.shuffle').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();renderExamples(b.dataset.pool)});
@@ -615,13 +611,13 @@ function applyAttachMode(){
   const attach=$('attach').checked;
   $('extraLabel').innerHTML=attach?'추가 요청 <span style="font-weight:400">(선택)</span>':'학습 내용 <span style="font-weight:400">(첨부 자료가 없으니 핵심 내용을 적어 주세요)</span>';
   document.querySelector('.extra-wrap').classList.toggle('content',!attach);
-  const ph=attach?['범위: 어느 단원·소단원까지 다룰지 (예: 2단원 「광합성의 과정」만)','형식: 정답 위치, 문항 수, 표·그림 비중 (예: 정답은 맨 뒤, 객관식 7 + 서술형 3)','강조·수준: 꼭 강조할 개념, 난이도, 병기 (예: 자주 틀리는 비교를 표로, 영어 용어 병기)']
-                 :['핵심 내용: 자료의 중심 내용을 2~3문장으로 (예: 광합성은 빛에너지를 화학에너지로…)','꼭 들어갈 용어·공식·인물 (예: 6CO₂+6H₂O→…, 엽록소, ATP)','시험 포인트·주의점·자주 틀리는 것 (예: 한계 요인 그래프, 명반응 vs 암반응 구분)'];
-  ['extra1','extra2','extra3'].forEach((id,i)=>$(id).placeholder=ph[i]);
+  $('extra').placeholder=attach
+    ?'예) 범위: 2단원 「광합성의 과정」 소단원만\n형식: 정답·해설은 맨 뒤에 따로, 객관식 7개 + 서술형 3개\n강조: 자주 틀리는 명반응 vs 암반응 비교를 표로, 영어 용어 병기'
+    :'예) 핵심 내용: 광합성은 빛에너지를 화학에너지로 바꾸는 과정. 엽록체의 틸라코이드에서 명반응, 스트로마에서 암반응\n용어·공식: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂, 엽록소, ATP, NADPH\n시험 포인트: 빛의 세기·CO₂ 농도·온도에 따른 광합성량 그래프, 한계 요인';
   renderExamples('extra');
 }
 renderExamples('topic');applyAttachMode();
-['extra1','extra2','extra3'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
+$('extra').addEventListener('input',()=>{setCurrent(2);build()});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
@@ -653,7 +649,7 @@ $('copyImage').onclick=async()=>{
     else{$('refDownload').click();imgDone('✓ 이미지 복사가 지원되지 않아 파일로 저장했습니다. 저장된 그림을 ChatGPT에 첨부하세요.')}
   }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra1','extra2','extra3'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';setCurrent(2);build();toast('입력을 모두 지웠습니다')};
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='<b>예시 이미지도 함께 첨부</b>하면 구성과 색감이 훨씬 정확해집니다.';setCurrent(2);build();toast('입력을 모두 지웠습니다')};
 
 renderGallery();setCurrent(1);
 </script>
