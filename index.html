@@ -169,19 +169,13 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .extra-wrap.content textarea{border-color:#b9c4b6;background:var(--soft2)}
 .examples button{border:1px dashed #c3cdbf;background:transparent;border-radius:999px;padding:2px 9px;font-size:11px;color:var(--accent);transition:all .15s}
 .examples button:hover{background:var(--soft);border-style:solid}
-.imgstep{margin-top:10px;border:1.5px dashed var(--line);border-radius:12px;padding:10px 12px;transition:border-color .3s,background .3s}
-.imgstep-msg{margin:0 0 8px;font-size:12.5px;color:var(--muted)}
-.imgstep-msg b{color:var(--ink)}
-.imgstep .actions.sub{margin-top:0}
-.imgstep.glow{border-color:var(--accent);background:var(--soft2);box-shadow:0 0 0 3px var(--ring)}
-.imgstep.glow .imgstep-msg{color:var(--accent);font-weight:700}
-.imgstep.glow .secondary{border-color:var(--accent);color:var(--accent);font-weight:700;background:#fff}
-.imgstep.done{border-style:solid;border-color:#3f8f6e;background:#eef6f1;animation:none}
-.imgstep.done .imgstep-msg{color:#2f6f52}
 .copyopt input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
 .copyopt .hint{font-weight:400}
 .actions.sub{margin-top:8px}
-.actions.sub .secondary{padding:7px 11px;font-size:12px}
+.actions.sub .secondary{padding:9px 12px;font-size:12.5px;flex:1 1 0;justify-content:center}
+.resetrow{justify-content:flex-end;margin-top:4px}
+.linkbtn.danger{color:var(--muted);text-decoration:none;font-size:12px}
+.linkbtn.danger:hover{color:#b84a3a;text-decoration:underline}
 .secondary.danger:hover{border-color:#b84a3a;color:#b84a3a;background:#fbefed}
 .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
 .primary{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0;border-radius:12px;padding:12px 20px;font-weight:800;font-size:14.5px;flex:1 1 200px;letter-spacing:.01em;box-shadow:0 5px 0 var(--accent-dark),0 14px 24px -10px rgba(0,0,0,.4);transition:transform .12s,box-shadow .12s,filter .2s}
@@ -265,7 +259,10 @@ dialog.guide{width:min(96vw,760px)}
 .gsteps li span{font-size:12.5px;color:var(--muted)}
 .gsteps .plus{font-style:normal;display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid #999;font-size:13px;color:#555;vertical-align:middle}
 .gsteps{opacity:.95}
-.gact{border:2px solid var(--accent);border-radius:14px;padding:12px;background:#fff;display:flex;flex-direction:column;gap:8px;box-shadow:0 10px 24px -18px var(--accent)}
+.gdiv{border:0;border-top:1.5px dashed var(--line);margin:4px 0 0}
+.gnote{margin:0;font-size:14px;line-height:1.5}
+.gnote b{color:var(--accent)}
+.gact{display:flex;flex-direction:column;gap:8px}
 .gact-head{font-size:14px;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:2px}
 .gact-head::before{content:"✓";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#3f8f6e,#5fb08d);color:#fff;font-size:12px;flex:none}
 .gact-item{display:flex;gap:10px;align-items:center}
@@ -291,6 +288,15 @@ dialog.guide{width:min(96vw,760px)}
   .gbig{font-size:13px;padding:12px 10px}
   .primary.gbig{font-size:13.5px}
 }
+.float{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(94vw,640px);background:var(--card);border:1.5px solid var(--accent);border-radius:16px;box-shadow:0 20px 40px -16px rgba(0,0,0,.45);padding:10px 12px;display:flex;align-items:center;gap:10px;z-index:60;animation:floatIn .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes floatIn{from{transform:translate(-50%,16px);opacity:0}}
+.float .ok{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3f8f6e,#5fb08d);color:#fff;display:grid;place-items:center;font-size:13px;flex:none}
+.float .ftext{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.float .ftext b{font-size:13.5px}
+.float .ftext span{font-size:12.5px;color:var(--muted)}
+.float .primary.small{flex:none;padding:9px 12px;font-size:13px}
+.float #floatX{border:0;background:none;font-size:16px;color:var(--muted);padding:4px;flex:none}
+@media(max-width:760px){.float{flex-wrap:wrap;bottom:12px;padding-right:40px}.float .ftext{flex:1 1 calc(100% - 40px)}.float .primary.small{flex:1 1 100%}.float #floatX{position:absolute;top:8px;right:8px}}
 /* toast */
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px 10px 12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 16px 30px -12px rgba(0,0,0,.5);transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s;z-index:50}
 .toast.show{transform:translate(-50%,0);opacity:1}
@@ -400,15 +406,12 @@ dialog.guide{width:min(96vw,760px)}
           <div class="actions">
             <button id="copy" class="primary">📋 프롬프트 복사</button>
           </div>
-          <div class="imgstep" id="imgStep">
-            <p class="imgstep-msg" id="imgMsg">예시 이미지도 함께 첨부하면 구성과 색감이 더 비슷합니다.</p>
-            <div class="actions sub">
-              <button id="copyImage" class="secondary">🖼 예시 이미지 복사</button>
-                <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 예시 이미지 저장</a>
-            </div>
+          <div class="actions sub imgbtns">
+            <button id="copyImage" class="secondary">🖼 예시 이미지 복사</button>
+            <a id="refDownload" class="secondary" href="#" download="example.jpg">⬇ 예시 이미지 저장</a>
           </div>
           <div id="status" role="status" aria-live="polite"></div>
-          <div class="actions sub"><button id="reset" class="secondary danger">🗑 전체 지우기</button></div>
+          <div class="actions sub resetrow"><button id="reset" class="linkbtn danger">전체 지우기</button></div>
         </section>
       </div>
     </div>
@@ -418,6 +421,7 @@ dialog.guide{width:min(96vw,760px)}
 <footer class="wrap">쌤플레이 · 입력 내용은 저장되지 않습니다 · 예시: 고3 국어 「구운몽」</footer>
 
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
+<div id="float" class="float" hidden role="status"><span class="ok">✓</span><div class="ftext"><b>프롬프트 복사 완료</b><span>프롬프트를 붙여넣으셨으면, 정확한 생성을 위해 예시 이미지도 넣어 주세요!</span></div><button id="floatImg" class="primary small">🖼 예시 이미지 복사</button><button id="floatX" aria-label="닫기">✕</button></div>
 <dialog id="guide" class="guide" aria-labelledby="gTitle">
   <button id="guideX" class="dx" aria-label="닫기">✕</button>
   <div class="gwrap">
@@ -438,10 +442,10 @@ dialog.guide{width:min(96vw,760px)}
       <li class="s2"><b>2</b><div><strong>예시 이미지도 넣기</strong><span>복사한 이미지를 붙여넣거나, 저장한 파일을 <i class="plus">+</i> 로 첨부.</span></div></li>
       <li class="s3"><b>3</b><div><strong>전송</strong><span>틀린 글자는 "○○를 △△로 고쳐 줘"로 이어서 요청.</span></div></li>
     </ol>
+    <hr class="gdiv">
     <div class="gact">
-      <div class="gact-head">프롬프트 복사 완료 · 예시 이미지도 첨부</div>
-      <div class="gact-item"><b>1</b><button id="gCopyImage" class="primary gbig">🖼 예시 이미지 복사 → ChatGPT에 붙여넣기</button></div>
-      <div class="gact-item"><b>2</b><div class="gact-col"><span class="gact-note">복사가 안 될 때</span><button id="gSave" class="secondary gbig">⬇ 예시 이미지 저장 → <i class="plus">+</i> 로 첨부</button></div></div>
+      <p class="gnote">프롬프트를 붙여넣으셨으면, <b>정확한 생성을 위해 예시 이미지도 넣어 주세요!</b></p>
+      <div class="gact-row"><button id="gCopyImage" class="primary gbig">🖼 예시 이미지 복사</button><button id="gSave" class="secondary gbig">⬇ 예시 이미지 저장</button></div>
       <p class="gstatus" id="gStatus"></p>
       <div class="gact-row"><a id="gOpen" class="secondary gbig" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT 열기 ↗</a><button id="guideClose" class="secondary gbig">닫기</button></div>
     </div>
@@ -635,7 +639,7 @@ function enterWork(key,scroll=true){
   active=key;const s=sample();role=s.role;if(tab!=='all')tab=s.group;
   document.body.classList.toggle('teacher',role==='teacher');
   $('choose').hidden=true;$('work').hidden=false;
-  $('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='예시 이미지도 함께 첨부하면 구성과 색감이 더 비슷합니다.';unlocked=false;setCurrent(2);
+  $('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);
   renderPreview();build();
   if(scroll)window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -804,18 +808,17 @@ $('copy').onclick=async()=>{
   const text=$('output').value;if(!text.trim()){$('status').textContent='복사할 프롬프트가 없어요.';return}
   try{await navigator.clipboard.writeText(text)}
   catch{$('output').focus();$('output').select();let ok=false;try{ok=document.execCommand('copy')}catch{}if(!ok){$('status').textContent='자동 복사가 안 돼요. Ctrl+C로 복사해 주세요.';return}}
-  $('status').textContent='';toast('프롬프트 복사 완료');
+  $('status').textContent='';
   $('step3').classList.add('done');$('step3').classList.remove('current');
-  $('imgStep').classList.remove('done');$('imgStep').classList.add('glow');
-  $('imgMsg').innerHTML='프롬프트 복사 완료. <b>예시 이미지도 함께 첨부하세요.</b>';
-  $('imgStep').scrollIntoView({behavior:'smooth',block:'nearest'});
-  openGuide();
+  showFloat();openGuide();
 };
+let floatTimer;function showFloat(){$('float').hidden=false;clearTimeout(floatTimer);floatTimer=setTimeout(hideFloat,15000)}function hideFloat(){$('float').hidden=true}
+$('floatX').onclick=hideFloat;$('floatImg').onclick=()=>$('copyImage').click();
 function openGuide(){const s=sample();if(!s)return;$('gThumb').src=s.thumb;$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';if(!$('guide').open)$('guide').showModal()}
 $('guideX').onclick=$('guideClose').onclick=()=>$('guide').close();
 $('guide').onclick=e=>{if(e.target===$('guide'))$('guide').close()};
 $('gCopyImage').onclick=()=>$('copyImage').click();$('gSave').onclick=()=>$('refDownload').click();
-function imgDone(msg){$('imgStep').classList.remove('glow');$('imgStep').classList.add('done');$('imgMsg').innerHTML=msg;$('gStatus').textContent=msg.replace(/<[^>]+>/g,'')}
+function imgDone(msg){$('status').textContent=msg;$('gStatus').textContent=msg;hideFloat()}
 $('copyImage').onclick=async()=>{
   const s=sample();if(!s)return;
   try{
@@ -826,7 +829,7 @@ $('copyImage').onclick=async()=>{
     $('refDownload').click();imgDone('이 브라우저는 이미지 복사가 안 되어 파일로 저장했습니다. 저장된 파일을 첨부하세요.');
   }
 };
-$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');$('imgStep').classList.remove('glow','done');$('imgMsg').innerHTML='예시 이미지도 함께 첨부하면 구성과 색감이 더 비슷합니다.';unlocked=false;setCurrent(2);build();toast('모두 지웠어요')};
+$('reset').onclick=()=>{['grade','subject','topic','extra'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);build();toast('모두 지웠어요')};
 
 window.addEventListener('pageshow',()=>{syncSubject();renderExamples('topic');renderExamples('extra');if(active)build()});
 renderGallery();setCurrent(1);
