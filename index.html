@@ -20,7 +20,10 @@ button{cursor:pointer}
 .wrap{max-width:1480px;margin:0 auto;padding:0 16px}
 header{padding:14px 0 4px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{font-weight:800;font-size:15px;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.brand{font-weight:800;font-size:15px;letter-spacing:.02em;display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;border-radius:10px;transition:opacity .2s}
+.brand:hover{opacity:.8}
+.brand:hover .logo{transform:rotate(-8deg) scale(1.05)}
+.brand .logo{transition:transform .2s}
 .brand .logo{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:15px;box-shadow:0 6px 14px -6px var(--accent)}
 .brand small{font-weight:500;color:var(--muted);font-size:12px}
 .tagline{margin:0;font-size:13px;color:var(--muted)}
@@ -262,7 +265,7 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 <body>
 <header class="wrap">
   <div class="topbar">
-    <div class="brand"><span class="logo" aria-hidden="true">✎</span>배움의 도구<small>GPT 이미지 프롬프트 생성기</small></div>
+    <a class="brand" id="homeLink" href="#" title="홈으로"><span class="logo" aria-hidden="true">✎</span>배움의 도구<small>GPT 이미지 프롬프트 생성기</small></a>
     <p class="tagline">그림을 고르고 과목·주제만 적으면 프롬프트 완성. 복사해서 ChatGPT에 자료와 함께 붙여넣으세요.</p>
   </div>
 </header>
@@ -543,7 +546,9 @@ function renderPreview(){
     b.onclick=()=>{enterWork(x.key,false)};return b}));
   const act=$('altStrip').querySelector('.alt.active');if(act)act.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
 }
+function goHome(){$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';$('search').value='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
 $('changePick').onclick=()=>{$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
+$('homeLink').onclick=e=>{e.preventDefault();if($('dialog').open)$('dialog').close();goHome()};
 $('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
 const REQUIRED=['grade','subject','topic'];
 function validate(){let ok=true;for(const id of REQUIRED){const bad=!val(id);$(id).closest('.field').classList.toggle('invalid',bad);if(bad)ok=false}$('reqMsg').hidden=ok;return ok}
