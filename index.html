@@ -36,8 +36,7 @@ section.step{position:relative;background:var(--card);border:1px solid var(--lin
 .step-head h2{margin:0;font-size:16px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
 .step-head h2 b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:13px;box-shadow:0 5px 12px -5px var(--accent);transition:transform .3s}
 .step-head .hint{font-size:12px;color:var(--muted)}
-section.step.current{border-color:var(--accent);animation:focusPulse 2s ease-in-out infinite}
-section.step.current .step-head h2 b{animation:bump 2s ease-in-out infinite}
+section.step.current{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring),0 14px 30px -24px rgba(38,62,54,.35)}
 @keyframes focusPulse{0%,100%{box-shadow:0 0 0 3px var(--ring),0 14px 30px -24px rgba(38,62,54,.35)}50%{box-shadow:0 0 0 9px rgba(0,0,0,0),0 14px 30px -24px rgba(38,62,54,.35)}}
 @keyframes bump{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
 section.step.pending{opacity:.62}
@@ -58,11 +57,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .tab .n{font-size:11px;font-weight:600;background:var(--soft);border-radius:999px;padding:1px 7px;color:var(--muted)}
 .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;box-shadow:0 6px 14px -7px var(--accent)}
 .tab.active .n{background:rgba(255,255,255,.25);color:#fff}
-.toolbar{display:flex;gap:8px;align-items:center;margin:0 0 12px}
-.searchwrap{position:relative;flex:1;min-width:0}
-.sicon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.6;pointer-events:none}
-#search{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:0 12px 0 34px;height:38px;background:#fff;font-size:13px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
-#search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--ring)}
+.toolbar{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin:0 0 12px}
 .dd{position:relative;flex:none}
 .ddbtn{height:38px;border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:0 12px;font-size:13px;color:var(--ink);white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .2s}
 .ddbtn:hover{border-color:#c3cdbf}
@@ -177,7 +172,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .imgstep-msg{margin:0 0 8px;font-size:12.5px;color:var(--muted)}
 .imgstep-msg b{color:var(--ink)}
 .imgstep .actions.sub{margin-top:0}
-.imgstep.glow{border-color:var(--accent);background:var(--soft2);animation:focusPulse 1.6s ease-in-out infinite}
+.imgstep.glow{border-color:var(--accent);background:var(--soft2);box-shadow:0 0 0 3px var(--ring)}
 .imgstep.glow .imgstep-msg{color:var(--accent);font-weight:700}
 .imgstep.glow .secondary{border-color:var(--accent);color:var(--accent);font-weight:700;background:#fff}
 .imgstep.done{border-style:solid;border-color:#3f8f6e;background:#eef6f1;animation:none}
@@ -351,11 +346,10 @@ dialog.guide{width:min(96vw,760px)}
     <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 누르면 크게 보기</span></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="용도별 묶음"></div>
     <div class="toolbar">
-      <div class="searchwrap"><span class="sicon" aria-hidden="true">🔍</span><input id="search" type="search" placeholder="검색 (예: 암기, 표, 발문)" aria-label="예시 검색"></div>
       <div class="dd" id="styleDd"><button id="styleBtn" class="ddbtn" aria-haspopup="listbox" aria-expanded="false">스타일 <span id="styleCur">전체</span> <span class="caret">▾</span></button><div class="ddmenu" id="styleMenu" role="listbox" hidden></div></div>
     </div>
     <div id="groups"></div>
-    <p id="noResult" class="hint" hidden>검색 결과가 없어요.</p>
+    <p id="noResult" class="hint" hidden>해당하는 예시가 없어요.</p>
   </section>
 
   <section id="work" hidden aria-label="프롬프트 만들기">
@@ -559,7 +553,7 @@ const GUIDE={
   't-quiz':['수업 직후 확인 문항과 교사용 정답','차시 마무리 형성평가'],
   't-rubric':['평가 요소·수준·배점을 정리한 채점 기준표','서술형·수행평가 채점 기준 안내']
 };
-const GROUPS=[['organize','📘 정리하기'],['understand','💡 이해하기'],['memorize','🧠 암기하기'],['check','✅ 점검하기'],['teacher','🍎 선생님용']];
+const GROUPS=[['teacher','🍎 선생님용'],['organize','📘 정리하기'],['understand','💡 이해하기'],['memorize','🧠 암기하기'],['check','✅ 점검하기']];
 const HAND='크림색 모눈 종이 질감에 검은 펜 손글씨, 노랑·초록·분홍 형광펜 제목, 얇은 테두리, 작은 고전 인물 수채 일러스트';
 const $=id=>document.getElementById(id);
 const isMobile=()=>window.matchMedia('(max-width:1099px),(pointer:coarse)').matches;
@@ -572,7 +566,7 @@ const byKey=k=>samples.find(s=>s.key===k);
 function matches(s){const q=query.trim().toLowerCase();if(!q)return true;const f=info[s.key],g=GUIDE[s.key]||['',''];return (f.name+' '+f.desc+' '+s.tag+' '+s.title+' '+f.shape+' '+g[0]+' '+g[1]).toLowerCase().includes(q)}
 function renderTabs(){
   $('tabs').replaceChildren(...[['all','전체'],...GROUPS].map(([g,label])=>{const b=document.createElement('button');b.className='tab'+(g===tab&&!query.trim()?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',g===tab&&!query.trim());
-    const n=document.createElement('span');n.className='n';n.textContent=g==='all'?samples.length:samples.filter(s=>s.group===g).length;b.append(document.createTextNode(label+' '),n);b.onclick=()=>{tab=g;query='';$('search').value='';renderGallery()};return b}));
+    const n=document.createElement('span');n.className='n';n.textContent=g==='all'?samples.length:samples.filter(s=>s.group===g).length;b.append(document.createTextNode(label+' '),n);b.onclick=()=>{tab=g;query='';renderGallery()};return b}));
   const tagsAll=['전체','손글씨','인포그래픽','표','카드','만화·캐릭터','칠판','수채'].filter(tg=>tg==='전체'||samples.some(s=>s.tag===tg));
   $('styleMenu').replaceChildren(...tagsAll.map(tg=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','option');b.className=tg===styleFilter?'active':'';
     const n=document.createElement('span');n.className='n';n.textContent=tg==='전체'?samples.length:samples.filter(s=>s.tag===tg).length;b.append(document.createTextNode(tg),n);
@@ -606,7 +600,6 @@ function renderGallery(){
   }
   $('noResult').hidden=visibleKeys.length>0;
 }
-$('search').addEventListener('input',()=>{query=$('search').value;renderGallery()});
 function closeMenu(){$('styleMenu').hidden=true;$('styleBtn').setAttribute('aria-expanded','false')}
 $('styleBtn').onclick=e=>{e.stopPropagation();const open=$('styleMenu').hidden;$('styleMenu').hidden=!open;$('styleBtn').setAttribute('aria-expanded',open)};
 document.addEventListener('click',e=>{if(!$('styleDd').contains(e.target))closeMenu()});
@@ -653,7 +646,7 @@ function renderPreview(){
     b.onclick=()=>{enterWork(x.key,false)};return b}));
   const act=$('altStrip').querySelector('.alt.active');if(act)act.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
 }
-function goHome(){$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';$('search').value='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
+function goHome(){$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
 $('changePick').onclick=()=>{$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
 $('homeLink').onclick=e=>{e.preventDefault();if($('dialog').open)$('dialog').close();goHome()};
 $('selImage').onclick=$('selZoom').onclick=()=>openDialog(active);
