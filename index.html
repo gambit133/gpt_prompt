@@ -204,7 +204,7 @@ section.step.done .step-head h2 b::before{font-size:13px}
 footer{color:var(--muted);font-size:11.5px;padding:8px 0 28px;text-align:center}
 
 /* dialog */
-dialog{position:fixed;width:min(97vw,1400px);max-width:97vw;max-height:96vh;max-height:96dvh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:14px 16px 16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+dialog{scrollbar-width:thin;position:fixed;width:min(97vw,1400px);max-width:97vw;max-height:96vh;max-height:96dvh;overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--card);padding:14px 16px 16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
 dialog[open]{animation:dpop .25s cubic-bezier(.2,.8,.2,1)}
 @keyframes dpop{from{opacity:0;transform:translateY(10px) scale(.98)}}
 @keyframes sheet{from{transform:translateY(40px);opacity:0}}
@@ -309,13 +309,16 @@ dialog.guide{width:min(96vw,760px)}
   dialog#dialog:not([open]){display:none}
   dialog#dialog[open]{animation:sheet .3s cubic-bezier(.2,.8,.2,1)}
   dialog#dialog .dx{position:absolute;top:10px;right:10px}
-  .dbody{grid-template-columns:1fr;overflow:auto;flex:1;min-height:0;padding-bottom:12px}
+  .dbody{grid-template-columns:minmax(0,1fr);overflow-y:auto;overflow-x:hidden;flex:1;min-height:0;padding-bottom:calc(96px + env(safe-area-inset-bottom));scrollbar-width:none}
+  .dbody::-webkit-scrollbar{display:none}
   .dside{position:static}
   .dimg{margin-top:36px}
   .dimg img{max-height:none}
   .dnav{top:auto;bottom:12px;transform:none}
-  .dside .dbtns{position:sticky;bottom:0;margin:0 -14px;padding:10px 14px calc(12px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);box-shadow:0 -10px 20px -14px rgba(0,0,0,.35);z-index:3}
+  .dside .dbtns{position:fixed;left:0;right:0;bottom:0;margin:0;padding:10px 14px calc(12px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);box-shadow:0 -10px 20px -14px rgba(0,0,0,.35);z-index:5}
   .dside .counter{order:-1}
+  dialog.guide{scrollbar-width:none}
+  dialog.guide::-webkit-scrollbar{display:none}
 }
 @media(max-width:760px){
   .step-head{align-items:flex-start}
