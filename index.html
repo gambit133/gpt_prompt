@@ -19,9 +19,10 @@ header{padding:18px 0 6px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{font-weight:800;font-size:15px;letter-spacing:.02em}
 .brand small{font-weight:500;color:var(--muted);margin-left:8px;font-size:12px}
-.roles{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px}
-.roles button{border:0;background:transparent;border-radius:9px;padding:8px 16px;font-weight:700;font-size:13px;color:var(--muted)}
-.roles button.active{background:var(--accent);color:var(--accent-ink)}
+.group-label{display:flex;align-items:baseline;gap:8px;margin:12px 0 8px;font-weight:800;font-size:13.5px}
+.group-label:first-of-type{margin-top:4px}
+.group-label small{font-weight:500;color:var(--muted);font-size:12px}
+.group-label.active span{color:var(--accent)}
 .hero{padding:16px 0 10px}
 .hero h1{font-size:clamp(22px,3.4vw,30px);letter-spacing:-.04em;line-height:1.25;margin:0 0 8px}
 .hero p{margin:0;color:var(--muted);font-size:14px;max-width:720px}
@@ -86,20 +87,15 @@ dialog .dcontent{white-space:pre-wrap;font-size:12.5px;color:var(--muted);backgr
   .primary{flex-basis:100%}
 }
 @media(max-width:420px){
-  .roles button{padding:8px 11px;font-size:12px}
   .card .thumb{height:115px}
 }
-@media print{.roles,.actions,.attach,.howto,footer,.step-choose{display:none}.output{min-height:600px}}
+@media print{.actions,.attach,.howto,footer,.step-choose{display:none}.output{min-height:600px}}
 </style>
 </head>
 <body>
 <header class="wrap">
   <div class="topbar">
     <div class="brand">배움의 도구<small>GPT 이미지 프롬프트 생성기</small></div>
-    <div class="roles" role="group" aria-label="사용자 선택">
-      <button id="roleStudent" class="active" aria-pressed="true">🎒 학생</button>
-      <button id="roleTeacher" aria-pressed="false">🍎 선생님</button>
-    </div>
   </div>
   <div class="hero">
     <h1>그림 하나 고르고, 과목·주제만 적으면 끝.</h1>
@@ -111,7 +107,10 @@ dialog .dcontent{white-space:pre-wrap;font-size:12.5px;color:var(--muted);backgr
 <main class="wrap">
   <section class="step step-choose" aria-labelledby="h1">
     <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint" id="galleryHint">그림을 누르면 선택됩니다 · 🔍로 크게 보기</span></div>
-    <div id="gallery" class="gallery"></div>
+    <div class="group-label" id="labelStudent"><span>🎒 학생용</span><small>공부·시험 대비</small></div>
+    <div id="galleryStudent" class="gallery"></div>
+    <div class="group-label" id="labelTeacher"><span>🍎 선생님용</span><small>수업·평가 자료</small></div>
+    <div id="galleryTeacher" class="gallery"></div>
   </section>
 
   <section class="step" aria-labelledby="h2">
@@ -186,8 +185,12 @@ const sample=()=>samples.find(s=>s.key===active);
 const val=id=>$(id).value.trim();
 
 function renderGallery(){
-  const list=samples.filter(s=>s.role===role);
-  $('gallery').replaceChildren(...list.map(s=>{
+  $('labelStudent').classList.toggle('active',role==='student');$('labelTeacher').classList.toggle('active',role==='teacher');
+  for(const r of ['student','teacher'])renderGroup(r,$(r==='student'?'galleryStudent':'galleryTeacher'));
+}
+function renderGroup(r,el){
+  const list=samples.filter(s=>s.role===r);
+  el.replaceChildren(...list.map(s=>{
     const card=document.createElement('div');card.className='card'+(s.key===active?' active':'');
     const pick=document.createElement('button');pick.className='card-pick';pick.style.cssText='all:unset;display:block;cursor:pointer;width:100%';
     pick.setAttribute('aria-pressed',s.key===active);pick.setAttribute('aria-label',info[s.key].name+' 선택');
@@ -195,7 +198,7 @@ function renderGallery(){
     const meta=document.createElement('div');meta.className='meta';
     const t=document.createElement('strong');t.textContent=info[s.key].name;
     const d=document.createElement('p');d.textContent=info[s.key].desc;
-    meta.append(t,d);pick.append(img,meta);pick.onclick=()=>{active=s.key;renderGallery();build();};
+    meta.append(t,d);pick.append(img,meta);pick.onclick=()=>{active=s.key;setRole(s.role);};
     const check=document.createElement('span');check.className='check';check.textContent='✓ 선택됨';
     const zoom=document.createElement('button');zoom.className='zoom';zoom.textContent='🔍 크게';zoom.setAttribute('aria-label',info[s.key].name+' 예시 크게 보기');
     zoom.onclick=e=>{e.stopPropagation();openDialog(s)};
@@ -237,11 +240,9 @@ function build(){
 
 function setRole(r){
   role=r;document.body.classList.toggle('teacher',r==='teacher');
-  $('roleStudent').classList.toggle('active',r==='student');$('roleTeacher').classList.toggle('active',r==='teacher');
-  $('roleStudent').setAttribute('aria-pressed',r==='student');$('roleTeacher').setAttribute('aria-pressed',r==='teacher');
-  active=r==='teacher'?'t-plan':'s-notes';renderGallery();build();
+  if(sample().role!==r)active=r==='teacher'?'t-plan':'s-notes';
+  renderGallery();build();
 }
-$('roleStudent').onclick=()=>setRole('student');$('roleTeacher').onclick=()=>setRole('teacher');
 ['grade','subject','topic','extra'].forEach(id=>$(id).addEventListener('input',build));
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
