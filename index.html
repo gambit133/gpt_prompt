@@ -30,6 +30,9 @@ header{padding:16px 0 8px}
 .brand small{font-weight:500;color:var(--muted);font-size:12.5px}
 .tagline{margin:0;font-size:13px;color:var(--muted)}
 .tagline b{color:var(--accent);font-weight:700}
+.aboutlink{margin-left:10px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;background:var(--card)}
+.aboutlink:hover{border-color:var(--accent)}
+@media(max-width:1099px){.tagline{display:flex!important;justify-content:flex-end}.tagline b{display:none}}
 main.wrap{padding-top:12px;padding-bottom:24px}
 
 /* steps */
@@ -396,7 +399,7 @@ dialog.guide{width:min(96vw,640px)}
 <header class="wrap">
   <div class="topbar">
     <a class="brand" id="homeLink" href="#" title="홈으로"><img class="logo" src="assets/logo.svg" alt="" width="34" height="34">쌤플레이<small>AI마당 · 선생님 모여라</small></a>
-    <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b></p>
+    <p class="tagline"><b>학습자료 프롬프트 sample 생성기</b> <a class="aboutlink" href="about.html">사이트 소개 →</a></p>
   </div>
 </header>
 
