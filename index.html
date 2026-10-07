@@ -108,7 +108,11 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .preview-img .zoom:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .preview-what{margin:0;font-size:12.5px;color:var(--muted);padding:0 4px}
 .alts{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
-.alts-label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:7px}
+.alts-label{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:7px;cursor:pointer;list-style:none;user-select:none}
+.alts-label::-webkit-details-marker{display:none}
+.alts-label::before{content:"▸";font-size:11px;transition:transform .2s}
+.alts[open] .alts-label::before{transform:rotate(90deg)}
+.alts:not([open]) .alts-label{margin-bottom:0}
 .alt-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
 .alt{flex:none;width:92px;border:2px solid var(--line);border-radius:9px;overflow:hidden;background:var(--card);padding:0;text-align:center;transition:transform .2s,border-color .2s}
 .alt:hover{transform:translateY(-2px);border-color:#c3cdbf}
@@ -234,34 +238,72 @@ dialog.guide{width:min(96vw,640px)}
 .gcheck{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#3f8f6e,#5fb08d);color:#fff;display:grid;place-items:center;font-size:20px;font-weight:800;flex:none;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
 .ghead h3{margin:0;font-size:17px;letter-spacing:-.02em}
 .ghead .sub{margin:2px 0 0;color:var(--muted);font-size:13px}
-.mock{position:relative;background:#f7f7f8;border:1px solid #e3e3e3;border-radius:14px;padding:10px 12px 46px;font-family:system-ui,sans-serif;color:#222;overflow:hidden}
-.mock-top{display:flex;align-items:center;gap:5px;margin-bottom:8px}
+.mock{position:relative;height:250px;background:#f7f7f8;border:1px solid #e3e3e3;border-radius:14px;overflow:hidden;font-family:system-ui,sans-serif;color:#222;--T:16s}
+.mock .page{position:absolute;inset:0;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.mock .pa{background:var(--paper);animation:pageA var(--T) infinite}
+.mock .pb{background:#f7f7f8;animation:pageB var(--T) infinite}
+@keyframes pageA{0%,12%{opacity:1;transform:translateX(0)}18%,34%{opacity:0;transform:translateX(-18px)}40%,47%{opacity:1;transform:translateX(0)}53%,100%{opacity:0;transform:translateX(-18px)}}
+@keyframes pageB{0%,12%{opacity:0;transform:translateX(18px)}18%,34%{opacity:1;transform:translateX(0)}40%,47%{opacity:0;transform:translateX(18px)}53%,100%{opacity:1;transform:translateX(0)}}
+.mock-top{display:flex;align-items:center;gap:5px}
 .mock-dot{width:9px;height:9px;border-radius:50%;background:#d5d5d5}
 .mock-title{margin-left:6px;font-size:11.5px;color:#777;font-weight:600}
-.mock-chat{min-height:34px;margin-bottom:8px}
-.mock-ai{display:inline-block;background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:6px 10px;font-size:12px;color:#555}
-.mock-input{background:#fff;border:1.5px solid #cfcfcf;border-radius:16px;padding:8px 10px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.mock-attach{display:flex;align-items:center;gap:6px;margin-bottom:6px;height:0;opacity:0;transform:scale(.6);transform-origin:left;animation:gAttach 10s infinite}
-.mock-attach img{width:44px;height:44px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid #ddd}
+.pa-box{background:#fffefa;border:1.5px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}
+.pa-line{height:7px;border-radius:4px;background:#e4e8e0;width:92%}.pa-line.short{width:60%}
+.pa-btn{position:relative;border-radius:9px;padding:8px 10px;font-size:12px;font-weight:700;text-align:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 3px 0 var(--accent-dark)}
+.pa-btn.copy{animation:pressCopy var(--T) infinite}
+.pa-row{display:flex;gap:6px}.pa-row .pa-btn{flex:1;font-size:11px;padding:6px 8px}
+.pa-btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.pa-btn.img{animation:pressImg var(--T) infinite}
+.pa-badge{position:absolute;right:8px;top:50%;transform:translateY(-50%) scale(.5);font-size:10px;background:#fff;color:var(--accent);border-radius:999px;padding:1px 7px;opacity:0}
+.pa-btn.copy .pa-badge{animation:badgeCopy var(--T) infinite}.pa-btn.img .pa-badge{animation:badgeImg var(--T) infinite}
+@keyframes pressCopy{0%,9%,12%,100%{transform:translateY(0);box-shadow:0 3px 0 var(--accent-dark)}9.6%,11%{transform:translateY(3px);box-shadow:0 0 0 var(--accent-dark)}}
+@keyframes badgeCopy{0%,9.6%{opacity:0;transform:translateY(-50%) scale(.5)}10.5%,12.5%{opacity:1;transform:translateY(-50%) scale(1)}13%,100%{opacity:0}}
+@keyframes pressImg{0%,44%,47%,100%{transform:translateY(0);box-shadow:0 3px 0 var(--accent-dark)}44.6%,46%{transform:translateY(3px);box-shadow:0 0 0 var(--accent-dark)}}
+@keyframes badgeImg{0%,44.6%{opacity:0;transform:translateY(-50%) scale(.5)}45.5%,47.5%{opacity:1;transform:translateY(-50%) scale(1)}48%,100%{opacity:0}}
+.mock-chat{flex:1;display:flex;flex-direction:column;gap:6px;min-height:0}
+.mock-ai{align-self:flex-start;background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:5px 10px;font-size:11.5px;color:#555}
+.mock-user{align-self:flex-end;display:flex;align-items:center;gap:6px;background:#e9f1ec;border-radius:12px;padding:4px 8px;font-size:11px;color:#333;opacity:0;animation:userMsg var(--T) infinite}
+.mock-user img{width:22px;height:22px;object-fit:cover;object-position:top;border-radius:5px}
+@keyframes userMsg{0%,65%{opacity:0;transform:translateY(6px)}68%,100%{opacity:1;transform:translateY(0)}}
+.mock-result{align-self:flex-start;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:5px 8px;font-size:11px;color:#555;opacity:0;animation:resultMsg var(--T) infinite}
+.mock-result-img{width:40px;height:40px;border-radius:7px;overflow:hidden;background:#eee;position:relative}
+.mock-result-img img{width:100%;height:100%;object-fit:cover;object-position:top}
+.mock-result-img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);animation:shimmer 1.2s linear infinite}
+@keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+@keyframes resultMsg{0%,72%{opacity:0;transform:translateY(6px)}78%,100%{opacity:1;transform:translateY(0)}}
+.mock-input{background:#fff;border:1.5px solid #cfcfcf;border-radius:16px;padding:7px 10px;box-shadow:0 2px 8px rgba(0,0,0,.05);animation:inputFocus var(--T) infinite}
+@keyframes inputFocus{0%,24%,66%,100%{border-color:#cfcfcf;box-shadow:0 2px 8px rgba(0,0,0,.05)}25%,65%{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}}
+.mock-attach{display:flex;align-items:center;gap:6px;height:0;opacity:0;transform:scale(.6);transform-origin:left;animation:gAttach var(--T) infinite}
+.mock-attach img{width:36px;height:36px;object-fit:cover;object-position:top;border-radius:7px;border:1px solid #ddd}
 .mock-attach-x{font-size:10px;color:#999}
+@keyframes gAttach{0%,53%{height:0;opacity:0;transform:scale(.6);margin-bottom:0}55%,65%{height:36px;opacity:1;transform:scale(1);margin-bottom:6px}66%,100%{height:0;opacity:0;margin-bottom:0}}
 .mock-line{display:flex;align-items:center;gap:8px}
-.mock-plus{width:26px;height:26px;border-radius:50%;border:1.5px solid #cfcfcf;display:grid;place-items:center;font-size:16px;color:#555;flex:none;animation:gPlus 10s infinite}
-.mock-text{flex:1;min-width:0;font-size:12.5px;line-height:1.4;height:36px;overflow:hidden;position:relative;display:flex;align-items:center}
-.typed{display:inline-block;white-space:nowrap;overflow:hidden;max-width:0;animation:gType 10s infinite;vertical-align:middle}
-.caret{display:inline-block;width:2px;height:16px;background:#333;margin-left:2px;animation:gCaret .8s steps(1) infinite}
-.mock-send{width:28px;height:28px;border-radius:50%;background:#222;color:#fff;display:grid;place-items:center;font-size:15px;flex:none;animation:gSend 10s infinite}
-.mock-label{position:absolute;left:12px;bottom:12px;font-size:12.5px;font-weight:700;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 11px;opacity:0;animation:gLabel 10s infinite}
-.mock-label.l2{animation-delay:3.4s}.mock-label.l3{animation-delay:6.8s}
-@keyframes gType{0%,4%{max-width:0}30%,100%{max-width:100%}}
+.mock-plus{width:24px;height:24px;border-radius:50%;border:1.5px solid #cfcfcf;display:grid;place-items:center;font-size:15px;color:#555;flex:none}
+.mock-text{flex:1;min-width:0;font-size:12px;line-height:1.4;height:30px;overflow:hidden;display:flex;align-items:center}
+.typed{display:inline-block;white-space:nowrap;overflow:hidden;max-width:0;animation:gType var(--T) infinite;vertical-align:middle}
+.caret{display:inline-block;width:2px;height:15px;background:#333;margin-left:2px;animation:gCaret .8s steps(1) infinite}
+@keyframes gType{0%,25%{max-width:0}34%,65%{max-width:100%}66%,100%{max-width:0}}
 @keyframes gCaret{50%{opacity:0}}
-@keyframes gAttach{0%,36%{height:0;opacity:0;transform:scale(.6)}42%,92%{height:44px;opacity:1;transform:scale(1)}100%{height:0;opacity:0}}
-@keyframes gPlus{0%,34%,46%,100%{box-shadow:none;transform:scale(1)}38%,42%{box-shadow:0 0 0 5px rgba(37,92,71,.25);transform:scale(1.12)}}
-@keyframes gSend{0%,66%,100%{transform:scale(1);background:#222}72%,80%{transform:scale(1.2);background:var(--accent)}}
-@keyframes gLabel{0%,2%{opacity:0;transform:translateY(4px)}5%,32%{opacity:1;transform:translateY(0)}35%,100%{opacity:0}}
+.mock-send{width:26px;height:26px;border-radius:50%;background:#222;color:#fff;display:grid;place-items:center;font-size:14px;flex:none;animation:gSend var(--T) infinite}
+@keyframes gSend{0%,62%,66%,100%{transform:scale(1);background:#222}63%,65%{transform:scale(1.2);background:var(--accent)}}
+.kbd{position:absolute;right:52px;bottom:46px;font-size:11px;font-weight:700;color:#333;background:#fff;border:1px solid #bbb;border-bottom-width:3px;border-radius:6px;padding:2px 7px;opacity:0;animation:kbd var(--T) infinite}
+@keyframes kbd{0%,24%{opacity:0;transform:translateY(4px)}25.5%,30%{opacity:1;transform:translateY(0)}32%,53%{opacity:0}54%,57%{opacity:1;transform:translateY(0)}59%,100%{opacity:0}}
+.cursor{position:absolute;left:72%;top:38%;z-index:5;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));animation:cursorMove var(--T) infinite}
+.cursor .ring{position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;border:2.5px solid var(--accent);opacity:0;transform:scale(.3);animation:cursorClick var(--T) infinite}
+@keyframes cursorMove{0%{left:72%;top:38%}9%,12%{left:50%;top:60%}18%{left:50%;top:60%}24%,34%{left:42%;top:76%}40%{left:42%;top:76%}44%,47%{left:28%;top:84%}53%{left:28%;top:84%}56%{left:50%;top:74%}62%,66%{left:92%;top:76%}72%,100%{left:70%;top:36%}}
+@keyframes cursorClick{0%,9%{opacity:0;transform:scale(.3)}9.6%{opacity:1;transform:scale(.4)}11.5%{opacity:0;transform:scale(1.6)}24%{opacity:0;transform:scale(.3)}24.6%{opacity:1;transform:scale(.4)}26.5%{opacity:0;transform:scale(1.6)}44%{opacity:0;transform:scale(.3)}44.6%{opacity:1;transform:scale(.4)}46.5%{opacity:0;transform:scale(1.6)}62%{opacity:0;transform:scale(.3)}62.6%{opacity:1;transform:scale(.4)}64.5%{opacity:0;transform:scale(1.6)}100%{opacity:0}}
+.mock-label{position:absolute;right:12px;top:8px;font-size:12px;font-weight:700;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 11px;opacity:0;z-index:4}
+.mock-label.l1{animation:lab1 var(--T) infinite}.mock-label.l2{animation:lab2 var(--T) infinite}.mock-label.l3{animation:lab3 var(--T) infinite}.mock-label.l4{animation:lab4 var(--T) infinite}
+@keyframes lab1{0%{opacity:0;transform:translateY(-4px)}2%,12%{opacity:1;transform:translateY(0)}15%,100%{opacity:0}}
+@keyframes lab2{0%,17%{opacity:0;transform:translateY(4px)}20%,33%{opacity:1;transform:translateY(0)}36%,100%{opacity:0}}
+@keyframes lab3{0%,38%{opacity:0;transform:translateY(4px)}41%,57%{opacity:1;transform:translateY(0)}60%,100%{opacity:0}}
+@keyframes lab4{0%,60%{opacity:0;transform:translateY(4px)}63%,96%{opacity:1;transform:translateY(0)}99%,100%{opacity:0}}
 .gsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.gsteps li{display:flex;gap:10px;align-items:flex-start;background:var(--soft2);border:1px solid var(--line);border-radius:12px;padding:7px 10px;animation:gStep 10s infinite}
-.gsteps li.s2{animation-delay:3.4s}.gsteps li.s3{animation-delay:6.8s}
-@keyframes gStep{0%,2%{border-color:var(--line);background:var(--soft2)}5%,32%{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--ring)}35%,100%{border-color:var(--line);background:var(--soft2);box-shadow:none}}
+.gsteps li{display:flex;gap:10px;align-items:flex-start;background:var(--soft2);border:1px solid var(--line);border-radius:12px;padding:7px 10px;animation:st1 16s infinite}
+.gsteps li.s1{animation-name:st1}.gsteps li.s2{animation-name:st2}.gsteps li.s3{animation-name:st3}
+@keyframes st1{0%,17%{border-color:var(--line);background:var(--soft2);box-shadow:none}20%,33%{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--ring)}36%,100%{border-color:var(--line);background:var(--soft2);box-shadow:none}}
+@keyframes st2{0%,38%{border-color:var(--line);background:var(--soft2);box-shadow:none}41%,57%{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--ring)}60%,100%{border-color:var(--line);background:var(--soft2);box-shadow:none}}
+@keyframes st3{0%,60%{border-color:var(--line);background:var(--soft2);box-shadow:none}63%,96%{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--ring)}99%,100%{border-color:var(--line);background:var(--soft2);box-shadow:none}}
 .gsteps li b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;flex:none}
 .gsteps li strong{display:block;font-size:13px}
 .gsteps li span{font-size:12px;color:var(--muted)}
@@ -293,7 +335,7 @@ dialog.guide{width:min(96vw,640px)}
   .gsteps li{padding:8px 10px}
   .gsteps li strong{font-size:13px}
   .gsteps li span{font-size:12px}
-  .mock{padding-bottom:42px}
+  .mock{height:230px}
 }
 .float{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(94vw,640px);background:var(--card);border:1.5px solid var(--accent);border-radius:16px;box-shadow:0 20px 40px -16px rgba(0,0,0,.45);padding:10px 12px;display:flex;align-items:center;gap:10px;z-index:60;animation:floatIn .3s cubic-bezier(.2,.8,.2,1)}
 @keyframes floatIn{from{transform:translate(-50%,16px);opacity:0}}
@@ -373,7 +415,7 @@ dialog.guide{width:min(96vw,640px)}
       <aside class="preview">
         <div class="preview-img"><img id="selImage" alt="선택한 예시"><button id="selZoom" class="zoom">🔍 크게</button></div>
         <p class="preview-what" id="selWhat"></p>
-        <div class="alts"><span class="alts-label">다른 쌤플 더보기</span><div id="altStrip" class="alt-strip"></div></div>
+        <details class="alts" id="alts" open><summary class="alts-label">다른 쌤플 더보기</summary><div id="altStrip" class="alt-strip"></div></details>
       </aside>
 
       <div class="editor" id="editor">
@@ -440,15 +482,26 @@ dialog.guide{width:min(96vw,640px)}
     <div class="ghead"><span class="gcheck">✓</span><div><h3 id="gTitle">프롬프트가 복사됐어요</h3><p class="sub">ChatGPT에 붙여넣는 순서</p></div><button id="howToggle" class="howbtn" aria-expanded="true">사용법 접기</button></div>
     <div id="howto">
     <div class="mock" aria-hidden="true">
-      <div class="mock-top"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-title">ChatGPT</span></div>
-      <div class="mock-chat"><div class="mock-ai">무엇을 도와드릴까요?</div></div>
-      <div class="mock-input">
-        <div class="mock-attach"><img id="gThumb" alt=""><span class="mock-attach-x">✕</span></div>
-        <div class="mock-line"><span class="mock-plus">+</span><div class="mock-text"><span class="typed" id="gTyped">중학교 2학년 과학 '광합성' 한 장 복습 자료 이미지를 만들어 주세요. [예시 이미지 참고] 함께 첨부한…</span><span class="caret"></span></div><span class="mock-send">↑</span></div>
+      <div class="page pa">
+        <div class="mock-top"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-title">쌤플레이</span></div>
+        <div class="pa-box"><div class="pa-line"></div><div class="pa-line short"></div><div class="pa-line"></div></div>
+        <div class="pa-btn copy">📋 프롬프트 복사<span class="pa-badge">복사됨</span></div>
+        <div class="pa-row"><div class="pa-btn img">🖼 예시 이미지 복사<span class="pa-badge">복사됨</span></div><div class="pa-btn ghost">⬇ 예시 이미지 저장</div></div>
       </div>
-      <div class="mock-label l1">① Ctrl+V 로 프롬프트 붙여넣기</div>
-      <div class="mock-label l2">② 예시 이미지 붙여넣기 (Ctrl+V) 또는 + 로 첨부</div>
-      <div class="mock-label l3">③ 전송 → 이미지 생성</div>
+      <div class="page pb">
+        <div class="mock-top"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-title">ChatGPT</span></div>
+        <div class="mock-chat"><div class="mock-ai">무엇을 도와드릴까요?</div><div class="mock-user"><img id="gThumbU" alt=""><span>프롬프트…</span></div><div class="mock-result"><div class="mock-result-img"><img id="gThumbR" alt=""></div><span>완성된 학습 자료 이미지</span></div></div>
+        <div class="mock-input">
+          <div class="mock-attach"><img id="gThumb" alt=""><span class="mock-attach-x">✕</span></div>
+          <div class="mock-line"><span class="mock-plus">+</span><div class="mock-text"><span class="typed" id="gTyped">프롬프트…</span><span class="caret"></span></div><span class="mock-send">↑</span></div>
+        </div>
+        <div class="kbd">Ctrl + V</div>
+      </div>
+      <div class="cursor"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 3l14 8-6 1.5L16 20l-2.5 1-3-7.5L6 18z" fill="#fff" stroke="#222" stroke-width="1.6" stroke-linejoin="round"/></svg><span class="ring"></span></div>
+      <div class="mock-label l1">① 프롬프트 복사</div>
+      <div class="mock-label l2">② ChatGPT 입력창에 붙여넣기 (Ctrl+V)</div>
+      <div class="mock-label l3">③ 예시 이미지 복사 → 붙여넣기</div>
+      <div class="mock-label l4">④ 전송 → 학습 자료 생성</div>
     </div>
     <ol class="gsteps">
       <li class="s1"><b>1</b><div><strong>ChatGPT 입력창에 붙여넣기</strong><span>Ctrl+V(⌘V). 휴대폰은 입력창 길게 눌러 ‘붙여넣기’.</span></div></li>
@@ -461,7 +514,7 @@ dialog.guide{width:min(96vw,640px)}
       <p class="gnote">프롬프트를 붙여넣으셨으면, <b>정확한 생성을 위해 예시 이미지도 넣어 주세요!</b></p>
       <div class="gact-row"><button id="gCopyImage" class="primary gbig">🖼 예시 이미지 복사</button><button id="gSave" class="secondary gbig">⬇ 예시 이미지 저장</button></div>
       <p class="gstatus" id="gStatus"></p>
-      <div class="gact-row"><a id="gOpen" class="secondary gbig" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT 열기 ↗</a><button id="guideClose" class="secondary gbig">닫기</button></div>
+      <div class="gact-row"><a id="gOpen" class="secondary gbig" href="https://chatgpt.com/" target="_blank" rel="noopener" title="프롬프트가 입력된 상태로 열립니다">ChatGPT 열기 (프롬프트 자동 입력) ↗</a><button id="guideClose" class="secondary gbig">닫기</button></div>
       <label class="noshow"><input id="noGuide" type="checkbox">다음부터 이 안내 띄우지 않기 (복사 후 플로팅 안내만 표시)</label>
     </div>
   </div>
@@ -659,7 +712,7 @@ function enterWork(key,scroll=true){
   if(scroll)window.scrollTo({top:0,behavior:'smooth'});
 }
 function renderPreview(){
-  const s=sample(),f=info[s.key];
+  const s=sample(),f=info[s.key];$('alts').open=!isMobile();
   $('selImage').src=s.image;$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
   const alts=samples.filter(x=>x.group===s.group);
   $('altStrip').replaceChildren(...alts.map(x=>{const b=document.createElement('button');b.className='alt'+(x.key===s.key?' active':'');b.title=info[x.key].name;
@@ -870,7 +923,7 @@ let noGuide=false,howOpen=true;try{noGuide=localStorage.getItem('noGuide')==='1'
 function applyHow(){$('howto').hidden=!howOpen;$('howToggle').textContent=howOpen?'사용법 접기':'사용법 보기';$('howToggle').setAttribute('aria-expanded',howOpen)}
 $('howToggle').onclick=()=>{howOpen=!howOpen;try{localStorage.setItem('howOpen',howOpen?'1':'0')}catch{}applyHow()};
 $('noGuide').onchange=()=>{noGuide=$('noGuide').checked;try{localStorage.setItem('noGuide',noGuide?'1':'0')}catch{}};
-function openGuide(){const s=sample();if(!s)return;if(noGuide)return;$('noGuide').checked=noGuide;applyHow();$('gThumb').src=s.thumb;$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';if(!$('guide').open)$('guide').showModal()}
+function openGuide(){const s=sample();if(!s)return;if(noGuide)return;$('noGuide').checked=noGuide;applyHow();$('gThumb').src=s.thumb;$('gThumbU').src=s.thumb;$('gThumbR').src=s.thumb;$('gOpen').href='https://chatgpt.com/?q='+encodeURIComponent($('output').value);$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';if(!$('guide').open)$('guide').showModal()}
 $('guideX').onclick=$('guideClose').onclick=()=>$('guide').close();
 $('guide').onclick=e=>{if(e.target===$('guide'))$('guide').close()};
 $('gCopyImage').onclick=()=>$('copyImage').click();$('gSave').onclick=()=>$('refDownload').click();
