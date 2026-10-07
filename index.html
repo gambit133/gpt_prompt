@@ -44,19 +44,28 @@ section.step.done .step-head h2 b{font-size:0}
 section.step.done .step-head h2 b::before{font-size:13px}
 
 /* gallery */
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 8px}
-.tab{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;margin:2px -16px 8px;padding:2px 16px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;scroll-snap-align:start;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:all .2s}
 .tab:hover{border-color:#c3cdbf;transform:translateY(-1px)}
 .tab .n{font-size:11px;font-weight:600;background:var(--soft);border-radius:999px;padding:1px 7px;color:var(--muted)}
 .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;box-shadow:0 6px 14px -7px var(--accent)}
 .tab.active .n{background:rgba(255,255,255,.25);color:#fff}
-.filterbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
-.chips{display:flex;gap:5px;flex-wrap:wrap;flex:1 1 320px}
-.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:3px 10px;font-size:11.5px;color:var(--muted);transition:all .15s}
-.chip:hover{border-color:var(--accent);color:var(--accent)}
-.chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-#search{flex:0 1 230px;border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;height:34px;background:#fff;font-size:12.5px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
+.toolbar{display:flex;gap:8px;align-items:center;margin:0 0 12px}
+.searchwrap{position:relative;flex:1;min-width:0}
+.sicon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.6;pointer-events:none}
+#search{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:0 12px 0 34px;height:38px;background:#fff;font-size:13px;box-shadow:inset 0 1px 2px rgba(38,62,54,.05);transition:border-color .2s,box-shadow .2s}
 #search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--ring)}
+.dd{position:relative;flex:none}
+.ddbtn{height:38px;border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:0 12px;font-size:13px;color:var(--ink);white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .2s}
+.ddbtn:hover{border-color:#c3cdbf}
+.ddbtn .caret{color:var(--muted);font-size:11px}
+.ddbtn.active{border-color:var(--accent);color:var(--accent);font-weight:700;background:var(--soft2)}
+.ddmenu{position:absolute;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 34px -14px rgba(0,0,0,.4);padding:6px;min-width:180px;z-index:30;display:grid;gap:2px;animation:fade .15s ease}
+.ddmenu button{text-align:left;border:0;background:none;border-radius:8px;padding:9px 11px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--ink)}
+.ddmenu button:hover{background:var(--soft2)}
+.ddmenu button.active{background:var(--soft);color:var(--accent);font-weight:700}
+.ddmenu button .n{font-size:11px;color:var(--muted);font-weight:500}
 .group-label{display:flex;align-items:center;gap:8px;margin:12px 0 8px;font-weight:800;font-size:13px}
 .group-label span{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:999px;padding:3px 11px}
 .group-label .cnt{background:none;color:var(--muted);font-weight:600;font-size:12px;padding:0}
@@ -233,8 +242,12 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
   .dnav{top:auto;bottom:12px;transform:none}
 }
 @media(max-width:760px){
-  .tab{padding:6px 10px;font-size:12px}
-  #search{flex-basis:100%}
+  .step-head{align-items:flex-start}
+  .step-head h2{font-size:15px}
+  .step-choose .step-head .hint{display:none}
+  .tab{padding:6px 11px;font-size:12.5px}
+  .tab .n{display:none}
+  .ddbtn{padding:0 10px}
   .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .card .thumb{height:200px}
   .tune-row{flex-direction:column;gap:4px}
@@ -256,9 +269,12 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 
 <main class="wrap">
   <section class="step step-choose current" id="choose" aria-labelledby="h1">
-    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 그림을 누르면 크게 보고 고를 수 있습니다</span></div>
+    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 그림을 누르면 크게 보기</span></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="용도별 묶음"></div>
-    <div class="filterbar"><div class="chips" id="styleChips" aria-label="스타일 필터"></div><input id="search" type="search" placeholder="검색: 암기, 표, 칠판, 발문…" aria-label="예시 검색"></div>
+    <div class="toolbar">
+      <div class="searchwrap"><span class="sicon" aria-hidden="true">🔍</span><input id="search" type="search" placeholder="검색 (예: 암기, 표, 발문)" aria-label="예시 검색"></div>
+      <div class="dd" id="styleDd"><button id="styleBtn" class="ddbtn" aria-haspopup="listbox" aria-expanded="false">스타일 <span id="styleCur">전체</span> <span class="caret">▾</span></button><div class="ddmenu" id="styleMenu" role="listbox" hidden></div></div>
+    </div>
     <div id="groups"></div>
     <p id="noResult" class="hint" hidden>일치하는 예시가 없습니다.</p>
   </section>
@@ -451,7 +467,10 @@ function renderTabs(){
   $('tabs').replaceChildren(...[['all','전체'],...GROUPS].map(([g,label])=>{const b=document.createElement('button');b.className='tab'+(g===tab&&!query.trim()?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',g===tab&&!query.trim());
     const n=document.createElement('span');n.className='n';n.textContent=g==='all'?samples.length:samples.filter(s=>s.group===g).length;b.append(document.createTextNode(label+' '),n);b.onclick=()=>{tab=g;query='';$('search').value='';renderGallery()};return b}));
   const tagsAll=['전체','손글씨','인포그래픽','표','카드','만화·캐릭터','칠판','수채'].filter(tg=>tg==='전체'||samples.some(s=>s.tag===tg));
-  $('styleChips').replaceChildren(...tagsAll.map(tg=>{const b=document.createElement('button');b.className='chip'+(tg===styleFilter?' active':'');b.textContent=tg;b.setAttribute('aria-pressed',tg===styleFilter);b.onclick=()=>{styleFilter=tg;renderGallery()};return b}));
+  $('styleMenu').replaceChildren(...tagsAll.map(tg=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','option');b.className=tg===styleFilter?'active':'';
+    const n=document.createElement('span');n.className='n';n.textContent=tg==='전체'?samples.length:samples.filter(s=>s.tag===tg).length;b.append(document.createTextNode(tg),n);
+    b.onclick=()=>{styleFilter=tg;closeMenu();renderGallery()};return b}));
+  $('styleCur').textContent=styleFilter;$('styleBtn').classList.toggle('active',styleFilter!=='전체');
 }
 function renderGallery(){
   renderTabs();
@@ -481,6 +500,10 @@ function renderGallery(){
   $('noResult').hidden=visibleKeys.length>0;
 }
 $('search').addEventListener('input',()=>{query=$('search').value;renderGallery()});
+function closeMenu(){$('styleMenu').hidden=true;$('styleBtn').setAttribute('aria-expanded','false')}
+$('styleBtn').onclick=e=>{e.stopPropagation();const open=$('styleMenu').hidden;$('styleMenu').hidden=!open;$('styleBtn').setAttribute('aria-expanded',open)};
+document.addEventListener('click',e=>{if(!$('styleDd').contains(e.target))closeMenu()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
 
 /* ---------- dialog ---------- */
 function openDialog(key){
