@@ -708,7 +708,7 @@ function enterWork(key,scroll=true){
   document.body.classList.toggle('teacher',role==='teacher');
   $('choose').hidden=true;$('work').hidden=false;
   $('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);
-  renderPreview();build();
+  renderPreview();renderExamples('topic');renderExamples('extra');renderExamples('content');refreshPlaceholders();build();
   if(scroll)window.scrollTo({top:0,behavior:'smooth'});
 }
 function renderPreview(){
@@ -731,7 +731,7 @@ function validate(){syncSubject();const missing=[];const req=$('attach').checked
   $('reqMsg').hidden=!missing.length;if(missing.length)$('reqMsg').textContent=missing.join(', ')+(missing.length>1?'을(를)':'을(를)')+' 입력해 주세요.';return !missing.length}
 $('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step2 .field.invalid input,#step2 .field.invalid select,#step2 .field.invalid textarea');if(first){if(isMobile())first.scrollIntoView({behavior:'smooth',block:'center'});else first.focus()}return}
   unlocked=true;setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});if(!isMobile())setTimeout(()=>$('output').focus({preventScroll:true}),400)};
-$('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';if(!isMobile())$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'));renderExamples('topic');renderExamples('extra');renderExamples('content')});
+$('subjectSel').addEventListener('change',()=>{const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';if(!isMobile())$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'));renderExamples('topic');renderExamples('extra');renderExamples('content');refreshPlaceholders()});
 REQUIRED.forEach(id=>$(id).addEventListener('input',()=>{if(val(id))$(id).closest('.field').classList.remove('invalid');if(REQUIRED.every(i=>val(i))&&($('attach').checked||val('content')))$('reqMsg').hidden=true}));
 $('output').addEventListener('focus',()=>setCurrent(3));
 ['grade','subject','topic'].forEach(id=>$(id).addEventListener('input',()=>{setCurrent(2);build()}));
@@ -842,8 +842,24 @@ const POOLS={
 const GENERIC={topic:['단원 핵심 개념 정리','시험 범위 요약','자주 틀리는 개념 비교'],
   extra:['정답·해설은 학생 영역과 분리해서 맨 뒤에 따로 모아 주세요.','문항은 객관식 7개 + 서술형 3개로 구성하고, 서술형에는 채점 포인트를 붙여 주세요.','그림보다 표와 도식 위주로, 삽화는 최소한만 넣어 주세요.','시험에 자주 나오는 개념 5개를 ★ 표시로 강조해 주세요.','쉬운 말로 쓰고, 어려운 용어는 한 줄 뜻풀이를 달아 주세요.','마지막에 「오늘의 확인 질문」 3개를 넣어 주세요.','교과서 서술 순서를 그대로 따라 구성해 주세요.','A4 한 장을 넘지 않도록 내용을 압축해 주세요.','한 장에 다 안 들어가면 2장으로 나누고 각 장에 제목을 붙여 주세요.'],
   content:['핵심 내용: (자료의 중심 내용을 2~3문장으로)','꼭 들어갈 용어·공식·인물: (쉼표로 나열)','시험 포인트·주의점·자주 틀리는 것: (한 줄씩)']};
+const GUIDE_BY_GROUP={
+ organize:['핵심 개념은 굵게, 보조 설명은 작게 구분해 주세요.','표와 도식 위주로 구성하고 문장은 짧게 끊어 주세요.','단원 순서대로 번호를 붙여 배치해 주세요.','한 장에 다 안 들어가면 2장으로 나누고 각 장에 제목을 붙여 주세요.'],
+ understand:['쉬운 말로 풀고 어려운 용어는 한 줄 뜻풀이를 달아 주세요.','일상 예시를 하나씩 곁들여 주세요.','왜 그런지 이유를 단계별로 보여 주세요.','마지막에 「확인 질문」 2개를 넣어 주세요.'],
+ memorize:['카드/항목 수는 10개로 맞춰 주세요.','정답은 학생 영역과 분리해 맨 뒤에 모아 주세요.','외우기 쉽게 핵심어를 형광펜으로 강조해 주세요.','순서가 중요한 내용은 번호를 유지해 주세요.'],
+ check:['문항은 객관식 7개 + 서술형 3개로 구성해 주세요.','정답·해설은 맨 뒤에 따로 모아 주세요.','자주 틀리는 포인트를 ✗ 표시로 보여 주세요.','난이도를 쉬움→어려움 순서로 배치해 주세요.'],
+ teacher:['학생 배부용과 교사용 정답·해설을 분리해 주세요.','수업 시간은 50분 기준으로 배분해 주세요.','성취기준은 (가상 예시)로 표시하고 지어내지 마세요.','모둠 활동과 개별 활동을 구분해 표시해 주세요.']};
+const GUIDE_BY_KEY={
+ 't-plan':['도입 5분·전개 35분·정리 10분으로 배분해 주세요.','핵심 발문과 예상 답변을 짝지어 주세요.'],'t-flow':['도입·전개·정리 각 단계의 교사·학생 활동을 나란히 적어 주세요.'],
+ 't-goals':['학습 목표는 이해·지식·적용 수준으로 3개 만들어 주세요.','목표 문장은 「~할 수 있다」로 끝내 주세요.'],'t-questions':['질문 의도·예상 답변·꼬리 질문을 함께 적어 주세요.'],
+ 't-sheet':['빈칸은 10개 이내, 정답은 교사용에만 넣어 주세요.','서술형 문항에 채점 포인트를 붙여 주세요.'],'t-diagnosis':['선수 개념 3개마다 객관식 문항 1개씩 만들어 주세요.'],
+ 't-quiz':['5문항, 각 20점 배점으로 만들어 주세요.','선다형 3개 + 단답형 2개로 구성해 주세요.'],'t-rubric':['평가 요소 4개, 수준은 상·중·하 3단계로 만들어 주세요.','총점 100점으로 배점을 맞춰 주세요.'],
+ 's-flashcards':['앞면 질문, 뒷면 정답으로 8쌍 만들어 주세요.'],'s-cards':['질문은 한 줄, 정답은 핵심어 위주로 적어 주세요.'],'s-acronym':['두문자 3가지 버전을 만들고 각 글자의 뜻을 적어 주세요.'],
+ 's-questions':['예상문제 10개와 1번 예시·정답을 넣어 주세요.','실제 출제 여부는 단정하지 말아 주세요.'],'s-judgment':['OX 문장 8개, 틀린 문장은 고친 문장을 함께 적어 주세요.'],
+ 's-timeline':['연도는 자료에 있는 것만 쓰고 추측하지 마세요.','원인→사건→결과 순서로 정리해 주세요.'],'s-comparetable':['비교 기준 5개로 표를 만들어 주세요.'],
+ 's-glossary':['용어 8개를 정의·예시·혼동 주의 열로 정리해 주세요.'],'s-formula':['공식마다 적용 조건과 예제를 하나씩 붙여 주세요.'],'s-cornell':['핵심 질문 5개와 요약 3줄로 구성해 주세요.'],
+ 's-socratic':['질문→답변→피드백→힌트 순서로 5단계 만들어 주세요.'],'s-analogy':['비유가 맞지 않는 부분도 함께 적어 주세요.'],'s-misconception':['오개념 8개를 올바른 설명과 짝지어 주세요.']};
 function poolFor(kind){const sub=val('subject');const sp=POOLS[sub];let list=sp?[...sp[kind]]:[];
-  if(kind==='extra')list=[...list,...GENERIC.extra];
+  if(kind==='extra'){const s=sample();const byKey=s?(GUIDE_BY_KEY[s.key]||[]):[];const byGroup=s?(GUIDE_BY_GROUP[s.group]||[]):[];list=[...byKey,...byGroup,...list,...GENERIC.extra]}
   if(!list.length)list=[...GENERIC[kind]];return list}
 function pick(pool,n){const a=[...pool];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
 const TOPIC_CONTENT=[
@@ -890,20 +906,26 @@ function contentExamples(){const topic=val('topic');const hit=TOPIC_CONTENT.filt
 function renderExamples(which){
   const list=which==='topic'?$('topicExList'):which==='extra'?$('extraExList'):$('contentExList');
   const ce=which==='content'?contentExamples():null;const pool=ce?ce.items:poolFor(which);
-  list.replaceChildren(...(ce?pool.slice(0,3):pick(pool,which==='topic'?6:5)).map(txt=>{const b=document.createElement('button');b.type='button';b.textContent=txt;b.onclick=()=>{
+  const chosen=ce?pool.slice(0,3):which==='extra'?[...pool.slice(0,2),...pick(pool.slice(2),3)]:pick(pool,6);
+  list.replaceChildren(...chosen.map(txt=>{const b=document.createElement('button');b.type='button';b.textContent=txt;b.onclick=()=>{
     if(which==='topic'){$('topic').value=txt;$('topic').dispatchEvent(new Event('input'));if(!isMobile())$('topic').focus()}
     else{const el=$(which==='extra'?'extra':'content');const cur=el.value.trim();if(!cur.includes(txt))el.value=cur?cur+'\n'+txt:txt;el.dispatchEvent(new Event('input'));if(!isMobile())el.focus()}
   };return b}));
 }
 document.querySelectorAll('.shuffle').forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();renderExamples(b.dataset.pool)});
+function refreshPlaceholders(){
+  const tp=pick(poolFor('topic'),1)[0]||'단원명 또는 다룰 범위';$('topic').placeholder='예) '+tp;
+  const ex=poolFor('extra');$('extra').placeholder='예) '+[...ex.slice(0,1),...pick(ex.slice(1),2)].join('\n');
+  const ce=contentExamples().items.slice(0,3);$('content').placeholder='예) '+ce.join('\n');
+}
 function applyAttachMode(){
   const attach=$('attach').checked;
   $('contentWrap').hidden=attach;
-  renderExamples('extra');renderExamples('content');
+  renderExamples('extra');renderExamples('content');refreshPlaceholders();
 }
 renderExamples('topic');applyAttachMode();
 $('extra').addEventListener('input',()=>{setCurrent(2);build()});$('content').addEventListener('input',()=>{setCurrent(2);build();if(val('content'))$('contentWrap').classList.remove('invalid')});
-$('topic').addEventListener('input',()=>{if(!$('attach').checked)renderExamples('content')});
+$('topic').addEventListener('input',()=>{renderExamples('content');$('content').placeholder='예) '+contentExamples().items.slice(0,3).join('\n')});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
 $('output').addEventListener('input',()=>{$('length').textContent=$('output').value.length.toLocaleString()+'자'});
