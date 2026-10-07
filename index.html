@@ -57,9 +57,9 @@ section.step.done .step-head h2 b::before{font-size:13px}
 .tab .n{font-size:11px;font-weight:600;background:var(--soft);border-radius:999px;padding:1px 7px;color:var(--muted)}
 .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;box-shadow:0 6px 14px -7px var(--accent)}
 .tab.active .n{background:rgba(255,255,255,.25);color:#fff}
-.toolbar{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin:0 0 12px}
+.headright{display:flex;align-items:center;gap:10px;flex:none}
 .dd{position:relative;flex:none}
-.ddbtn{height:38px;border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:0 12px;font-size:13px;color:var(--ink);white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .2s}
+.ddbtn{height:32px;border:1.5px solid var(--line);border-radius:999px;background:#fff;padding:0 11px;font-size:12.5px;color:var(--ink);white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .2s}
 .ddbtn:hover{border-color:#c3cdbf}
 .ddbtn .caret{width:0;height:0;border-left:4.5px solid transparent;border-right:4.5px solid transparent;border-top:6px solid var(--muted);margin-left:2px}
 .ddbtn.active{border-color:var(--accent);color:var(--accent);font-weight:700;background:var(--soft2)}
@@ -317,9 +317,10 @@ dialog.guide{width:min(96vw,760px)}
 }
 @media(max-width:760px){
   header{padding:18px 0 10px}
-  .step-head{align-items:flex-start}
+  .step-head{align-items:center}
   .step-head h2{font-size:15px}
   .step-choose .step-head .hint{display:none}
+  .step-choose .step-head{margin-bottom:6px}
   .tab{padding:6px 11px;font-size:12.5px}
   .tab .n{display:none}
   .ddbtn{padding:0 10px}
@@ -344,11 +345,11 @@ dialog.guide{width:min(96vw,760px)}
 
 <main class="wrap">
   <section class="step step-choose current" id="choose" aria-labelledby="h1">
-    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2><span class="hint"><b id="countAll"></b>종 · 누르면 크게 보기</span></div>
+    <div class="step-head"><h2 id="h1"><b>1</b>어떤 자료를 만들까요?</h2>
+      <div class="headright"><span class="hint"><b id="countAll"></b>종 · 누르면 크게 보기</span>
+        <div class="dd" id="styleDd"><button id="styleBtn" class="ddbtn" aria-haspopup="listbox" aria-expanded="false">스타일 <span id="styleCur">전체</span> <span class="caret" aria-hidden="true"></span></button><div class="ddmenu" id="styleMenu" role="listbox" hidden></div></div>
+      </div></div>
     <div class="tabs" id="tabs" role="tablist" aria-label="용도별 묶음"></div>
-    <div class="toolbar">
-      <div class="dd" id="styleDd"><button id="styleBtn" class="ddbtn" aria-haspopup="listbox" aria-expanded="false">스타일 <span id="styleCur">전체</span> <span class="caret" aria-hidden="true"></span></button><div class="ddmenu" id="styleMenu" role="listbox" hidden></div></div>
-    </div>
     <div id="groups"></div>
     <p id="noResult" class="hint" hidden>해당하는 예시가 없어요.</p>
   </section>
