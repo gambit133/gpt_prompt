@@ -420,6 +420,7 @@ const GUIDE={
 const GROUPS=[['organize','📘 정리하기'],['understand','💡 이해하기'],['memorize','🧠 암기하기'],['check','✅ 점검하기'],['teacher','🍎 선생님용']];
 const HAND='크림색 모눈 종이 질감에 검은 펜 손글씨, 노랑·초록·분홍 형광펜 제목, 얇은 테두리, 작은 고전 인물 수채 일러스트';
 const $=id=>document.getElementById(id);
+const isMobile=()=>window.matchMedia('(max-width:1099px),(pointer:coarse)').matches;
 let role='student',active=null,tab='all',styleFilter='전체',query='',visibleKeys=[],dialogKey=null;
 const sample=()=>samples.find(s=>s.key===active);
 const val=id=>$(id).value.trim();
