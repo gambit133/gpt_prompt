@@ -594,7 +594,7 @@ dialog.guide{width:min(96vw,640px)}
       <div><span class="badge2" id="dTag"></span><h3 id="dialogTitle"></h3><p class="sub" id="dDesc"></p></div>
       <div class="box"><b>어떤 자료인가요</b><p id="dWhat"></p></div>
       <div class="box"><b>이럴 때 좋아요</b><p id="dWhen"></p></div>
-      <div class="dbtns"><button id="dialogPick" class="primary xl">이 쌤플 사용하기</button><button id="dialogFav" class="secondary" style="margin-top:8px;width:100%;justify-content:center">♡ 찜하기</button></div>
+      <div class="dbtns"><button id="dialogPick" class="primary xl">이 쌤플 사용하기</button></div>
       <div class="counter" id="dCounter"></div>
     </div>
   </div>
@@ -760,7 +760,7 @@ let favs=new Set();try{favs=new Set(JSON.parse(localStorage.getItem('favs')||'[]
 let favOnly=false;
 function saveFavs(){try{localStorage.setItem('favs',JSON.stringify([...favs]))}catch{}$('favCount').textContent=favs.size}
 function toggleFav(key){if(favs.has(key))favs.delete(key);else favs.add(key);saveFavs();renderGallery();if(dialogKey===key)syncDialogFav();toast(favs.has(key)?'찜 목록에 담았어요':'찜을 해제했어요')}
-function syncDialogFav(){const on=favs.has(dialogKey);$('dialogFav').textContent=on?'♥ 찜 해제':'♡ 찜하기'}
+function syncDialogFav(){}
 const sample=()=>samples.find(s=>s.key===active);
 const val=id=>$(id).value.trim();
 const byKey=k=>samples.find(s=>s.key===k);
@@ -824,7 +824,6 @@ $('dialog').addEventListener('keydown',e=>{if(e.key==='ArrowLeft')dialogStep(-1)
 $('dialogX').onclick=()=>$('dialog').close();
 $('dialog').onclick=e=>{if(e.target===$('dialog'))$('dialog').close()};
 $('dialogPick').onclick=()=>{if(!dialogKey)return;$('dialog').close();enterWork(dialogKey)};
-$('dialogFav').onclick=()=>{if(dialogKey)toggleFav(dialogKey)};
 $('favLink').onclick=e=>{e.preventDefault();setMenu(false);favOnly=!favOnly;$('favLink').classList.toggle('active',favOnly);if($('dialog').open)$('dialog').close();$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
 saveFavs();
 
