@@ -228,6 +228,52 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 .dx:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .dside .counter{font-size:11.5px;color:var(--muted);text-align:center}
 
+/* guide dialog */
+dialog.guide{width:min(96vw,760px)}
+.gwrap{display:flex;flex-direction:column;gap:14px;padding-top:4px}
+.ghead{display:flex;gap:12px;align-items:center}
+.gcheck{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#3f8f6e,#5fb08d);color:#fff;display:grid;place-items:center;font-size:20px;font-weight:800;flex:none;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+.ghead h3{margin:0;font-size:19px;letter-spacing:-.02em}
+.ghead .sub{margin:2px 0 0;color:var(--muted);font-size:13px}
+.mock{position:relative;background:#f7f7f8;border:1px solid #e3e3e3;border-radius:14px;padding:10px 12px 46px;font-family:system-ui,sans-serif;color:#222;overflow:hidden}
+.mock-top{display:flex;align-items:center;gap:5px;margin-bottom:8px}
+.mock-dot{width:9px;height:9px;border-radius:50%;background:#d5d5d5}
+.mock-title{margin-left:6px;font-size:11.5px;color:#777;font-weight:600}
+.mock-chat{min-height:34px;margin-bottom:8px}
+.mock-ai{display:inline-block;background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:6px 10px;font-size:12px;color:#555}
+.mock-input{background:#fff;border:1.5px solid #cfcfcf;border-radius:16px;padding:8px 10px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.mock-attach{display:flex;align-items:center;gap:6px;margin-bottom:6px;height:0;opacity:0;transform:scale(.6);transform-origin:left;animation:gAttach 10s infinite}
+.mock-attach img{width:44px;height:44px;object-fit:cover;object-position:top;border-radius:8px;border:1px solid #ddd}
+.mock-attach-x{font-size:10px;color:#999}
+.mock-line{display:flex;align-items:center;gap:8px}
+.mock-plus{width:26px;height:26px;border-radius:50%;border:1.5px solid #cfcfcf;display:grid;place-items:center;font-size:16px;color:#555;flex:none;animation:gPlus 10s infinite}
+.mock-text{flex:1;min-width:0;font-size:12.5px;line-height:1.4;height:36px;overflow:hidden;position:relative;display:flex;align-items:center}
+.typed{display:inline-block;white-space:nowrap;overflow:hidden;max-width:0;animation:gType 10s infinite;vertical-align:middle}
+.caret{display:inline-block;width:2px;height:16px;background:#333;margin-left:2px;animation:gCaret .8s steps(1) infinite}
+.mock-send{width:28px;height:28px;border-radius:50%;background:#222;color:#fff;display:grid;place-items:center;font-size:15px;flex:none;animation:gSend 10s infinite}
+.mock-label{position:absolute;left:12px;bottom:12px;font-size:12.5px;font-weight:700;color:var(--accent);background:var(--soft);border-radius:999px;padding:4px 11px;opacity:0;animation:gLabel 10s infinite}
+.mock-label.l2{animation-delay:3.4s}.mock-label.l3{animation-delay:6.8s}
+@keyframes gType{0%,4%{max-width:0}30%,100%{max-width:100%}}
+@keyframes gCaret{50%{opacity:0}}
+@keyframes gAttach{0%,36%{height:0;opacity:0;transform:scale(.6)}42%,92%{height:44px;opacity:1;transform:scale(1)}100%{height:0;opacity:0}}
+@keyframes gPlus{0%,34%,46%,100%{box-shadow:none;transform:scale(1)}38%,42%{box-shadow:0 0 0 5px rgba(37,92,71,.25);transform:scale(1.12)}}
+@keyframes gSend{0%,66%,100%{transform:scale(1);background:#222}72%,80%{transform:scale(1.2);background:var(--accent)}}
+@keyframes gLabel{0%,2%{opacity:0;transform:translateY(4px)}5%,32%{opacity:1;transform:translateY(0)}35%,100%{opacity:0}}
+.gsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.gsteps li{display:flex;gap:10px;align-items:flex-start;background:var(--soft2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;animation:gStep 10s infinite}
+.gsteps li.s2{animation-delay:3.4s}.gsteps li.s3{animation-delay:6.8s}
+@keyframes gStep{0%,2%{border-color:var(--line);background:var(--soft2)}5%,32%{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--ring)}35%,100%{border-color:var(--line);background:var(--soft2);box-shadow:none}}
+.gsteps li b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;flex:none}
+.gsteps li strong{display:block;font-size:14px}
+.gsteps li span{font-size:12.5px;color:var(--muted)}
+.gsteps .plus{font-style:normal;display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid #999;font-size:13px;color:#555;vertical-align:middle}
+.gbtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.gstatus{margin:6px 0 0;font-size:12.5px;color:var(--accent);font-weight:700}
+.gstatus:empty{display:none}
+.gfoot{display:flex;gap:8px;flex-wrap:wrap}
+.gfoot .primary{text-decoration:none;text-align:center;display:inline-flex;align-items:center;justify-content:center;flex:2 1 200px}
+.gfoot .secondary.big{flex:1 1 120px;justify-content:center;padding:12px 16px;font-size:14px}
+@media(max-width:1099px){dialog.guide{width:100vw}.gfoot .primary{flex-basis:100%}}
 /* toast */
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px 10px 12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 16px 30px -12px rgba(0,0,0,.5);transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s;z-index:50}
 .toast.show{transform:translate(-50%,0);opacity:1}
@@ -351,6 +397,31 @@ dialog::backdrop{background:#152921bb;backdrop-filter:blur(2px)}
 <footer class="wrap">쌤플레이 · 입력 내용은 저장되지 않아요 · 예시는 고3 국어 「구운몽」</footer>
 
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
+<dialog id="guide" class="guide" aria-labelledby="gTitle">
+  <button id="guideX" class="dx" aria-label="닫기">✕</button>
+  <div class="gwrap">
+    <div class="ghead"><span class="gcheck">✓</span><div><h3 id="gTitle">프롬프트가 복사됐어요</h3><p class="sub">ChatGPT에서 이 순서대로 붙여넣으면 끝</p></div></div>
+    <div class="mock" aria-hidden="true">
+      <div class="mock-top"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-title">ChatGPT</span></div>
+      <div class="mock-chat"><div class="mock-ai">무엇을 도와드릴까요?</div></div>
+      <div class="mock-input">
+        <div class="mock-attach"><img id="gThumb" alt=""><span class="mock-attach-x">✕</span></div>
+        <div class="mock-line"><span class="mock-plus">+</span><div class="mock-text"><span class="typed" id="gTyped">중학교 2학년 과학 '광합성' 한 장 복습 자료 이미지를 만들어 주세요. [예시 이미지 참고] 함께 첨부한…</span><span class="caret"></span></div><span class="mock-send">↑</span></div>
+      </div>
+      <div class="mock-label l1">① Ctrl+V 로 프롬프트 붙여넣기</div>
+      <div class="mock-label l2">② 예시 이미지 붙여넣기 (Ctrl+V) 또는 + 로 첨부</div>
+      <div class="mock-label l3">③ 전송 → 이미지 생성</div>
+    </div>
+    <ol class="gsteps">
+      <li class="s1"><b>1</b><div><strong>ChatGPT 입력창에 붙여넣기</strong><span>방금 복사한 프롬프트를 Ctrl+V(⌘V)로 넣어요. 휴대폰은 입력창을 길게 눌러 ‘붙여넣기’.</span></div></li>
+      <li class="s2"><b>2</b><div><strong>예시 이미지도 넣기</strong><span>아래 버튼으로 복사해서 같은 입력창에 붙여넣거나, 저장한 파일을 <i class="plus">+</i> 버튼으로 첨부해요.</span>
+        <div class="gbtns"><button id="gCopyImage" class="secondary accent">🖼 예시 이미지 복사</button><button id="gShare" class="secondary" hidden>📤 공유</button><button id="gSave" class="secondary">⬇ 저장</button></div>
+        <p class="gstatus" id="gStatus"></p></div></li>
+      <li class="s3"><b>3</b><div><strong>전송</strong><span>결과가 나오면 틀린 글자는 "○○를 △△로 고쳐 줘"라고 이어서 요청하면 돼요.</span></div></li>
+    </ol>
+    <div class="gfoot"><a id="gOpen" class="primary" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPT 열기 ↗</a><button id="guideClose" class="secondary big">닫기</button></div>
+  </div>
+</dialog>
 <dialog id="dialog" aria-labelledby="dialogTitle">
   <button id="dialogX" class="dx" aria-label="닫기">✕</button>
   <div class="dbody">
@@ -667,8 +738,13 @@ $('copy').onclick=async()=>{
   $('imgStep').classList.remove('done');$('imgStep').classList.add('glow');
   $('imgMsg').innerHTML='프롬프트 복사 완료. <b>이제 예시 이미지도 ChatGPT에 올려 주세요.</b> 구성과 색감이 더 비슷하게 나와요.';
   $('imgStep').scrollIntoView({behavior:'smooth',block:'nearest'});
+  openGuide();
 };
-function imgDone(msg){$('imgStep').classList.remove('glow');$('imgStep').classList.add('done');$('imgMsg').innerHTML=msg}
+function openGuide(){const s=sample();if(!s)return;$('gThumb').src=s.thumb;$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';$('gShare').hidden=!canShareFiles();if(!$('guide').open)$('guide').showModal()}
+$('guideX').onclick=$('guideClose').onclick=()=>$('guide').close();
+$('guide').onclick=e=>{if(e.target===$('guide'))$('guide').close()};
+$('gCopyImage').onclick=()=>$('copyImage').click();$('gShare').onclick=()=>$('shareImage').click();$('gSave').onclick=()=>$('refDownload').click();
+function imgDone(msg){$('imgStep').classList.remove('glow');$('imgStep').classList.add('done');$('imgMsg').innerHTML=msg;$('gStatus').textContent=msg.replace(/<[^>]+>/g,'')}
 async function imageFile(s){const b=await imageBlob(s.image);return new File([b],s.key+'.png',{type:'image/png'})}
 const canShareFiles=()=>{try{return !!(navigator.canShare&&navigator.canShare({files:[new File([''],'x.png',{type:'image/png'})]}))}catch{return false}};
 $('shareImage').hidden=!canShareFiles();
@@ -680,7 +756,7 @@ $('copyImage').onclick=async()=>{
     await navigator.clipboard.write([new ClipboardItem({'image/png':imageBlob(s.image)})]);
     imgDone('예시 이미지 복사 완료. ChatGPT에 이미지 → 프롬프트 순서로 붙여넣으세요.');toast('예시 이미지 복사 완료');
   }catch(e){
-    if(canShareFiles()){$('imgMsg').innerHTML='이 브라우저는 이미지 복사가 안 돼요. <b>예시 이미지 공유</b>로 ChatGPT에 보내거나 <b>저장</b>해서 올려 주세요.'}
+    if(canShareFiles()){$('imgMsg').innerHTML='이 브라우저는 이미지 복사가 안 돼요. <b>예시 이미지 공유</b>로 ChatGPT에 보내거나 <b>저장</b>해서 올려 주세요.';$('gStatus').textContent='이 브라우저는 이미지 복사가 안 돼요. 공유나 저장을 이용하세요.'}
     else{$('refDownload').click();imgDone('이미지 복사가 안 되는 브라우저라 파일로 저장했어요. 저장된 그림을 ChatGPT에 올려 주세요.')}
   }
 };
