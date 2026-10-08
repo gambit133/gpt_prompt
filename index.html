@@ -200,6 +200,10 @@ body.school .field-subject{display:none}
 .switch input:checked+.slider{background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .switch input:checked+.slider::before{transform:translateX(20px)}
 .attach{margin:6px 0 10px;font-size:12px;color:var(--accent-text);font-weight:600;animation:fade .3s ease}
+.autorules{grid-column:1/-1;margin:6px 0 2px;border:1.5px dashed var(--line2);border-radius:10px;background:var(--soft2);padding:8px 12px;font-size:12px;color:var(--muted)}
+.autorules b{color:var(--accent-text);font-size:12.5px}
+.autorules ul{margin:4px 0 0;padding-left:18px;line-height:1.5}
+.autorules[hidden]{display:none}
 .attach-sub{font-weight:400;color:var(--muted);font-size:11.5px}
 .tune{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--soft2);padding:0 12px}
 .tune summary{cursor:pointer;font-weight:700;font-size:13px;padding:9px 0;list-style:none;display:flex;align-items:center;gap:8px}
@@ -525,7 +529,7 @@ dialog.guide{width:min(96vw,640px)}
               <details class="exbox" id="contentEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="content">🎲 다른 예시</button></summary><div class="examples" id="contentExList"></div></details></div>
             <div class="field wide extra-wrap"><label for="extra">추가 가이드라인 <span style="font-weight:400">(선택)</span></label>
               <div class="extra-grid"><textarea id="extra" rows="3" placeholder="예) 범위: 2단원 중 ○○ 소단원만&#10;형식: 정답·해설은 맨 뒤에 따로, 객관식 7개 + 서술형 3개&#10;강조: 자주 틀리는 개념 비교를 표로, 핵심 용어 병기"></textarea></div>
-              <details class="exbox" id="extraEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="extra">🎲 다른 예시</button></summary><div class="examples" id="extraExList"></div></details></div>
+              <details class="exbox" id="extraEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="extra">🎲 다른 예시</button></summary><div class="examples" id="extraExList"></div></details><div class="autorules" id="autoRules" hidden><b>📎 자료 첨부를 켜면 프롬프트에 자동으로 들어가는 지침</b><ul id="autoRulesList"></ul></div></div>
           </div>
           <details class="tune" id="tune">
             <summary>🎨 세부 조정 <span class="n" id="tuneCount"></span><span class="hint" style="font-weight:400;margin-left:4px">톤·색감·글꼴·삽화·글자량·비율</span></summary>
@@ -954,6 +958,9 @@ function whoToGrade(w){const m=/^(초|중|고)(\d)/.exec(w||'');if(!m)return '';
 function matchTC(t){let best=null,bl=0;for(const e of TOPIC_CONTENT){for(const kw of e.k){if(kw.length>bl&&t.includes(kw)){best=e;bl=kw.length}}}return best}
 function schoolContents(k){const e=SCHOOL_EX[k];if(!e)return [];const c=e.contents;if(Array.isArray(c))return c;const tp=val('topic').trim();return c[tp]||c[e.topics[0]]||[]}
 function josa(w,a,b){const s=String(w||'').replace(/[^가-힣]+$/,'');if(!s)return a+'('+b+')';const c=s.charCodeAt(s.length-1);return ((c-0xAC00)%28)?a:b}
+const ATTACH_HEAD='함께 첨부한 자료(교과서·필기 사진, 학습지, 요약본, PDF, 수업 자료 등)를 먼저 꼼꼼히 읽고 핵심 내용을 뽑아 정리해 주세요.';
+function attachRules(fname){return ['자료에 나온 용어·표기·순서·강조점을 그대로 우선 사용하세요.','자료가 여러 개면 겹치는 내용은 합치고, 자료에 없는 내용을 보충했다면 이미지 밖 답변 글에서 따로 알려 주세요.','글씨가 흐릿하거나 범위가 불분명하면 만들기 전에 먼저 질문해 주세요.',`첨부 자료가 사진·스캔 이미지여도 내용을 읽는 용도입니다. 그 사진의 모양을 따라 그리지 말고, 배치와 구성은 예시 이미지(${fname?"'"+fname+"'":'선택한 쌤플'})를 따르세요.`]}
+function attachSection(fname,contents,demo){return '[첨부 자료 활용]\n'+ATTACH_HEAD+'\n'+attachRules(fname).map(x=>'- '+x).join('\n')+(demo?'\n- 위에 적힌 학습 내용과 첨부 자료가 다르면 첨부 자료를 우선하세요.':'')+(contents.length?'\n- 특히 다음을 꼭 담아 주세요: '+contents.join(' / '):'')}
 function presetList(){const s=sample();if(!s)return [];const out=[];const ex=(GUIDE_BY_KEY[s.key]||[]).slice(0,2);
   if(isAdm(s)){const e=SCHOOL_EX[s.key];if(e){e.topics.forEach(t=>out.push({grade:val('grade')||'초등학교 고학년',sub:'',topic:t,content:Array.isArray(e.contents)?e.contents:(e.contents[t]||[]),extra:ex}))}return out}
   out.push({grade:whoToGrade(s.demoWho||'고3 국어'),sub:s.demoSubject||'국어',topic:s.demoTopic||'구운몽',content:s.content.split(/\n+/).map(x=>x.trim()).filter(Boolean).slice(0,5),extra:ex,demo:true});
@@ -1004,6 +1011,7 @@ function build(){
     if(!s.demoWho&&grade&&!grade.includes('고등학교 3학년'))g=g.replaceAll(' 고3 ',' ');
     g=g.replace('\n\n','\n\n[예시 이미지]\n'+imgUrl+'\n위 주소의 이미지를 열어 보고 그 구성·배치·시각 스타일을 따르세요. 이미지를 직접 첨부했다면 첨부한 것을 우선 참고하세요. 그 밖에 올린 사진·스캔 이미지는 내용 참고용일 뿐이니 그 모양은 따라 하지 마세요.\n\n').replaceAll('첨부한 예시 이미지는','예시 이미지는');
     parts.push(g+'\n\n[제목·바탕]\n바탕은 위에서 아래까지 하나의 고른 색(또는 지정한 종이 질감)으로 채우고, 제목은 그 위에 선명한 단색 글씨로 크고 또렷하게 씁니다. 수채·수묵처럼 퍼지는 표현은 작은 삽화 안에서만 씁니다.');
+    if(attach)parts.push(attachSection(f.name,contents,true));
   }else{
     const tq=/^[「『'"]/.test(topic)?topic:`'${topic}'`;const head=topic
       ? `${who?who+' ':''}${tq}${josa(topic,'을','를')} 주제로, '${f.name}' 형식의 이미지를 만들어 주세요.`
@@ -1015,7 +1023,7 @@ ${topic?`이미지 맨 위 큰 제목은 ${tq}${josa(topic,'으로','로')} 쓰�
     parts.push(`[이미지 역할 구분]\n- 예시 이미지('${f.name}'): 레이아웃·구성·색감·글꼴 느낌만 참고하는 '모양 기준'입니다. 그 안의 글과 내용은 쓰지 마세요.\n- 그 밖에 함께 올린 이미지(교과서·필기 사진, 학습지 스캔 등): 내용을 읽어 오는 '내용 출처'입니다. 그 사진의 배치·디자인·글꼴은 따라 하지 말고, 배치는 예시 이미지를 따르세요.`);
     parts.push(`[결과 형식]\n${f.shape.includes('. ')?f.shape.replace(/\.?$/,'.'):'맨 위에 큰 제목(필요하면 한 줄 부제)을 두고, '+f.shape+'.'} 독립된 한 장의 세로형 고해상도 ${isAdm(s)?'배포·게시용 자료':'학습 자료'}로 완성하고, 내용이 많아 글자가 작아지면 여러 장으로 나누세요.`);
     if(attach){
-      parts.push(`[첨부 자료 활용]\n함께 첨부한 자료(교과서·필기 사진, 학습지, 요약본, PDF, 수업 자료 등)를 먼저 꼼꼼히 읽고 핵심 내용을 뽑아 정리해 주세요.\n- 자료에 나온 용어·표기·순서·강조점을 그대로 우선 사용하세요.\n- 자료가 여러 개면 겹치는 내용은 합치고 빠진 부분은 보충하되, 자료에 없는 내용은 '보충'이라고 표시하세요.\n- 글씨가 흐릿하거나 범위가 불분명하면 만들기 전에 먼저 질문해 주세요.\n- 첨부 자료가 사진·스캔 이미지여도 그것은 내용을 읽는 용도입니다. 그 사진의 모양을 따라 그리지 말고, 배치와 구성은 예시 이미지('${f.name}')를 따르세요.${contents.length?'\n- 특히 다음을 꼭 담아 주세요: '+contents.join(' / '):''}`);
+      parts.push(attachSection(f.name,contents,false));
     }else{
       if(contents.length)parts.push(`[${isAdm(s)?'안내 내용':'학습 내용'}]\n첨부 자료 대신 아래 내용을 근거로 작성해 주세요. ${isAdm(s)?'아래에 없는 항목이 꼭 필요하면 ( )로 비워 두고, 날짜·장소·비용·이름은 지어내지 마세요.':"아래에 없는 내용을 보충했다면 이미지 안에 표시하지 말고 답변 글에서 따로 알려 주시고, 확실하지 않은 사실은 넣지 마세요."}\n${contents.map(x=>'- '+x).join('\n')}`);
       else parts.push(isAdm(s)?`[자료 없음]\n첨부 자료가 없으므로 ${topic?`'${topic}'에 `:''}일반적으로 들어가는 항목을 갖추되, 날짜·장소·비용·연락처·학교명은 ( )와 ○○로 비워 두고 지어내지 마세요.`:`[자료 없음]\n첨부 자료가 없으므로 ${topic?`'${topic}'의 `:''}교과서 수준의 일반적인 내용을 기준으로 작성해 주세요. 자료를 분석했다고 말하지 말고, 확실하지 않은 내용은 넣지 마세요.`);
@@ -1085,7 +1093,7 @@ function refreshPlaceholders(){
 }
 function applyAttachMode(){
   const attach=$('attach').checked;
-  $('contentWrap').hidden=false;$('contentWrap').classList.toggle('opt',attach);
+  $('contentWrap').hidden=false;$('autoRules').hidden=!attach;if(attach){const s1=sample();$('autoRulesList').replaceChildren(...[ATTACH_HEAD,...attachRules(s1&&info[s1.key]?info[s1.key].name:'')].map(x=>{const li=document.createElement('li');li.textContent=x;return li}))}$('contentWrap').classList.toggle('opt',attach);
   const s0=sample(),sch0=!!(s0&&isAdm(s0));$('contentLabel').innerHTML=attach?(sch0?'강조할 내용 <span style="font-weight:400">(선택 · 첨부 자료에서 꼭 넣을 일시·장소·항목)</span>':'강조할 내용 <span style="font-weight:400">(선택 · 첨부 자료에서 꼭 넣을 범위·용어·문항)</span>'):(sch0?'포함할 내용 <i class="req">*</i> <span style="font-weight:400">(일시·장소·준비물 등을 한 줄씩)</span>':'학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span>');
   $('content').placeholder=attach?'예) 2단원 2절 범위만\n용어는 교과서 표기 그대로\n3번 문항은 꼭 포함':$('content').dataset.ph;
   renderExamples('extra');renderExamples('content');refreshPlaceholders();
