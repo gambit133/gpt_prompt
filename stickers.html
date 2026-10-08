@@ -296,7 +296,7 @@ const DISPLAY=124,GAP=26;
 function toast(m,ms=2200){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),ms)}
 function setMenu(o){$('menuList').hidden=!o;$('menuBtn').classList.toggle('open',o);$('menuBtn').setAttribute('aria-expanded',o)}
 $('menuBtn').onclick=e=>{e.stopPropagation();setMenu($('menuList').hidden)};document.addEventListener('click',e=>{if(!e.target.closest('.menu'))setMenu(false)});
-const DESC={capy:'마스코트 카피바라 · 과학·보건·국어·업무',raccoon:'너구리 캐릭터 · 탐정 너구리',kids:'요즘·옛날 교과서 철수와 영희',people:'수채·애니풍 학생과 선생님',animals:'아기 동물 · 크레용 낙서풍 동물',lesson:'학습 목표·활동·발표 등 수업 단계',hands:'손 들기·손가락 숫자',emoji:'표정·반응 이모티콘',callig:'게시판·카드용 손글씨 문구',labels:'학습 목표·강조 라벨·칭찬 배지',buttons:'퀴즈·게임 하이퍼링크 버튼',deco:'말풍선·번호·화살표·밑줄',frames:'글을 써 넣는 빈 템플릿',icons:'수업 도구와 과목 아이콘',lineicons:'통일된 2색 선 아이콘',official:'상장·메달·행사용 그래픽',retro:'추억의 교실 물건'};
+const DESC={capy:'마스코트 카피바라 · 과학·보건·국어·업무',raccoon:'너구리 캐릭터 · 탐정 너구리',kids:'요즘·옛날 교과서 철수와 영희',people:'수채·애니풍 학생과 선생님',animals:'아기 동물 · 크레용 낙서풍 동물',lesson:'학습 목표·활동·발표 등 수업 단계',hands:'손 들기·손가락 숫자',emoji:'표정·반응 이모티콘',callig:'게시판·카드용 손글씨 문구',labels:'학습 목표·강조 라벨·칭찬 배지',buttons:'퀴즈·게임 하이퍼링크 버튼',deco:'말풍선·번호·화살표·밑줄',frames:'글을 써 넣는 빈 템플릿',icons:'수업 도구와 과목 아이콘',lineicons:'통일된 2색 선 아이콘',docicons:'공문·가정통신문·보고서용 선 아이콘',official:'상장·메달·행사용 그래픽',retro:'추억의 교실 물건'};
 const src=(p,it)=>it.src||`${p.dir}/${it.file}`;
 /* ---------- 내 치트키 (IndexedDB) ---------- */
 const MINE={key:'mine',name:'⭐ 내 치트키',dir:'',items:[]};PACKS.unshift(MINE);DESC.mine='내가 모은 그림';

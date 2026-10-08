@@ -51,6 +51,8 @@ EXTRA_SRC['lesson-kit']=["학습 목표", "생각 열기", "활동", "토의·�
 EXTRA_SRC['raccoon']=["인사", "엄지 척", "처리 완료!", "안심하라구!", "박수", "고민", "아이디어", "책 읽기", "필기", "응원", "하트", "쉬는 중"]
 EXTRA_SRC['raccoon-detective']=["돋보기 수사", "발자국 추적", "수첩 메모", "사건 해결!", "추리 중", "손전등", "단서 발견", "유레카", "지도 보기", "사건 파일", "살금살금", "엄지 척"]
 EXTRA_SRC['crayon-animals']=["멍멍이", "야옹이", "토끼", "곰", "돼지", "병아리", "개구리", "코끼리", "펭귄", "오리", "다람쥐", "강아지 엉덩이"]
+EXTRA_SRC['doc-a']=["공지", "일정", "장소", "시간", "문의 전화", "이메일", "대상", "준비물", "신청서", "마감", "안전", "주의", "학교", "학부모", "회의", "예산", "통계", "첨부", "확인", "서명"]
+EXTRA_SRC['doc-b']=["입학", "졸업", "방학", "시험", "급식", "방과후", "상담", "체험학습", "보건", "도서관", "교통안전", "개인정보", "설문", "결과 보고", "시상", "행사", "발표", "봉사", "진로", "돌봄"]
 LABELS = {k: l + EXTRA.get(k, []) for k, n, l in PACKS}
 LABELS.update(EXTRA_SRC)
 # What the page shows: sections > packs, each pack merged from one or more source folders (in order).
@@ -77,6 +79,7 @@ GROUPS = [
         ('lesson', '수업 PPT 아이콘', ['lesson-kit']),
         ('icons', '수업·과목 아이콘', ['icons', 'subjects']),
         ('lineicons', '라인 아이콘', ['lineicons']),
+        ('docicons', '공문·안내문 아이콘', ['doc-a', 'doc-b']),
         ('official', '상장·공식', ['official']),
         ('retro', '옛날 학교 추억', ['retro']),
     ]),
