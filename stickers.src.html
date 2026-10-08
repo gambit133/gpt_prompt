@@ -146,22 +146,29 @@ body.inmine .ctx .mineonly,body:not(.inmine) .ctx .notmine{display:inline-block}
 .tip{margin:2px 4px 24px;font-size:12.5px;color:var(--muted)}
 .bgm{position:fixed;inset:0;z-index:9500;background:rgba(30,22,15,.55);display:grid;place-items:center;padding:16px}
 .bgm[hidden]{display:none}
-.bgbox{background:var(--card);border-radius:20px;width:min(860px,100%);max-height:calc(100dvh - 32px);display:flex;flex-direction:column;gap:10px;padding:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
-.bghead{display:flex;align-items:center;gap:10px}.bghead b{font-size:16px}.bghead .sp,.bgtools .sp{flex:1}
+.bgbox{background:var(--card);border-radius:20px;width:min(1080px,100%);height:min(820px,calc(100dvh - 32px));display:flex;flex-direction:column;gap:8px;padding:12px 14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.bghead{display:flex;align-items:center;gap:10px}.bghead b{font-size:16px}.bghead .sp,.bgopts .sp{flex:1}
 .xbtn{border:0;background:var(--soft2);width:34px;height:34px;border-radius:50%;font-size:15px;cursor:pointer;color:var(--ink)}
-.bgtools{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.bgtools,.bgopts{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
 .seg{display:inline-flex;background:var(--soft2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px}
 .seg button{border:0;background:transparent;font-family:inherit;font-weight:800;font-size:13px;color:var(--muted);padding:7px 11px;border-radius:9px;cursor:pointer;white-space:nowrap}
 .seg button.on{background:var(--ink);color:#fff}
-.gbtn:disabled{opacity:.4;cursor:default}
-.bgstage{position:relative;height:min(60dvh,560px);flex:none;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;display:grid;place-items:center;padding:12px}
-.bgstage canvas{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:block;touch-action:none;cursor:crosshair;image-rendering:auto}
-.bgstage canvas.brush{cursor:none}
-.ring{position:absolute;border:2px solid #fff;outline:1.5px solid rgba(0,0,0,.6);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%)}
-.bghint{margin:0;font-size:12.5px;color:var(--muted);min-height:18px}
-.bgfoot{display:flex;justify-content:flex-end;gap:10px}
+.seg button kbd{font:inherit;font-size:10.5px;opacity:.55;margin-left:4px}
+.ibtn{border:1px solid var(--line);background:var(--card);font-family:inherit;font-weight:800;font-size:13px;color:var(--ink);min-width:34px;height:32px;padding:0 9px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.ibtn:disabled{opacity:.35;cursor:default}.ibtn:not(:disabled):hover{background:var(--soft2)}
+.zoomg{display:inline-flex;align-items:center;gap:4px}.zoomg output{min-width:48px;text-align:center;font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums}
+.bgopts .tol{white-space:nowrap}.bgopts .tol input{width:110px}
+.bgstage{position:relative;flex:1;min-height:0;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+.bgstage canvas{position:absolute;left:0;top:0;display:block;box-shadow:0 0 0 1px rgba(0,0,0,.12);cursor:crosshair}
+.bgstage canvas.px{image-rendering:pixelated}
+.bgstage.hand,.bgstage.hand canvas{cursor:grab}.bgstage.panning,.bgstage.panning canvas{cursor:grabbing}
+.bgstage.brush canvas{cursor:none}
+.ring{position:absolute;border:1.5px solid #fff;outline:1.5px solid rgba(0,0,0,.65);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%)}
+.ring.sq{border-radius:0}
+.bgfoot{display:flex;align-items:center;gap:10px}.bghint{flex:1;margin:0;font-size:12.5px;color:var(--muted);min-width:0}
 body.bgopen{overflow:hidden}
-@media(max-width:700px){.bgm{padding:0}.bgbox{border-radius:0;height:100dvh;max-height:none;width:100%}.bgtools .sp{display:none}.seg button{padding:7px 9px;font-size:12.5px}.bgstage{height:auto;flex:1;min-height:0}.bghead .bgsw button{font-size:0;padding:4px;gap:0}}
+.bgopts [hidden]{display:none!important}
+@media(max-width:700px){.bgm{padding:0}.bgbox{border-radius:0;height:100dvh;width:100%;padding:10px}.bgbox>*{min-width:0}.bgtools{gap:6px}.seg{max-width:100%;overflow-x:auto;scrollbar-width:none}.zoomg{width:100%}.zoomg output{flex:1}.bgopts{gap:6px 10px}.bgfoot .btn{flex:1;justify-content:center}.seg button{padding:7px 9px;font-size:12.5px}.seg button kbd{display:none}.bgopts .tol input{width:80px}.bghead .bgsw button{font-size:0;padding:4px;gap:0}.bgfoot{flex-wrap:wrap}.bghint{flex-basis:100%}.hidem{display:none}}
 .tip.tipmine{display:none;margin-bottom:4px}body.inmine .tip.tipmine{display:block}.tip a{color:var(--accent-text,#b45309);font-weight:800}
 .tip b{color:var(--ink)}
 .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:70;max-width:92vw;text-align:center}
@@ -263,16 +270,20 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
     <span class="bgsw bgsw2" role="group" aria-label="미리보기 배경"><button data-bb="check" class="on" title="투명"><i class="sw sw-check"></i>투명</button><button data-bb="white" title="흰색"><i class="sw sw-white"></i>흰색</button><button data-bb="dark" title="검정"><i class="sw sw-dark"></i>검정</button></span>
     <button class="xbtn" id="bgClose" aria-label="닫기">✕</button></div>
   <div class="bgtools" id="bgTools">
-    <div class="seg" role="group" aria-label="도구"><button data-t="wand">영역 지우기</button><button data-t="erase">지우개</button><button data-t="restore">복원 붓</button></div>
-    <label class="tol"><span id="bgValLbl">강도</span><input type="range" id="bgVal" min="4" max="120"><output id="bgValOut"></output></label>
-    <label class="chk" id="bgAllLbl" title="같은 색이면 떨어져 있어도 지워요 (글자 안쪽 구멍 등)"><input type="checkbox" id="bgAll">떨어진 곳도</label>
+    <div class="seg" role="group" aria-label="도구"><button data-t="wand" title="누른 곳과 이어진 비슷한 색 지우기 (W)">영역 지우기<kbd>W</kbd></button><button data-t="erase" title="문질러 지우기 (E)">지우개<kbd>E</kbd></button><button data-t="pixel" title="한 칸씩 딱딱하게 지우기 (P)">픽셀 지우개<kbd>P</kbd></button><button data-t="restore" title="지운 곳 되살리기 (R)">복원 붓<kbd>R</kbd></button><button data-t="hand" title="화면 옮기기 (H, 스페이스 누른 채 끌기)">이동<kbd>H</kbd></button></div>
+    <span class="zoomg"><button class="ibtn" id="bgZOut" title="축소 (Ctrl -)" aria-label="축소">−</button><output id="bgZv">100%</output><button class="ibtn" id="bgZIn" title="확대 (Ctrl +)" aria-label="확대">＋</button><button class="ibtn" id="bgZFit" title="화면에 맞춤 (0)">맞춤</button><button class="ibtn hidem" id="bgZ1" title="실제 크기 (1)">1:1</button></span>
+  </div>
+  <div class="bgopts" id="bgOpts">
+    <label class="tol" id="optTol" title="높을수록 더 다른 색까지 지워요">강도 <input type="range" id="bgTolR" min="2" max="120"><output id="bgTolV"></output></label>
+    <label class="chk" id="optAll" title="같은 색이면 떨어진 곳(글자 안쪽 구멍 등)도 지워요"><input type="checkbox" id="bgAll">떨어진 같은 색도</label>
+    <label class="tol" id="optSize" title="[ ] 키로도 바꿔요">크기 <input type="range" id="bgSizeR" min="1" max="150"><output id="bgSizeV"></output></label>
+    <label class="tol" id="optSoft" title="가장자리를 얼마나 부드럽게 할지">부드럽기 <input type="range" id="bgSoftR" min="0" max="100"><output id="bgSoftV"></output></label>
     <span class="sp"></span>
-    <button class="gbtn" id="bgUndo">되돌리기</button><button class="gbtn" id="bgReset">원본으로</button>
-    <button class="btn sm" id="bgAI" title="AI가 주인공만 남겨요">✨ AI 자동</button>
+    <button class="ibtn" id="bgUndo" title="되돌리기 (Ctrl Z)">되돌리기</button><button class="ibtn" id="bgRedo" title="다시 하기 (Ctrl Shift Z)">다시</button>
+    <button class="ibtn" id="bgPeek" title="누르고 있는 동안 원본을 보여 줘요">원본 보기</button><button class="ibtn" id="bgReset" title="처음 상태로">원본으로</button>
   </div>
   <div class="bgstage bg-check" id="bgStage"><canvas id="bgCv"></canvas><span class="ring" id="bgRing" hidden></span></div>
-  <p class="bghint" id="bgHint"></p>
-  <div class="bgfoot"><button class="btn" id="bgCancel">취소</button><button class="btn primary" id="bgSave">저장</button></div>
+  <div class="bgfoot"><p class="bghint" id="bgHint"></p><button class="btn" id="bgCancel">취소</button><button class="btn primary" id="bgSave">저장</button></div>
 </div></div>
 <div class="toast" id="toast"></div>
 <script>
@@ -340,59 +351,77 @@ function renameSel(){if(pack!=='mine')return;if(sel.size!==1){toast('이름은 �
     lb.textContent=it.label||'';inp.replaceWith(lb);posCtx();if(ch)toast('이름을 바꿨어요')};
   inp.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();fin(true)}else if(e.key==='Escape')fin(false)});
   inp.addEventListener('blur',()=>fin(true));['pointerdown','mousedown','touchstart','click','dblclick'].forEach(ev=>inp.addEventListener(ev,e=>e.stopPropagation()))}
-// ---- 배경 지우기 편집기 (영역 지우기 · 지우개 · 복원 붓 · AI 자동)
-const BG={open:false,tol:32,size:28};let RM=null;
+// ---- 배경 지우기 편집기: 영역 지우기 · 지우개 · 픽셀 지우개 · 복원 붓 · 이동 · 확대/축소
+const BG={open:false,tol:32,size:24,soft:30,psize:2,tool:'wand',z:1,tx:0,ty:0};
+const HINT={wand:'지울 배경을 누르세요. 누른 곳과 이어진 비슷한 색만 지워져요.',erase:'지울 곳을 문지르세요. 부드럽기를 낮추면 가장자리가 또렷해요.',pixel:'확대한 뒤 한 칸씩 지우세요. 크기는 픽셀 단위예요.',restore:'문지르면 지운 부분이 원본에서 되살아나요.',hand:'끌어서 화면을 옮기세요. 휠·두 손가락으로 확대/축소.'};
 async function imgData(s){const im=new Image();im.src=s;await im.decode();const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(im,0,0);return g.getImageData(0,0,c.width,c.height)}
 function bgSel(){if(pack!=='mine'){toast('⭐ 내 치트키에 담은 그림만 편집할 수 있어요');return}if(sel.size!==1){toast('편집할 그림을 하나만 골라 주세요');return}openBg([...sel][0])}
 async function openBg(k){const it=MINE.items[k];if(!it)return;let cur,base;
   try{cur=await imgData(it.src);base=it.orig?await imgData(it.orig):cur}catch{toast('이미지를 열지 못했어요');return}
   if(base.width!==cur.width||base.height!==cur.height)base=cur;const W=cur.width,H=cur.height,N=W*H;
-  Object.assign(BG,{open:true,it,W,H,rgb:base.data,baseA:new Uint8Array(N),a:new Uint8Array(N),undo:[],drag:null});
+  Object.assign(BG,{open:true,it,W,H,rgb:base.data,baseA:new Uint8Array(N),a:new Uint8Array(N),undo:[],redo:[],peek:false,mode:null});
   for(let i=0;i<N;i++){BG.baseA[i]=base.data[i*4+3];BG.a[i]=cur.data[i*4+3]}
   const cv=$('bgCv');cv.width=W;cv.height=H;BG.g=cv.getContext('2d');BG.img=BG.g.createImageData(W,H);
-  $('bgm').hidden=false;document.body.classList.add('bgopen');bgFit();const ai=$('bgAI');ai.textContent=RM?'✨ AI 자동':'✨ AI 자동';delete ai.dataset.ok;setTool('wand');bgDraw()}
-function bgFit(){if(!BG.open)return;const st=$('bgStage'),cs=getComputedStyle(st),sw=st.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight),sh=st.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
-  const s=Math.min(sw/BG.W,sh/BG.H,4),cv=$('bgCv');cv.style.width=Math.max(1,Math.floor(BG.W*s))+'px';cv.style.height=Math.max(1,Math.floor(BG.H*s))+'px'}
-window.addEventListener('resize',()=>bgFit());
-function closeBg(){BG.open=false;BG.drag=null;$('bgm').hidden=true;document.body.classList.remove('bgopen')}
-function bgDraw(){const d=BG.img.data,r=BG.rgb,a=BG.a;for(let i=0,j=0;i<a.length;i++,j+=4){d[j]=r[j];d[j+1]=r[j+1];d[j+2]=r[j+2];d[j+3]=a[i]}BG.g.putImageData(BG.img,0,0);$('bgUndo').disabled=!BG.undo.length}
+  $('bgm').hidden=false;document.body.classList.add('bgopen');setTool(BG.tool);bgDraw();requestAnimationFrame(bgFit)}
+function closeBg(){BG.open=false;BG.mode=null;$('bgm').hidden=true;document.body.classList.remove('bgopen')}
+function bgDraw(){const d=BG.img.data,r=BG.rgb,a=BG.peek?BG.baseA:BG.a;for(let i=0,j=0;i<a.length;i++,j+=4){d[j]=r[j];d[j+1]=r[j+1];d[j+2]=r[j+2];d[j+3]=a[i]}BG.g.putImageData(BG.img,0,0);$('bgUndo').disabled=!BG.undo.length;$('bgRedo').disabled=!BG.redo.length}
 let bgRaf=0;function bgDrawQ(){if(!bgRaf)bgRaf=requestAnimationFrame(()=>{bgRaf=0;bgDraw()})}
-function bgPush(){BG.undo.push(BG.a.slice());if(BG.undo.length>30)BG.undo.shift()}
-function setTool(t){BG.tool=t;document.querySelectorAll('#bgTools [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));const w=t==='wand',v=$('bgVal');
-  $('bgValLbl').textContent=w?'강도':'크기';v.value=w?BG.tol:BG.size;$('bgValOut').textContent=v.value;$('bgAllLbl').hidden=!w;$('bgCv').classList.toggle('brush',!w);$('bgRing').hidden=true;
-  $('bgHint').textContent=w?'지울 배경을 누르세요. 이어진 비슷한 색이 함께 지워져요.':t==='erase'?'지울 곳을 문지르세요.':'문지르면 지운 부분이 되살아나요.'}
-function bgPt(e){const r=$('bgCv').getBoundingClientRect();return [(e.clientX-r.left)*BG.W/r.width,(e.clientY-r.top)*BG.H/r.height,BG.W/r.width]}
-function wand(fx,fy){const x=fx|0,y=fy|0,W=BG.W,H=BG.H;if(x<0||y<0||x>=W||y>=H)return;const a=BG.a,r=BG.rgb,s=y*W+x;
+function bgPush(){BG.undo.push(BG.a.slice());if(BG.undo.length>40)BG.undo.shift();BG.redo=[]}
+// view: zoom & pan
+function bgView(){const cv=$('bgCv');cv.style.width=BG.W*BG.z+'px';cv.style.height=BG.H*BG.z+'px';cv.style.left=BG.tx+'px';cv.style.top=BG.ty+'px';cv.classList.toggle('px',BG.z>=4);$('bgZv').textContent=Math.round(BG.z*100)+'%'}
+function bgFit(){if(!BG.open)return;const st=$('bgStage'),sw=st.clientWidth,sh=st.clientHeight;BG.z=Math.min(8,Math.max(.05,Math.min(sw/BG.W,sh/BG.H)*.92));BG.tx=(sw-BG.W*BG.z)/2;BG.ty=(sh-BG.H*BG.z)/2;bgView()}
+function bgZoomAt(nz,cx,cy){nz=Math.min(32,Math.max(.05,nz));BG.tx=cx-(cx-BG.tx)*nz/BG.z;BG.ty=cy-(cy-BG.ty)*nz/BG.z;BG.z=nz;bgView()}
+function bgZoomC(f){const st=$('bgStage');bgZoomAt(BG.z*f,st.clientWidth/2,st.clientHeight/2)}
+window.addEventListener('resize',()=>{if(BG.open)bgFit()});
+function stPt(e){const r=$('bgStage').getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]}
+function imPt(e){const [x,y]=stPt(e);return [(x-BG.tx)/BG.z,(y-BG.ty)/BG.z]}
+function setTool(t){BG.tool=t;document.querySelectorAll('#bgTools [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  const show=(id,v)=>{$(id).hidden=!v};show('optTol',t==='wand');show('optAll',t==='wand');show('optSize',t==='erase'||t==='restore'||t==='pixel');show('optSoft',t==='erase'||t==='restore');
+  const s=$('bgSizeR');if(t==='pixel'){s.min=1;s.max=24;s.value=BG.psize}else{s.min=2;s.max=150;s.value=BG.size}$('bgSizeV').textContent=s.value+'px';
+  $('bgTolR').value=BG.tol;$('bgTolV').textContent=BG.tol;$('bgSoftR').value=BG.soft;$('bgSoftV').textContent=BG.soft;
+  const st=$('bgStage');st.classList.toggle('hand',t==='hand');st.classList.toggle('brush',t==='erase'||t==='restore'||t==='pixel');$('bgRing').hidden=true;$('bgHint').textContent=HINT[t]}
+// tools
+function wand(fx,fy){const x=Math.floor(fx),y=Math.floor(fy),W=BG.W,H=BG.H;if(x<0||y<0||x>=W||y>=H)return;const a=BG.a,r=BG.rgb,s=y*W+x;
   if(!a[s]){$('bgHint').textContent='이미 지워진 곳이에요. 남은 배경을 눌러 보세요.';return}
-  bgPush();const tol=BG.tol,t2=tol*tol,soft=(tol*1.6)**2,R=r[s*4],G=r[s*4+1],B=r[s*4+2];let n=0;
-  const hit=i=>{const j=i*4,dr=r[j]-R,dg=r[j+1]-G,db=r[j+2]-B,d=dr*dr+dg*dg+db*db;if(d<=t2){a[i]=0;n++;return true}if(d<=soft)a[i]=Math.min(a[i],Math.round(255*(Math.sqrt(d)-tol)/(tol*.6)));return false};
-  if($('bgAll').checked){for(let i=0;i<a.length;i++)if(a[i])hit(i)}
-  else{const seen=new Uint8Array(W*H),q=new Int32Array(W*H);let h=0,tl=0;seen[s]=1;q[tl++]=s;
-    while(h<tl){const i=q[h++];if(a[i]&&!hit(i))continue;const px=i%W;
+  const old=BG.a.slice(),tol=BG.tol,t2=tol*tol,soft=(tol*1.5)**2,R=r[s*4],G=r[s*4+1],B=r[s*4+2];let n=0;
+  const d2=i=>{const j=i*4,dr=r[j]-R,dg=r[j+1]-G,db=r[j+2]-B;return dr*dr+dg*dg+db*db};
+  const fringe=i=>{const d=d2(i);if(d>t2&&d<=soft)a[i]=Math.min(a[i],Math.round(a[i]*(Math.sqrt(d)-tol)/(tol*.5)))};
+  if($('bgAll').checked){for(let i=0;i<a.length;i++)if(a[i]){if(d2(i)<=t2){a[i]=0;n++}else fringe(i)}}
+  else{// only pixels connected to the click through matching, still-visible pixels
+    const seen=new Uint8Array(W*H),q=new Int32Array(W*H);let h=0,tl=0;seen[s]=1;q[tl++]=s;
+    while(h<tl){const i=q[h++];if(!a[i])continue;if(d2(i)>t2){fringe(i);continue}a[i]=0;n++;const px=i%W;
       if(px>0&&!seen[i-1]){seen[i-1]=1;q[tl++]=i-1}if(px<W-1&&!seen[i+1]){seen[i+1]=1;q[tl++]=i+1}
       if(i>=W&&!seen[i-W]){seen[i-W]=1;q[tl++]=i-W}if(i<W*(H-1)&&!seen[i+W]){seen[i+W]=1;q[tl++]=i+W}}}
-  if(!n)BG.undo.pop();bgDraw()}
-function brush(x0,y0,x1,y1,k){const rad=Math.max(1,BG.size*k/2),W=BG.W,H=BG.H,a=BG.a,ba=BG.baseA,er=BG.tool==='erase',feather=Math.max(1,rad*.3);
-  const steps=Math.max(1,Math.ceil(Math.hypot(x1-x0,y1-y0)/Math.max(1,rad/3)));
-  for(let s=0;s<=steps;s++){const cx=x0+(x1-x0)*s/steps,cy=y0+(y1-y0)*s/steps;
+  if(n){BG.undo.push(old);if(BG.undo.length>40)BG.undo.shift();BG.redo=[]}bgDraw()}
+function paint(x0,y0,x1,y1){const W=BG.W,H=BG.H,a=BG.a,ba=BG.baseA,t=BG.tool;
+  if(t==='pixel'){const s=BG.psize,steps=Math.max(1,Math.ceil(Math.hypot(x1-x0,y1-y0)*2));
+    for(let k=0;k<=steps;k++){const cx=x0+(x1-x0)*k/steps,cy=y0+(y1-y0)*k/steps,xa=Math.floor(cx-s/2+.5),ya=Math.floor(cy-s/2+.5);
+      for(let y=Math.max(0,ya);y<Math.min(H,ya+s);y++)for(let x=Math.max(0,xa);x<Math.min(W,xa+s);x++)a[y*W+x]=0}return}
+  const rad=Math.max(.5,BG.size/2),hard=rad*(1-BG.soft/100),er=t==='erase',steps=Math.max(1,Math.ceil(Math.hypot(x1-x0,y1-y0)/Math.max(.5,rad/4)));
+  for(let k=0;k<=steps;k++){const cx=x0+(x1-x0)*k/steps,cy=y0+(y1-y0)*k/steps;
     const xa=Math.max(0,Math.floor(cx-rad)),xb=Math.min(W-1,Math.ceil(cx+rad)),ya=Math.max(0,Math.floor(cy-rad)),yb=Math.min(H-1,Math.ceil(cy+rad));
-    for(let y=ya;y<=yb;y++)for(let x=xa;x<=xb;x++){const d=Math.hypot(x-cx,y-cy);if(d>rad)continue;const f=Math.min(1,(rad-d)/feather),i=y*W+x;
+    for(let y=ya;y<=yb;y++)for(let x=xa;x<=xb;x++){const d=Math.hypot(x+.5-cx,y+.5-cy);if(d>rad)continue;const f=d<=hard?1:(rad-d)/(rad-hard),i=y*W+x;
       if(er)a[i]=Math.min(a[i],Math.round(a[i]*(1-f)));else a[i]=Math.max(a[i],Math.round(ba[i]*f))}}}
-function ring(e){const g=$('bgRing');if(BG.tool==='wand'||e.pointerType==='touch'){g.hidden=true;return}const sr=$('bgStage').getBoundingClientRect();g.hidden=false;g.style.width=g.style.height=BG.size+'px';g.style.left=(e.clientX-sr.left)+'px';g.style.top=(e.clientY-sr.top)+'px'}
-async function aiRun(){const b=$('bgAI'),hint=$('bgHint');
-  if(!RM&&!b.dataset.ok){b.dataset.ok='1';b.textContent='✨ 내려받고 실행';hint.textContent='AI 모델을 처음 한 번 내려받아요(약 44MB, 와이파이 권장). 한 번 더 누르면 시작해요.';return}
-  b.disabled=true;
-  try{if(!RM){hint.textContent='AI 준비 중…';const T=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1');T.env.allowLocalModels=false;
-      const prog=p=>{if(p.status==='progress'&&p.total>1e6)hint.textContent=`AI 내려받는 중… ${Math.round(p.loaded/p.total*100)}%`};
-      RM={T,seg:await T.pipeline('background-removal','onnx-community/ormbg-ONNX',{dtype:'q8',device:'wasm',progress_callback:prog})}}
-    hint.textContent='AI가 배경을 찾는 중… (10~30초)';await new Promise(r=>setTimeout(r,30));
-    const W=BG.W,H=BG.H,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');const tmp=new ImageData(W,H);
-    for(let i=0,j=0;i<BG.baseA.length;i++,j+=4){const al=BG.baseA[i]/255;tmp.data[j]=BG.rgb[j]*al+255*(1-al);tmp.data[j+1]=BG.rgb[j+1]*al+255*(1-al);tmp.data[j+2]=BG.rgb[j+2]*al+255*(1-al);tmp.data[j+3]=255}
-    g.putImageData(tmp,0,0);const out=(await RM.seg(RM.T.RawImage.fromCanvas(c)))[0];const m=(out.width===W&&out.height===H)?out:await out.resize(W,H);
-    if(!BG.open)return;bgPush();const md=m.data,ch=m.channels;for(let i=0;i<BG.a.length;i++)BG.a[i]=Math.min(BG.baseA[i],md[i*ch+ch-1]);bgDraw();
-    b.textContent='✨ AI 자동';hint.textContent='AI로 지웠어요. 남은 곳은 영역 지우기·지우개로, 지워진 곳은 복원 붓으로 다듬으세요.'}
-  catch(err){console.error(err);RM=null;delete b.dataset.ok;b.textContent='✨ AI 자동';hint.textContent='AI를 실행하지 못했어요. 영역 지우기·지우개를 써 주세요.'}
-  finally{b.disabled=false}}
+function ring(e){const g=$('bgRing'),t=BG.tool;if(!(t==='erase'||t==='restore'||t==='pixel')||e.pointerType==='touch'||BG.mode==='pan'||BG.space){g.hidden=true;return}
+  const [x,y]=stPt(e);const d=(t==='pixel'?BG.psize:BG.size)*BG.z;g.hidden=false;g.classList.toggle('sq',t==='pixel');g.style.width=g.style.height=Math.max(4,d)+'px';g.style.left=x+'px';g.style.top=y+'px'}
+// pointer input: 1 finger/mouse = tool, 2 fingers = pinch zoom + pan, space/middle/이동 = pan
+const PT=new Map();
+function bgDown(e){if(!BG.open)return;e.preventDefault();const st=$('bgStage');st.setPointerCapture(e.pointerId);PT.set(e.pointerId,stPt(e));
+  if(PT.size===2){if(BG.mode==='paint'&&BG.strokeOld){BG.a=BG.strokeOld;BG.undo.pop();bgDraw()}const [p,q]=[...PT.values()];
+    BG.mode='pinch';BG.p0={d:Math.hypot(p[0]-q[0],p[1]-q[1])||1,m:[(p[0]+q[0])/2,(p[1]+q[1])/2],z:BG.z,tx:BG.tx,ty:BG.ty};$('bgRing').hidden=true;return}
+  if(PT.size>2)return;
+  if(BG.tool==='hand'||BG.space||e.button===1){BG.mode='pan';BG.p0={s:stPt(e),tx:BG.tx,ty:BG.ty};st.classList.add('panning');return}
+  if(e.button!==0&&e.pointerType==='mouse')return;const [x,y]=imPt(e);
+  if(BG.tool==='wand'){wand(x,y);return}
+  BG.strokeOld=BG.a.slice();bgPush();BG.mode='paint';BG.last=[x,y];paint(x,y,x,y);bgDraw()}
+function bgMove(e){if(!BG.open)return;ring(e);if(!PT.has(e.pointerId))return;PT.set(e.pointerId,stPt(e));
+  if(BG.mode==='pinch'&&PT.size>=2){const [p,q]=[...PT.values()],P=BG.p0,d=Math.hypot(p[0]-q[0],p[1]-q[1]),m=[(p[0]+q[0])/2,(p[1]+q[1])/2];
+    const nz=Math.min(32,Math.max(.05,P.z*d/P.d)),ix=(P.m[0]-P.tx)/P.z,iy=(P.m[1]-P.ty)/P.z;BG.z=nz;BG.tx=m[0]-ix*nz;BG.ty=m[1]-iy*nz;bgView();return}
+  if(BG.mode==='pan'){const s=stPt(e);BG.tx=BG.p0.tx+s[0]-BG.p0.s[0];BG.ty=BG.p0.ty+s[1]-BG.p0.s[1];bgView();return}
+  if(BG.mode==='paint'){const [x,y]=imPt(e);paint(BG.last[0],BG.last[1],x,y);BG.last=[x,y];bgDrawQ()}}
+function bgUp(e){PT.delete(e.pointerId);if(BG.mode==='pinch'&&PT.size)return;if(BG.mode==='paint'){BG.strokeOld=null;bgDraw()}BG.mode=null;$('bgStage').classList.remove('panning')}
+function bgUndo(){const p=BG.undo.pop();if(p){BG.redo.push(BG.a);BG.a=p;bgDraw()}}
+function bgRedo(){const p=BG.redo.pop();if(p){BG.undo.push(BG.a);BG.a=p;bgDraw()}}
 async function saveBg(){const {W,H,a,rgb,baseA,it}=BG;let x0=W,y0=H,x1=-1,y1=-1;
   for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(a[y*W+x]>8){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
   if(x1<0){toast('전부 지워졌어요. 되돌리기를 눌러 주세요');return}
@@ -405,19 +434,31 @@ async function saveBg(){const {W,H,a,rgb,baseA,it}=BG;let x0=W,y0=H,x1=-1,y1=-1;
   it.src=mk(a);it.orig=mk(baseA);it.w=cw;it.h=chh;
   try{await dbWrite(st=>st.put(it))}catch{Object.assign(it,prev);if(!prev.orig)delete it.orig;if(!prev.pos)delete it.pos;toast('저장하지 못했어요');return}
   closeBg();layout();toast('배경을 지웠어요')}
-(()=>{const cv=$('bgCv');
-  cv.addEventListener('pointerdown',e=>{if(!BG.open)return;e.preventDefault();const [x,y,k]=bgPt(e);if(BG.tool==='wand'){wand(x,y);return}
-    cv.setPointerCapture(e.pointerId);bgPush();BG.drag=[x,y];brush(x,y,x,y,k);bgDraw()});
-  cv.addEventListener('pointermove',e=>{ring(e);if(!BG.drag)return;const [x,y,k]=bgPt(e);brush(BG.drag[0],BG.drag[1],x,y,k);BG.drag=[x,y];bgDrawQ()});
-  ['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{BG.drag=null}));cv.addEventListener('pointerleave',()=>{$('bgRing').hidden=true});
+(()=>{const st=$('bgStage');
+  st.addEventListener('pointerdown',bgDown);st.addEventListener('pointermove',bgMove);['pointerup','pointercancel'].forEach(ev=>st.addEventListener(ev,bgUp));
+  st.addEventListener('pointerleave',()=>{$('bgRing').hidden=true});st.addEventListener('contextmenu',e=>e.preventDefault());
+  st.addEventListener('wheel',e=>{if(!BG.open)return;e.preventDefault();const [x,y]=stPt(e);bgZoomAt(BG.z*Math.exp(-e.deltaY*(e.ctrlKey?.01:.0018)),x,y)},{passive:false});
   document.querySelectorAll('#bgTools [data-t]').forEach(b=>b.onclick=()=>setTool(b.dataset.t));
-  $('bgVal').oninput=e=>{const v=+e.target.value;$('bgValOut').textContent=v;if(BG.tool==='wand')BG.tol=v;else BG.size=v};
-  $('bgUndo').onclick=()=>{const p=BG.undo.pop();if(p){BG.a=p;bgDraw()}};
+  $('bgTolR').oninput=e=>{BG.tol=+e.target.value;$('bgTolV').textContent=BG.tol};
+  $('bgSizeR').oninput=e=>{const v=+e.target.value;if(BG.tool==='pixel')BG.psize=v;else BG.size=v;$('bgSizeV').textContent=v+'px'};
+  $('bgSoftR').oninput=e=>{BG.soft=+e.target.value;$('bgSoftV').textContent=BG.soft};
+  $('bgZIn').onclick=()=>bgZoomC(1.25);$('bgZOut').onclick=()=>bgZoomC(.8);$('bgZFit').onclick=bgFit;$('bgZ1').onclick=()=>bgZoomC(1/BG.z);
+  $('bgUndo').onclick=bgUndo;$('bgRedo').onclick=bgRedo;
+  const peek=v=>{if(BG.peek===v)return;BG.peek=v;bgDraw()};const pk=$('bgPeek');pk.addEventListener('pointerdown',e=>{e.preventDefault();peek(true)});['pointerup','pointerleave','pointercancel'].forEach(ev=>pk.addEventListener(ev,()=>peek(false)));
   $('bgReset').onclick=()=>{bgPush();BG.a=BG.baseA.slice();bgDraw();$('bgHint').textContent='원본으로 되돌렸어요. 되돌리기로 취소할 수 있어요.'};
-  $('bgAI').onclick=aiRun;$('bgSave').onclick=saveBg;$('bgCancel').onclick=$('bgClose').onclick=closeBg;
+  $('bgSave').onclick=saveBg;$('bgCancel').onclick=$('bgClose').onclick=closeBg;
   $('bgm').addEventListener('pointerdown',e=>{if(e.target===$('bgm'))closeBg()});
-  document.querySelectorAll('.bgsw2 button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bgsw2 button').forEach(x=>x.classList.toggle('on',x===b));$('bgStage').className='bgstage bg-'+b.dataset.bb});
-  document.addEventListener('keydown',e=>{if(!BG.open)return;const mod=e.ctrlKey||e.metaKey;if(e.key==='Escape'){e.preventDefault();closeBg()}else if(mod&&e.key.toLowerCase()==='z'){e.preventDefault();$('bgUndo').click()}});
+  document.querySelectorAll('.bgsw2 button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bgsw2 button').forEach(x=>x.classList.toggle('on',x===b));$('bgStage').className='bgstage bg-'+b.dataset.bb;setTool(BG.tool)});
+  const keyTool={w:'wand',e:'erase',p:'pixel',r:'restore',h:'hand'};
+  document.addEventListener('keydown',e=>{if(!BG.open||e.target.matches('input[type=text],textarea'))return;const mod=e.ctrlKey||e.metaKey,k=e.key.toLowerCase();
+    if(e.key==='Escape'){e.preventDefault();closeBg()}
+    else if(mod&&k==='z'){e.preventDefault();e.shiftKey?bgRedo():bgUndo()}else if(mod&&k==='y'){e.preventDefault();bgRedo()}
+    else if(mod&&(k==='='||k==='+')){e.preventDefault();bgZoomC(1.25)}else if(mod&&k==='-'){e.preventDefault();bgZoomC(.8)}
+    else if(mod)return;else if(e.key===' '){e.preventDefault();if(!BG.space){BG.space=true;$('bgStage').classList.add('hand');$('bgRing').hidden=true}}
+    else if(k==='0'){bgFit()}else if(k==='1'){bgZoomC(1/BG.z)}
+    else if(keyTool[k])setTool(keyTool[k]);
+    else if(e.key==='['||e.key===']'){const s=$('bgSizeR');s.value=+s.value+(e.key===']'?1:-1)*(BG.tool==='pixel'?1:Math.max(1,Math.round(+s.value*.15)));s.dispatchEvent(new Event('input'))}});
+  document.addEventListener('keyup',e=>{if(e.key===' '&&BG.space){BG.space=false;$('bgStage').classList.toggle('hand',BG.tool==='hand')}});
   $('bgTip').onclick=e=>{e.preventDefault();bgSel()}})();
 function exportMine(){if(!MINE.items.length){toast('아직 담은 그림이 없어요');return}
   const blob=new Blob([JSON.stringify({app:'saemplay-mine',v:1,at:new Date().toISOString(),items:MINE.items})],{type:'application/json'});
