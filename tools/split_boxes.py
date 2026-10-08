@@ -3,13 +3,15 @@
 Each connected shape goes to the box holding its centre, so touching neighbours are not cut.
 usage: python tools/split_boxes.py sheet.png out_dir "x0,y0,x1,y1;x0,y0,x1,y1;..."
        python tools/split_boxes.py sheet.png out_dir grid:4x3   (even cells, row by row)
+  add --append to number after the files already in out_dir instead of replacing them
 """
 import os, sys
 import numpy as np
 from PIL import Image
 from scipy import ndimage as nd
 
-sheet, out, spec = sys.argv[1:4]
+APPEND = '--append' in sys.argv
+sheet, out, spec = [a for a in sys.argv[1:] if a != '--append'][:3]
 A = np.array(Image.open(sheet).convert('RGBA'))
 if spec.startswith('grid:'):
     C, R = (int(v) for v in spec[5:].split('x')); H, W = A.shape[:2]
@@ -33,8 +35,10 @@ for i, s in enumerate(nd.find_objects(lab)):
         for kk, (a0, b0, a1, b1) in enumerate(boxes):
             sel = (xs >= a0) & (xs < a1) & (ys >= b0) & (ys < b1); pix[ys[sel], xs[sel]] = kk
 os.makedirs(out, exist_ok=True)
-for f in os.listdir(out):
-    if f.endswith('.png'): os.remove(os.path.join(out, f))
+start = len([f for f in os.listdir(out) if f.endswith('.png')]) if APPEND else 0
+if not APPEND:
+    for f in os.listdir(out):
+        if f.endswith('.png'): os.remove(os.path.join(out, f))
 for k in range(len(boxes)):
     m = (pix == k) & (A[:, :, 3] > 8)
     # drop small slivers that touch the box edge (bits of a neighbour), keep inner sparkles
@@ -49,5 +53,5 @@ for k in range(len(boxes)):
     y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
     s = A[y0:y1, x0:x1].copy(); s[~m[y0:y1, x0:x1]] = 0
     o = Image.fromarray(s); o.thumbnail((400, 400))
-    o.quantize(256, Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(os.path.join(out, f'{k + 1:02d}.png'), optimize=True)
+    o.quantize(256, Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(os.path.join(out, f'{start + k + 1:02d}.png'), optimize=True)
 print(out, len(boxes), 'files')
