@@ -129,8 +129,11 @@ body.inmine .btn.mineonly,body:not(.inmine) .btn.notmine{display:inline-flex}
 .board.busy .ctx{display:none}
 .ctx .mineonly,.ctx .notmine{display:none}
 body.inmine .ctx .mineonly,body:not(.inmine) .ctx .notmine{display:inline-block}
-.minepanel{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:10px;border:0;background:transparent;padding:0}
+.minepanel{display:block}
 .morebtn{display:none}.more{display:contents}
+.mbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;border:1.5px dashed var(--line2);border-radius:14px;padding:7px 10px;background:var(--soft2)}
+.mbar .sp{flex:1}.mbar .bk{display:inline-flex;gap:2px}
+.bkline{margin:5px 6px 0;font-size:11.5px;color:var(--muted)}
 .marquee{position:absolute;border:1.5px dashed var(--sel);background:rgba(47,125,225,.1);pointer-events:none;display:none;z-index:30}
 .tip{margin:2px 4px 24px;font-size:12.5px;color:var(--muted)}
 .tip b{color:var(--ink)}
@@ -146,7 +149,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
   .pack .pv{grid-template-columns:repeat(4,1fr)}.pack .pv img:nth-child(n+5){display:none}
   .pack small{display:none}.peek{display:none!important}
 }
-@media(max-width:700px){.minepanel{grid-template-columns:1fr}}
+@media(max-width:700px){.mbar .sp{display:none}.mbar .bk{margin-left:auto}.tol input{width:70px}}
 @media(max-width:560px){
   .packs{display:flex!important;overflow-x:auto;gap:6px;padding:2px 2px 6px;scroll-snap-type:x proximity;scrollbar-width:none}
   .packs::-webkit-scrollbar{display:none}
@@ -203,21 +206,17 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
       </div>
     </div>
     <div class="minepanel" id="minePanel" hidden>
-      <div class="dropzone" id="dropZone">
-        <label class="dz" for="fileIn"><span class="dzi">＋</span><span><b>이미지 추가</b><small>클릭 · 끌어 놓기 · Ctrl+V</small></span></label><input type="file" id="fileIn" accept="image/*" multiple hidden>
-        <div class="dzopt">
-          <label class="chk" title="단색 배경을 투명하게 지워요"><input type="checkbox" id="bgRemove" checked>배경 지우기</label>
-          <label class="tol" title="높을수록 배경과 비슷한 색까지 지워요">배경 제거 강도 <input type="range" id="bgTol" min="10" max="90" value="40"><output id="tolVal">40</output></label>
-        </div>
+      <div class="mbar dropzone" id="dropZone">
+        <label class="btn primary sm" for="fileIn" title="클릭 · 끌어 놓기 · Ctrl+V">＋ 이미지 추가</label><input type="file" id="fileIn" accept="image/*" multiple hidden>
+        <label class="chk" title="단색 배경을 투명하게 지워요"><input type="checkbox" id="bgRemove" checked>배경 지우기</label>
+        <label class="tol" title="높을수록 배경과 비슷한 색까지 지워요">강도 <input type="range" id="bgTol" min="10" max="90" value="40"><output id="tolVal">40</output></label>
+        <span class="sp"></span>
+        <span class="bk"><button class="gbtn" id="exportBtn">백업하기</button><label class="gbtn" for="importIn">불러오기</label><input type="file" id="importIn" accept=".json,application/json" hidden></span>
       </div>
-      <div class="backup">
-        <div class="bkhead"><b>백업</b><span id="backupInfo"></span></div>
-        <div class="bkbtns"><button class="btn sm" id="exportBtn">백업하기</button><label class="btn sm" for="importIn">불러오기</label><input type="file" id="importIn" accept=".json,application/json" hidden></div>
-        <small>이 브라우저에만 저장돼요. 가끔 백업해 두세요.</small>
-      </div>
+      <p class="bkline" id="backupInfo"></p>
     </div>
     <div class="editor">
-    <div class="edhead"><b id="edTitle"></b><span class="edcount" id="edCount"></span><span class="sp"></span><span class="edhint">모서리를 끌면 크기 · 방향키로 이동</span><span class="bgsw" role="group" aria-label="캔버스 배경"><button data-bg="check" class="on" title="투명 배경으로 보기"><i class="sw sw-check"></i>투명</button><button data-bg="white" title="흰 배경으로 보기"><i class="sw sw-white"></i>흰색</button><button data-bg="dark" title="검정 배경으로 보기"><i class="sw sw-dark"></i>검정</button></span></div>
+    <div class="edhead"><b id="edTitle"></b><span class="edcount" id="edCount"></span><span class="sp"></span><span class="bgsw" role="group" aria-label="캔버스 배경"><button data-bg="check" class="on" title="투명 배경으로 보기"><i class="sw sw-check"></i>투명</button><button data-bg="white" title="흰 배경으로 보기"><i class="sw sw-white"></i>흰색</button><button data-bg="dark" title="검정 배경으로 보기"><i class="sw sw-dark"></i>검정</button></span></div>
     <div class="board bg-check" id="board"><div class="marquee" id="marquee"></div>
       <div class="ctx" id="ctx" hidden><button data-a="copy" title="복사">복사</button><button data-a="save" title="PNG 저장">저장</button><button data-a="mine" class="notmine" title="내 치트키에 담기">⭐ 담기</button><button data-a="del" class="mineonly" title="삭제">삭제</button><i></i><button data-a="front" title="맨 앞으로">앞으로</button><button data-a="back" title="맨 뒤로">뒤로</button><button data-a="fit" title="처음 크기로">원래 크기</button></div>
     </div>
@@ -295,8 +294,7 @@ async function importMine(file){try{const j=JSON.parse(await file.text());if(!j|
     const skipped=j.items.length-add.length;if(add.length&&!(await saveNew(add)))return;MINE.items.sort((a,b)=>a.t-b.t);pack='mine';renderTabs();layout();
     toast(add.length+'개 불러옴'+(skipped?` · ${skipped}개는 이미 있거나 제외`:''),3200)}catch{toast('백업 파일을 읽지 못했어요')}}
 function backupInfo(){const el=$('backupInfo');if(!el)return;let at=0;try{at=+localStorage.getItem('mineBackupAt')||0}catch{}
-  if(!MINE.items.length){el.textContent='';el.className='';return}
-  const days=at?Math.floor((Date.now()-at)/864e5):null;el.className=(days===null||days>=7)?'warn':'';el.textContent=days===null?'아직 백업 전이에요.':days===0?'오늘 백업했어요.':`${days}일 전에 백업했어요.`}
+  const p=n=>String(n).padStart(2,'0');const d=new Date(at);el.textContent='마지막 백업: '+(at?`${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`:'없음')}
 
 function showPeek(p,btn){if(innerWidth<=900)return;const pk=$('peek');pk.querySelector('b').textContent=`${p.name} · ${p.items.length}개`;
   pk.querySelector('.g').replaceChildren(...p.items.map(it=>{const im=new Image();im.src=src(p,it);im.alt='';return im}));
@@ -313,14 +311,18 @@ function layout(){
   if(inMine&&!p.items.length){const em=document.createElement('div');em.className='empty';em.innerHTML='<div><b>아직 비어 있어요</b>다른 묶음에서 ⭐ 담기를 누르거나<br>내 이미지를 추가해 보세요</div>';board.append(em);board.style.height='300px';syncSel();return}const W=board.clientWidth;
   const size=W<520?Math.floor((W-GAP*4)/3):DISPLAY;const cols=Math.max(3,Math.floor((W-GAP)/(size+GAP)));
   const ox=Math.max(GAP,(W-cols*(size+GAP)+GAP)/2);
-  items=p.items.map((it,i)=>{const r=Math.min(size/it.w,size/it.h);const w=Math.round(it.w*r),h=Math.round(it.h*r);
-    const cx=ox+(i%cols)*(size+GAP)+(size-w)/2,cy=GAP+Math.floor(i/cols)*(size+GAP)+(size-h)/2;
+  items=p.items.map((it,i)=>{const r=Math.min(size/it.w,size/it.h);let w=Math.round(it.w*r),h=Math.round(it.h*r);
+    let cx=ox+(i%cols)*(size+GAP)+(size-w)/2,cy=GAP+Math.floor(i/cols)*(size+GAP)+(size-h)/2;
+    const w0=w,h0=h;if(inMine&&it.pos){w=Math.max(16,Math.min(it.pos.w,W-8));h=Math.max(16,Math.round(it.pos.h*w/it.pos.w));cx=Math.min(Math.max(0,it.pos.x),W-w);cy=Math.max(0,it.pos.y)}
     const el=document.createElement('div');el.className='item';el.style.cssText=`left:${cx}px;top:${cy}px;width:${w}px;height:${h}px`;el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',(it.label||'스티커 '+(i+1))+' — 끌어서 옮기기, 더블클릭으로 복사');
     const img=new Image();img.src=src(p,it);img.alt='';img.draggable=false;img.decoding='async';const lb=document.createElement('span');lb.className='lb';lb.textContent=it.label||'';el.append(img,lb);['nw','ne','sw','se'].forEach(c=>{const hd=document.createElement('span');hd.className='hd '+c;hd.dataset.h=c;el.append(hd)});board.append(el);
-    return {el,img,x:cx,y:cy,w,h,w0:w,h0:h,url:new URL(src(p,it),location.href).href}});
-  board.style.height=(GAP*2+Math.ceil(p.items.length/cols)*(size+GAP))+'px';syncSel();
+    if(inMine&&it.pos&&it.pos.z)el.style.zIndex=it.pos.z;
+    return {el,img,x:cx,y:cy,w,h,w0,h0,url:new URL(src(p,it),location.href).href}});
+  const gridH=GAP*2+Math.ceil(p.items.length/cols)*(size+GAP);board.style.height=Math.max(gridH,...items.map(o=>o.y+o.h+GAP))+'px';syncSel();
 }
 function place(o){o.el.style.left=o.x+'px';o.el.style.top=o.y+'px';o.el.style.width=o.w+'px';o.el.style.height=o.h+'px'}
+let posT;function savePos(){if(pack!=='mine')return;clearTimeout(posT);posT=setTimeout(async()=>{const ch=[];items.forEach((o,i)=>{const it=MINE.items[i];if(!it)return;it.pos={x:Math.round(o.x),y:Math.round(o.y),w:Math.round(o.w),h:Math.round(o.h),z:+o.el.style.zIndex||0};ch.push(it)});
+  try{await dbWrite(st=>ch.forEach(x=>st.put(x)))}catch{}const need=Math.max(...items.map(o=>o.y+o.h+GAP));if(need>board.clientHeight)board.style.height=need+'px'},250)}
 function posCtx(){const c=$('ctx');if(!sel.size||mode){c.hidden=true;return}const L=[...sel].map(k=>items[k]).filter(Boolean);if(!L.length){c.hidden=true;return}c.hidden=false;const x0=Math.min(...L.map(o=>o.x)),y0=Math.min(...L.map(o=>o.y)),x1=Math.max(...L.map(o=>o.x+o.w)),y1=Math.max(...L.map(o=>o.y+o.h));const W=board.clientWidth,cw=c.offsetWidth,ch=c.offsetHeight;c.style.left=Math.max(6,Math.min(W-cw-6,(x0+x1)/2-cw/2))+'px';c.style.top=(y0-ch-14>4?y0-ch-14:y1+14)+'px'}
 function edHead(){const p=cur();$('edTitle').textContent=p?p.name:'';$('edCount').textContent=(p?p.items.length:0)+'개'}
 function syncSel(){items.forEach((o,i)=>o.el.classList.toggle('sel',sel.has(i)));$('selInfo').textContent=sel.size?sel.size+'개 선택됨':(matchMedia('(pointer:coarse)').matches?'그림을 탭해 고르세요':'클릭하거나 빈 곳을 드래그해 고르세요');$('selInfo').classList.toggle('on',!!sel.size);posCtx();$('copyBtn').disabled=$('saveBtn').disabled=$('addMineBtn').disabled=$('delBtn').disabled=!sel.size}
@@ -343,7 +345,7 @@ board.addEventListener('pointermove',e=>{if(!mode)return;const rect=board.getBou
   if(mode==='move'){board.classList.add('busy');const W=board.clientWidth,H=board.clientHeight;orig.forEach(({k,x,y})=>{const o=items[k];o.x=Math.min(Math.max(-o.w*.5,x+dx),W-o.w*.5);o.y=Math.min(Math.max(-o.h*.5,y+dy),H-o.h*.5);place(o)})}
   else{const x=Math.min(px,start.x),y=Math.min(py,start.y),w=Math.abs(dx),h=Math.abs(dy);marq.style.left=x+'px';marq.style.top=y+'px';marq.style.width=w+'px';marq.style.height=h+'px';
     sel=new Set(base);items.forEach((o,i)=>{if(o.x<x+w&&o.x+o.w>x&&o.y<y+h&&o.y+o.h>y)sel.add(i)});syncSel()}});
-function endPointer(){if(mode==='marquee'){marq.style.display='none';if(!moved&&!base.size){sel.clear();syncSel()}}items.forEach(o=>o.el.classList.remove('dragging'));mode=null;board.classList.remove('busy');posCtx()}
+function endPointer(){if(mode==='marquee'){marq.style.display='none';if(!moved&&!base.size){sel.clear();syncSel()}}items.forEach(o=>o.el.classList.remove('dragging'));const wasEdit=(mode==='move'||mode==='resize')&&moved;mode=null;board.classList.remove('busy');posCtx();if(wasEdit)savePos()}
 board.addEventListener('pointerup',endPointer);board.addEventListener('pointercancel',endPointer);
 board.addEventListener('dblclick',e=>{const el=e.target.closest('.item');if(!el)return;const i=items.findIndex(o=>o.el===el);sel=new Set([i]);syncSel();copySel()});
 const SCALE=2.6;
@@ -365,7 +367,7 @@ async function copySel(){if(!sel.size)return;const idx=[...sel];
   catch{toast('복사가 안 되는 브라우저라 PNG로 저장했어요');saveSel()}}
 async function saveSel(){if(!sel.size)return;const blob=await toBlob(await composeCanvas([...sel]));const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`쌤플레이-PPT치트키-${pack}-${sel.size}개.png`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast('PNG로 저장했어요 · PPT [삽입 → 그림]')}
 $('copyBtn').onclick=copySel;$('saveBtn').onclick=saveSel;
-$('allBtn').onclick=()=>{sel=new Set(items.map((_,i)=>i));syncSel()};$('noneBtn').onclick=()=>{sel.clear();syncSel()};$('resetBtn').onclick=layout;
+$('allBtn').onclick=()=>{sel=new Set(items.map((_,i)=>i));syncSel()};$('noneBtn').onclick=()=>{sel.clear();syncSel()};$('resetBtn').onclick=async()=>{if(pack==='mine'&&MINE.items.some(x=>x.pos)){MINE.items.forEach(x=>delete x.pos);try{await dbWrite(st=>MINE.items.forEach(x=>st.put(x)))}catch{}}layout()};
 document.querySelectorAll('.bgsw button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bgsw button').forEach(x=>x.classList.toggle('on',x===b));board.className='board bg-'+b.dataset.bg;try{localStorage.setItem('stkBg',b.dataset.bg)}catch{}});
 $('whiteBg').onchange=()=>{try{localStorage.setItem('stkWhite',$('whiteBg').checked?'1':'0')}catch{}};
 document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;const mod=e.ctrlKey||e.metaKey;
@@ -377,9 +379,9 @@ try{const sp=localStorage.getItem('stkPack');if(PACKS.some(p=>p.key===sp))pack=s
 let rz;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(!sel.size)layout()},200)});
 $('ctx').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const a=b.dataset.a,L=[...sel];
   if(a==='copy')copySel();else if(a==='save')saveSel();else if(a==='mine')addToMine();else if(a==='del')delSel();
-  else if(a==='front'||a==='back'){const zs=items.map(o=>+o.el.style.zIndex||0);const v=a==='front'?Math.max(...zs)+1:Math.min(...zs)-1;L.forEach(k=>items[k].el.style.zIndex=v)}
-  else if(a==='fit'){L.forEach(k=>{const o=items[k];o.x+=(o.w-o.w0)/2;o.y+=(o.h-o.h0)/2;o.w=o.w0;o.h=o.h0;place(o)});posCtx()}});
-document.addEventListener('keydown',e=>{if(!sel.size||e.target.matches('input,textarea'))return;const d={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(!d)return;e.preventDefault();const s=e.shiftKey?10:1;[...sel].forEach(k=>{const o=items[k];o.x+=d[0]*s;o.y+=d[1]*s;place(o)});posCtx()});
+  else if(a==='front'||a==='back'){const zs=items.map(o=>+o.el.style.zIndex||0);const v=a==='front'?Math.max(...zs)+1:Math.min(...zs)-1;L.forEach(k=>items[k].el.style.zIndex=v);savePos()}
+  else if(a==='fit'){L.forEach(k=>{const o=items[k];o.x+=(o.w-o.w0)/2;o.y+=(o.h-o.h0)/2;o.w=o.w0;o.h=o.h0;place(o)});posCtx();savePos()}});
+document.addEventListener('keydown',e=>{if(!sel.size||e.target.matches('input,textarea'))return;const d={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(!d)return;e.preventDefault();const s=e.shiftKey?10:1;[...sel].forEach(k=>{const o=items[k];o.x+=d[0]*s;o.y+=d[1]*s;place(o)});posCtx();savePos()});
 $('moreBtn').onclick=e=>{e.stopPropagation();const o=$('moreBox').classList.toggle('open');$('moreBtn').setAttribute('aria-expanded',o)};
 document.addEventListener('click',e=>{if(!e.target.closest('#moreBox,#moreBtn'))$('moreBox').classList.remove('open')});
 $('bgTol').oninput=()=>$('tolVal').textContent=$('bgTol').value;
