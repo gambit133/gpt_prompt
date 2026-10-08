@@ -90,7 +90,7 @@ body.school .field-subject{display:none}
 .topnav a:hover{color:var(--ink);background:var(--soft2)}
 .topnav a.on{color:var(--ink);background:var(--soft)}
 @media(max-width:520px){.topnav a{font-size:13px;padding:6px 9px}}
-.peek{position:fixed;z-index:90;width:380px;background:#fff;border:3px solid var(--accent);border-radius:18px;box-shadow:0 0 0 6px rgba(255,255,255,.85),0 30px 60px -16px rgba(40,28,18,.6);padding:8px;pointer-events:none;opacity:0;transform:scale(var(--s,.7));transform-origin:center;transition:opacity .12s,transform .16s cubic-bezier(.2,.8,.2,1)}
+.peek{position:fixed;z-index:90;width:380px;background:#fff;border:3px solid var(--accent);border-radius:18px;box-shadow:0 0 0 6px rgba(255,255,255,.85),0 30px 60px -16px rgba(40,28,18,.6);padding:8px;pointer-events:none;opacity:0;transform:scale(var(--s,.7));transition:opacity .12s,transform .16s cubic-bezier(.2,.8,.2,1)}
 .peek.show{opacity:1;transform:none}
 .peek img{display:block;width:100%;max-height:calc(100vh - 70px);object-fit:contain;border-radius:10px;background:#f7efe2}
 .peek b{display:block;font-size:14px;margin:7px 0 2px;text-align:center}
@@ -118,7 +118,7 @@ body.peeking .gallery .card:not(.peeksrc){opacity:.55;filter:saturate(.7);transi
 .group-label{display:flex;align-items:center;gap:8px;margin:12px 0 8px;font-weight:800;font-size:13px}
 .group-label span{background:var(--ink);color:#fff;border-radius:999px;padding:3px 11px}
 .group-label .cnt{background:none;color:var(--muted);font-weight:600;font-size:12px;padding:0}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
 .card{position:relative;border:2px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s}
 .card:hover{transform:translateY(-4px);box-shadow:0 18px 30px -16px rgba(59,42,30,.45);border-color:var(--line2)}
 .card.active{border-color:transparent;background-image:linear-gradient(var(--card),var(--card)),linear-gradient(120deg,var(--accent),var(--accent2),var(--peach),var(--accent));background-origin:border-box;background-clip:padding-box,border-box;background-size:100% 100%,300% 100%;animation:flow 4s linear infinite;box-shadow:0 0 0 4px var(--ring)}
@@ -916,7 +916,7 @@ function inPeek(x,y){const pk=$('peek');if(!pk.classList.contains('show'))return
 function showPeek(s,name,el){if(matchMedia('(max-width:900px),(pointer:coarse)').matches)return;clearTimeout(peekT);const pk=$('peek');const open=pk.classList.contains('show');peekTw=el;
   peekT=setTimeout(()=>{if(peekTw!==el)return;const im=pk.querySelector('img');const full=s.view||s.image;im.src=s.thumb||full;if(s.thumb&&s.thumb!==full){const pre=new Image();pre.onload=()=>{if(pk.dataset.k===s.key)im.src=full};pre.src=full}
     pk.dataset.k=s.key;pk.querySelector('b').textContent=name;document.querySelectorAll('.card.peeksrc').forEach(c=>c.classList.remove('peeksrc'));const card=el.closest('.card');if(card)card.classList.add('peeksrc');document.body.classList.add('peeking');
-    const r=el.getBoundingClientRect();const w=Math.min(400,innerWidth-16),h=Math.min(innerHeight-16,w*1.5+40);const cx=r.left+r.width/2,cy=r.top+r.height/2;pk.style.width=w+'px';pk.style.left=Math.max(8,Math.min(innerWidth-w-8,cx-w/2))+'px';pk.style.top=Math.max(8,Math.min(innerHeight-h-8,cy-h/2))+'px';pk.style.setProperty('--s',Math.max(.4,Math.min(.95,r.width/w)));pk.classList.add('show')},open?0:70)}
+    const r=el.getBoundingClientRect();const w=Math.min(400,innerWidth-16),h=Math.min(innerHeight-16,w*1.5+40);const cx=r.left+r.width/2;pk.style.width=w+'px';pk.style.left=Math.max(8,Math.min(innerWidth-w-8,cx-w/2))+'px';const ph=h;const top=Math.max(8,Math.min(innerHeight-ph-8,r.bottom+8-ph));pk.style.top=top+'px';pk.style.transformOrigin=`${cx-parseFloat(pk.style.left)}px ${Math.min(ph,r.bottom-top)}px`;pk.style.setProperty('--s',Math.max(.4,Math.min(.95,r.width/w)));pk.classList.add('show')},open?0:70)}
 function hidePeek(now){clearTimeout(peekT);peekTw=null;const go=()=>{$('peek').classList.remove('show');document.body.classList.remove('peeking');document.querySelectorAll('.card.peeksrc').forEach(c=>c.classList.remove('peeksrc'))};if(now===true)go();else peekT=setTimeout(go,90)}
 let peekRaf=0;
 document.addEventListener('pointermove',e=>{if(e.pointerType==='touch'||peekRaf)return;const x=e.clientX,y=e.clientY;peekRaf=requestAnimationFrame(()=>{peekRaf=0;
