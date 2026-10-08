@@ -84,6 +84,8 @@ header .logo{height:48px;display:block}
 .item:hover img{transform:scale(1.04)}
 .item.sel{outline-color:var(--sel);background:rgba(47,125,225,.07)}
 .item.dragging{cursor:grabbing}
+.btn#renBtn{display:none}
+.item .lbin{position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);z-index:5;width:max(140px,100%);font:inherit;font-size:12.5px;font-weight:700;color:var(--ink);background:#fff;border:1.5px solid var(--accent);border-radius:8px;padding:4px 8px;outline:none;box-shadow:0 0 0 3px var(--ring,rgba(232,150,40,.25))}
 .item .lb{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;background:rgba(255,253,248,.95);padding:1px 6px;border-radius:6px}
 .item:hover .lb{opacity:1}
 .minepanel{margin-bottom:10px}
@@ -164,6 +166,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
   .toolbar{position:fixed;left:10px;right:10px;bottom:10px;top:auto;z-index:50;margin:0;flex-wrap:nowrap;gap:6px;box-shadow:0 14px 30px -12px rgba(0,0,0,.45)}
   .toolbar .grp:first-child{flex:1}.toolbar .grp:first-child .btn{flex:1;justify-content:center;padding:9px 6px}
   .selinfo{display:none}.morebtn{display:inline-flex}
+  body.inmine .btn#renBtn{display:inline-flex;justify-content:center}
   .more{display:none}
   .more.open{display:flex;flex-direction:column;align-items:stretch;gap:10px;position:absolute;right:0;bottom:calc(100% + 8px);background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 14px 30px -12px rgba(0,0,0,.45);min-width:200px}
   .more.open .grp.ghost{flex-direction:column;align-items:stretch}
@@ -204,6 +207,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
       <span class="sp"></span>
       <button class="gbtn morebtn" id="moreBtn" aria-expanded="false">더보기</button>
       <div class="more" id="moreBox">
+      <button class="btn mineonly" id="renBtn" disabled>이름 편집</button>
       <div class="grp ghost">
         <button class="gbtn" id="allBtn">전체 선택</button>
         <button class="gbtn" id="noneBtn">해제</button>
@@ -226,7 +230,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
     <div class="editor">
     <div class="edhead"><b id="edTitle"></b><span class="edcount" id="edCount"></span><span class="sp"></span><span class="bgsw" role="group" aria-label="캔버스 배경"><button data-bg="check" class="on" title="투명 배경으로 보기"><i class="sw sw-check"></i>투명</button><button data-bg="white" title="흰 배경으로 보기"><i class="sw sw-white"></i>흰색</button><button data-bg="dark" title="검정 배경으로 보기"><i class="sw sw-dark"></i>검정</button></span></div>
     <div class="board bg-check" id="board"><div class="marquee" id="marquee"></div>
-      <div class="ctx" id="ctx" hidden><button data-a="copy" title="복사">복사</button><button data-a="save" title="PNG 저장">저장</button><button data-a="mine" class="notmine" title="내 치트키에 담기">⭐ 담기</button><button data-a="del" class="mineonly" title="삭제">삭제</button><i></i><button data-a="front" title="맨 앞으로">앞으로</button><button data-a="back" title="맨 뒤로">뒤로</button><button data-a="fit" title="처음 크기로">원래 크기</button></div>
+      <div class="ctx" id="ctx" hidden><button data-a="copy" title="복사">복사</button><button data-a="save" title="PNG 저장">저장</button><button data-a="mine" class="notmine" title="내 치트키에 담기">⭐ 담기</button><button data-a="del" class="mineonly" title="삭제">삭제</button><button data-a="ren" class="mineonly" title="이름 편집">이름 편집</button><i></i><button data-a="front" title="맨 앞으로">앞으로</button><button data-a="back" title="맨 뒤로">뒤로</button><button data-a="fit" title="처음 크기로">원래 크기</button></div>
     </div>
     </div>
     <p class="tip">PPT에 검은 배경으로 붙으면 <b>Ctrl+Alt+V → 그림</b>으로 붙여넣거나, <b>흰 배경</b>을 켜고 복사하세요.</p>
@@ -286,12 +290,20 @@ async function processImage(file){const bm=await createImageBitmap(file);const m
   const o=document.createElement('canvas');o.width=x1-x0+1;o.height=y1-y0+1;o.getContext('2d').drawImage(c,x0,y0,o.width,o.height,0,0,o.width,o.height);
   return {src:o.toDataURL('image/png'),w:o.width,h:o.height}}
 async function addFiles(files){const imgs=[...files].filter(f=>f&&f.type&&f.type.startsWith('image/'));if(!imgs.length)return;toast('이미지 정리 중…',6000);
-  const now=Date.now(),out=[];for(const [i,f] of imgs.entries()){try{const r=await processImage(f);out.push({id:rid('u'),t:now+i,src:r.src,w:r.w,h:r.h,label:(f.name||'내 이미지').replace(/\.[^.]+$/,'').slice(0,30)})}catch{}}
+  const now=Date.now(),out=[];for(const [i,f] of imgs.entries()){try{const r=await processImage(f);out.push({id:rid('u'),t:now+i,src:r.src,w:r.w,h:r.h,label:((n=>/[0-9a-f]{10,}|^\d+$|^$/i.test(n)?'내 이미지':n)((f.name||'').replace(/\.[^.]+$/,''))).slice(0,30)})}catch{}}
   if(!out.length){toast('이미지를 읽지 못했어요');return}
   if(await saveNew(out)){pack='mine';try{localStorage.setItem('stkPack',pack)}catch{}renderTabs();layout();toast(out.length+'개 추가했어요');edHead()}}
 async function delSel(){if(pack!=='mine'||!sel.size)return;const ids=[...sel].map(k=>MINE.items[k]&&MINE.items[k].id).filter(Boolean);
   try{await dbWrite(st=>ids.forEach(id=>st.delete(id)))}catch{toast('삭제하지 못했어요');return}
   MINE.items=MINE.items.filter(x=>!ids.includes(x.id));renderTabs();layout();toast(ids.length+'개 지웠어요')}
+function renameSel(){if(pack!=='mine')return;if(sel.size!==1){toast('이름은 하나씩 바꿀 수 있어요');return}
+  const k=[...sel][0],o=items[k],it=MINE.items[k];if(!o||!it)return;const lb=o.el.querySelector('.lb');if(!lb)return;
+  const inp=document.createElement('input');inp.className='lbin';inp.value=it.label||'';inp.maxLength=40;inp.setAttribute('aria-label','이름');inp.enterKeyHint='done';
+  lb.replaceWith(inp);$('ctx').hidden=true;inp.focus();inp.select();let done=false;
+  const fin=async ok=>{if(done)return;done=true;const v=inp.value.trim().slice(0,40);let ch=false;if(ok&&v&&v!==it.label){it.label=v;ch=true;try{await dbWrite(st=>st.put(it))}catch{toast('이름을 저장하지 못했어요')}}
+    lb.textContent=it.label||'';inp.replaceWith(lb);posCtx();if(ch)toast('이름을 바꿨어요')};
+  inp.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();fin(true)}else if(e.key==='Escape')fin(false)});
+  inp.addEventListener('blur',()=>fin(true));['pointerdown','mousedown','touchstart','click','dblclick'].forEach(ev=>inp.addEventListener(ev,e=>e.stopPropagation()))}
 function exportMine(){if(!MINE.items.length){toast('아직 담은 그림이 없어요');return}
   const blob=new Blob([JSON.stringify({app:'saemplay-mine',v:1,at:new Date().toISOString(),items:MINE.items})],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`쌤플레이-내치트키-백업-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
@@ -333,7 +345,7 @@ let posT;function savePos(){if(pack!=='mine')return;clearTimeout(posT);posT=setT
   try{await dbWrite(st=>ch.forEach(x=>st.put(x)))}catch{}const need=Math.max(...items.map(o=>o.y+o.h+GAP));if(need>board.clientHeight)board.style.height=need+'px'},250)}
 function posCtx(){const c=$('ctx');if(!sel.size||mode){c.hidden=true;return}const L=[...sel].map(k=>items[k]).filter(Boolean);if(!L.length){c.hidden=true;return}c.hidden=false;const x0=Math.min(...L.map(o=>o.x)),y0=Math.min(...L.map(o=>o.y)),x1=Math.max(...L.map(o=>o.x+o.w)),y1=Math.max(...L.map(o=>o.y+o.h));const W=board.clientWidth,cw=c.offsetWidth,ch=c.offsetHeight;c.style.left=Math.max(6,Math.min(W-cw-6,(x0+x1)/2-cw/2))+'px';c.style.top=(y0-ch-14>4?y0-ch-14:y1+14)+'px'}
 function edHead(){const p=cur();$('edTitle').textContent=p?p.name:'';$('edCount').textContent=(p?p.items.length:0)+'개'}
-function syncSel(){items.forEach((o,i)=>o.el.classList.toggle('sel',sel.has(i)));$('selInfo').textContent=sel.size?sel.size+'개 선택됨':(matchMedia('(pointer:coarse)').matches?'그림을 탭해 고르세요':'클릭하거나 빈 곳을 드래그해 고르세요');$('selInfo').classList.toggle('on',!!sel.size);posCtx();$('copyBtn').disabled=$('saveBtn').disabled=$('addMineBtn').disabled=$('delBtn').disabled=!sel.size}
+function syncSel(){items.forEach((o,i)=>o.el.classList.toggle('sel',sel.has(i)));$('selInfo').textContent=sel.size?sel.size+'개 선택됨':(matchMedia('(pointer:coarse)').matches?'그림을 탭해 고르세요':'클릭하거나 빈 곳을 드래그해 고르세요');$('selInfo').classList.toggle('on',!!sel.size);posCtx();$('copyBtn').disabled=$('saveBtn').disabled=$('addMineBtn').disabled=$('delBtn').disabled=!sel.size;$('renBtn').disabled=sel.size!==1}
 let mode=null,start=null,orig=null,moved=false,base=null,tapOff=-1;
 board.addEventListener('pointerdown',e=>{
   if(e.target.closest('.ctx'))return;
@@ -385,7 +397,7 @@ document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))re
 try{const sp=localStorage.getItem('stkPack');if(PACKS.some(p=>p.key===sp))pack=sp;const bg=localStorage.getItem('stkBg');if(bg)document.querySelector(`.bgsw button[data-bg="${bg}"]`)?.click();$('whiteBg').checked=localStorage.getItem('stkWhite')==='1'}catch{}
 let rz;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(!sel.size)layout()},200)});
 $('ctx').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const a=b.dataset.a,L=[...sel];
-  if(a==='copy')copySel();else if(a==='save')saveSel();else if(a==='mine')addToMine();else if(a==='del')delSel();
+  if(a==='copy')copySel();else if(a==='save')saveSel();else if(a==='mine')addToMine();else if(a==='del')delSel();else if(a==='ren')renameSel();
   else if(a==='front'||a==='back'){const zs=items.map(o=>+o.el.style.zIndex||0);const v=a==='front'?Math.max(...zs)+1:Math.min(...zs)-1;L.forEach(k=>items[k].el.style.zIndex=v);savePos()}
   else if(a==='fit'){L.forEach(k=>{const o=items[k];o.x+=(o.w-o.w0)/2;o.y+=(o.h-o.h0)/2;o.w=o.w0;o.h=o.h0;place(o)});posCtx();savePos()}});
 document.addEventListener('keydown',e=>{if(!sel.size||e.target.matches('input,textarea'))return;const d={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(!d)return;e.preventDefault();const s=e.shiftKey?10:1;[...sel].forEach(k=>{const o=items[k];o.x+=d[0]*s;o.y+=d[1]*s;place(o)});posCtx();savePos()});
@@ -394,7 +406,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('#moreBox,#moreBtn'))
 $('bgTol').oninput=()=>$('tolVal').textContent=$('bgTol').value;
 const dz=$('dropZone');['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{if([...e.dataTransfer.types].includes('Files')){e.preventDefault();dz.classList.add('drop')}}));
 ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,()=>dz.classList.remove('drop')));dz.addEventListener('drop',e=>{if(e.dataTransfer.files.length){e.preventDefault();addFiles(e.dataTransfer.files)}});
-$('addMineBtn').onclick=addToMine;$('delBtn').onclick=delSel;$('exportBtn').onclick=exportMine;
+$('addMineBtn').onclick=addToMine;$('delBtn').onclick=delSel;$('renBtn').onclick=()=>{$('moreBox').classList.remove('open');renameSel()};$('exportBtn').onclick=exportMine;
 $('fileIn').onchange=e=>{addFiles(e.target.files);e.target.value=''};
 $('importIn').onchange=e=>{const f=e.target.files[0];if(f)importMine(f);e.target.value=''};
 ['dragenter','dragover'].forEach(ev=>board.addEventListener(ev,e=>{if([...e.dataTransfer.types].includes('Files')){e.preventDefault();board.classList.add('drop')}}));
