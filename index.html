@@ -157,17 +157,6 @@ body.school .field-subject{display:none}
 .preview-img{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:0 14px 30px -24px rgba(59,42,30,.35)}
 .preview-img img{display:block;width:100%;max-height:max(360px,calc(100vh - 300px));object-fit:contain;border-radius:10px;background:#f7efe2;cursor:zoom-in}
 .preview-img .zoom{position:absolute;top:18px;right:18px;border:1px solid rgba(255,255,255,.7);background:rgba(255,254,250,.85);backdrop-filter:blur(6px);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;transition:all .2s}
-.preview-img .fgbtn{top:auto;bottom:18px;right:auto;left:18px}
-.preview-img .fgbtn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
-.fguide{position:absolute;pointer-events:none;z-index:3;border-radius:10px;overflow:hidden}
-.fguide[hidden]{display:none}
-.fg{position:absolute;border:2px dashed;border-radius:8px;padding:4px 6px;font-size:11px;line-height:1.3;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
-.fg b{display:inline-block;color:#fff;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:800;white-space:nowrap}
-.fg span{font-weight:700;color:#fff;background:rgba(0,0,0,.45);border-radius:5px;padding:0 5px;white-space:nowrap}
-.fg.z1{left:2.5%;top:1.5%;width:95%;height:13%;align-items:flex-end;border-color:#e07a2f;background:rgba(224,122,47,.16)}.fg.z1 b{background:#e07a2f}
-.fg.z3{left:2.5%;top:16.5%;width:95%;height:80%;border-color:#2f8f6b;background:rgba(47,143,107,.13)}.fg.z3 b{background:#2f8f6b}
-.fg.z4{left:52%;top:86%;width:45.5%;height:9%;border-color:#2b74c7;background:rgba(43,116,199,.2)}.fg.z4 b{background:#2b74c7}
-@media(max-width:560px){.fg{font-size:9.5px;padding:3px 4px}.fg b,.fg span{font-size:9.5px}.preview-img .fgbtn{padding:5px 9px}}
 #selZoom{display:none}
 .preview-img .zoom:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent-text)}
 .preview-what{margin:0;font-size:12.5px;color:var(--muted);padding:0 4px}
@@ -506,7 +495,7 @@ dialog.guide{width:min(96vw,640px)}
     <div class="selbar"><span class="stepnum">✓</span><span>선택한 쌤플</span><strong id="selName"></strong><span class="badge2" id="selTag"></span></div>
     <div class="work-grid">
       <aside class="preview">
-        <div class="preview-img"><img id="selImage" alt="선택한 예시"><div class="fguide" id="fguide" hidden aria-hidden="true"><div class="fg z1"><b>제목(주제) · 학년·과목</b><span>큰 제목 · 부제</span></div><div class="fg z3"><b id="fgBody">학습 내용 / 첨부 자료</b><span>본문 내용</span></div><div class="fg z4"><b>추가 가이드라인</b><span>개수·구성·톤</span></div></div><button id="fgBtn" class="zoom fgbtn" aria-pressed="false" title="입력한 내용이 그림의 어디에 들어가는지 보기">🧭 입력 항목</button><button id="selZoom" class="zoom">🔍 크게</button></div>
+        <div class="preview-img"><img id="selImage" alt="선택한 예시"><button id="selZoom" class="zoom">🔍 크게</button></div>
         <p class="preview-what" id="selWhat"></p>
         <details class="alts" id="alts" open><summary class="alts-label">다른 쌤플 더보기</summary><div id="altStrip" class="alt-strip"></div></details>
       </aside>
@@ -931,7 +920,7 @@ function enterWork(key,scroll=true,noPush=false){
 }
 function renderPreview(){
   const s=sample(),f=info[s.key];$('alts').open=!isMobile();
-  $('selImage').src=s.view||s.image;guideLabels(s);$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('ssImg').src=s.thumb;$('ssName').textContent=f.name;$('ssTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
+  $('selImage').src=s.view||s.image;$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('ssImg').src=s.thumb;$('ssName').textContent=f.name;$('ssTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
   const alts=samples.filter(x=>x.group===s.group);
   $('altStrip').replaceChildren(...alts.map(x=>{const b=document.createElement('button');b.className='alt'+(x.key===s.key?' active':'');b.title=info[x.key].name;
     const im=document.createElement('img');im.src=x.thumb;im.alt='';im.loading='lazy';const sp=document.createElement('span');sp.textContent=info[x.key].name;b.append(im,sp);
@@ -1094,10 +1083,6 @@ function refreshPlaceholders(){
   const ex=poolFor('extra');$('extra').placeholder='예) '+[...ex.slice(0,1),...pick(ex.slice(1),2)].join('\n');
   const ce=contentExamples().items.slice(0,3);$('content').placeholder='예) '+ce.join('\n');
 }
-function fitGuide(){const im=$('selImage'),g=$('fguide');if(g.hidden||!im.naturalWidth)return;const cw=im.clientWidth,ch=im.clientHeight,s=Math.min(cw/im.naturalWidth,ch/im.naturalHeight),w=im.naturalWidth*s,h=im.naturalHeight*s;
-  g.style.left=(im.offsetLeft+(cw-w)/2)+'px';g.style.top=(im.offsetTop+(ch-h)/2)+'px';g.style.width=w+'px';g.style.height=h+'px'}
-function setGuide(on){const g=$('fguide'),b=$('fgBtn');g.hidden=!on;b.setAttribute('aria-pressed',on);try{localStorage.setItem('fguide',on?'1':'0')}catch{}if(on)fitGuide()}
-function guideLabels(s){if(!s)return;const adm=isAdm(s);$('fgBody').textContent=adm?(s.group==='blank'?'학습 내용 → 칸 구성':'안내 내용 / 첨부 자료'):'학습 내용 / 첨부 자료';const z1=document.querySelector('.fg.z1 b');z1.textContent=adm?(s.group==='blank'?'양식 이름':'행사·자료 이름 · 대상'):'제목(주제) · 학년·과목'}
 function applyAttachMode(){
   const attach=$('attach').checked;
   $('contentWrap').hidden=false;$('contentWrap').classList.toggle('opt',attach);
@@ -1110,9 +1095,7 @@ $('grade').addEventListener('change',()=>{renderExamples('topic');refreshPlaceho
 $('extra').addEventListener('input',()=>{setCurrent(2);build()});$('content').addEventListener('input',()=>{setCurrent(2);build();if(val('content'))$('contentWrap').classList.remove('invalid')});
 $('topic').addEventListener('input',()=>{renderExamples('content');$('content').placeholder='예) '+contentExamples().items.slice(0,3).join('\n')});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
-$('content').dataset.ph=$('content').placeholder;$('fgBtn').onclick=()=>setGuide($('fguide').hidden);$('selImage').addEventListener('load',fitGuide);window.addEventListener('resize',fitGuide);
-(()=>{let on=true;try{on=localStorage.getItem('fguide')!=='0'}catch{}setGuide(on)})();
-$('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
+$('content').dataset.ph=$('content').placeholder;$('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
 function updateLength(){const n=$('output').value.length;const long=n>3000;$('length').textContent=n.toLocaleString()+'자'+(long?' · 조금 길어요 (3,000자 이내 권장)':'');$('length').classList.toggle('warn',long)}
 $('output').addEventListener('input',updateLength);
 
