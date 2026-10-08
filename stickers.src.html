@@ -129,11 +129,18 @@ body.inmine .btn.mineonly,body:not(.inmine) .btn.notmine{display:inline-flex}
 .board.busy .ctx{display:none}
 .ctx .mineonly,.ctx .notmine{display:none}
 body.inmine .ctx .mineonly,body:not(.inmine) .ctx .notmine{display:inline-block}
-.minepanel{display:block}
+.minepanel{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:stretch}
 .morebtn{display:none}.more{display:contents}
 .mbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;border:1.5px dashed var(--line2);border-radius:14px;padding:7px 10px;background:var(--soft2)}
-.mbar .sp{flex:1}.mbar .bk{display:inline-flex;gap:2px}
-.bkline{margin:5px 6px 0;font-size:11.5px;color:var(--muted)}
+.bkcard{display:flex;align-items:center;gap:14px;border:1.5px solid var(--line);border-radius:14px;padding:7px 8px 7px 14px;background:var(--card)}
+.bkt{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.bkt span{font-size:11px;font-weight:700;color:var(--muted)}
+.bkt b{font-size:12.5px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bkt b.warn{color:#c2410c}
+.bkb{display:flex;gap:6px}
+.obtn{display:inline-flex;align-items:center;gap:5px;font-family:inherit;font-weight:800;font-size:13px;color:var(--ink);background:var(--soft2);border:1.5px solid var(--line2);border-radius:10px;padding:7px 11px;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s}
+.obtn:hover{background:#fff4e2;border-color:var(--accent)}
+.obtn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .marquee{position:absolute;border:1.5px dashed var(--sel);background:rgba(47,125,225,.1);pointer-events:none;display:none;z-index:30}
 .tip{margin:2px 4px 24px;font-size:12.5px;color:var(--muted)}
 .tip b{color:var(--ink)}
@@ -149,7 +156,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
   .pack .pv{grid-template-columns:repeat(4,1fr)}.pack .pv img:nth-child(n+5){display:none}
   .pack small{display:none}.peek{display:none!important}
 }
-@media(max-width:700px){.mbar .sp{display:none}.mbar .bk{margin-left:auto}.tol input{width:70px}}
+@media(max-width:700px){.minepanel{grid-template-columns:minmax(0,1fr)}.bkcard{padding:6px 6px 6px 12px}.bkt{flex:1}.obtn{padding:7px 9px;font-size:12.5px}.tol input{width:70px}}
 @media(max-width:560px){
   .packs{display:flex!important;overflow-x:auto;gap:6px;padding:2px 2px 6px;scroll-snap-type:x proximity;scrollbar-width:none}
   .packs::-webkit-scrollbar{display:none}
@@ -210,10 +217,11 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
         <label class="btn primary sm" for="fileIn" title="클릭 · 끌어 놓기 · Ctrl+V">＋ 이미지 추가</label><input type="file" id="fileIn" accept="image/*" multiple hidden>
         <label class="chk" title="단색 배경을 투명하게 지워요"><input type="checkbox" id="bgRemove" checked>배경 지우기</label>
         <label class="tol" title="높을수록 배경과 비슷한 색까지 지워요">강도 <input type="range" id="bgTol" min="10" max="90" value="40"><output id="tolVal">40</output></label>
-        <span class="sp"></span>
-        <span class="bk"><button class="gbtn" id="exportBtn">백업하기</button><label class="gbtn" for="importIn">불러오기</label><input type="file" id="importIn" accept=".json,application/json" hidden></span>
       </div>
-      <p class="bkline" id="backupInfo"></p>
+      <div class="bkcard">
+        <div class="bkt"><span>마지막 백업</span><b id="backupInfo">없음</b></div>
+        <div class="bkb"><button class="obtn" id="exportBtn" title="내 치트키를 파일로 저장"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg>백업하기</button><label class="obtn" for="importIn" title="백업 파일에서 가져오기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4m0 0L7.5 8.5M12 4l4.5 4.5M5 19h14"/></svg>불러오기</label><input type="file" id="importIn" accept=".json,application/json" hidden></div>
+      </div>
     </div>
     <div class="editor">
     <div class="edhead"><b id="edTitle"></b><span class="edcount" id="edCount"></span><span class="sp"></span><span class="bgsw" role="group" aria-label="캔버스 배경"><button data-bg="check" class="on" title="투명 배경으로 보기"><i class="sw sw-check"></i>투명</button><button data-bg="white" title="흰 배경으로 보기"><i class="sw sw-white"></i>흰색</button><button data-bg="dark" title="검정 배경으로 보기"><i class="sw sw-dark"></i>검정</button></span></div>
@@ -294,7 +302,7 @@ async function importMine(file){try{const j=JSON.parse(await file.text());if(!j|
     const skipped=j.items.length-add.length;if(add.length&&!(await saveNew(add)))return;MINE.items.sort((a,b)=>a.t-b.t);pack='mine';renderTabs();layout();
     toast(add.length+'개 불러옴'+(skipped?` · ${skipped}개는 이미 있거나 제외`:''),3200)}catch{toast('백업 파일을 읽지 못했어요')}}
 function backupInfo(){const el=$('backupInfo');if(!el)return;let at=0;try{at=+localStorage.getItem('mineBackupAt')||0}catch{}
-  const p=n=>String(n).padStart(2,'0');const d=new Date(at);el.textContent='마지막 백업: '+(at?`${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`:'없음')}
+  const p=n=>String(n).padStart(2,'0');const d=new Date(at);el.textContent=at?`${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`:'없음';el.classList.toggle('warn',!at||Date.now()-at>7*864e5)}
 
 function showPeek(p,btn){if(innerWidth<=900)return;const pk=$('peek');pk.querySelector('b').textContent=`${p.name} · ${p.items.length}개`;
   pk.querySelector('.g').replaceChildren(...p.items.map(it=>{const im=new Image();im.src=src(p,it);im.alt='';return im}));
