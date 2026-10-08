@@ -20,14 +20,25 @@ header .logo{height:48px;display:block}
 .topnav a:hover{color:var(--ink);background:var(--soft2)}
 .topnav a.on{color:var(--ink);background:var(--soft)}
 .menu{position:relative;flex:none}
-.hamb{width:36px;height:36px;border:0;border-radius:10px;background:transparent;display:grid;place-items:center;padding:0;cursor:pointer}
-.hamb:hover,.hamb.open{background:var(--soft2)}
-.hamb .hb{display:flex;gap:4px}.hamb .hb i{width:4px;height:4px;border-radius:50%;background:var(--ink)}
-.menulist{position:absolute;right:0;top:calc(100% + 10px);background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:0 18px 34px -16px rgba(0,0,0,.4);padding:4px;min-width:140px;z-index:60;display:grid}
+.hamb{width:36px;height:36px;border:0;border-radius:10px;background:transparent;display:grid;place-items:center;padding:0;cursor:pointer;transition:background .2s}
+.hamb:hover{background:var(--soft2)}
+.hamb .hb{position:relative;width:20px;height:20px;display:block}
+.hamb .hb i{position:absolute;top:50%;left:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:var(--ink);transition:transform .35s cubic-bezier(.68,-.55,.27,1.55),width .3s,height .3s,margin .3s,border-radius .3s,opacity .25s}
+.hamb .hb i:nth-child(1){transform:translateX(-6px)}
+.hamb .hb i:nth-child(3){transform:translateX(6px)}
+.hamb.open{background:var(--soft2)}
+.hamb.open .hb i:nth-child(1){width:16px;height:2px;margin:-1px 0 0 -8px;border-radius:2px;transform:rotate(45deg)}
+.hamb.open .hb i:nth-child(2){opacity:0;transform:scale(0)}
+.hamb.open .hb i:nth-child(3){width:16px;height:2px;margin:-1px 0 0 -8px;border-radius:2px;transform:rotate(-45deg)}
+.menulist{position:absolute;right:0;top:calc(100% + 10px);background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:0 18px 34px -16px rgba(0,0,0,.4);padding:4px;min-width:128px;z-index:40;display:grid;gap:0;transform-origin:top right;animation:menuIn .28s cubic-bezier(.2,.9,.3,1.2)}
 .menulist[hidden]{display:none}
-.menulist a{text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:600;padding:7px 10px;border-radius:7px}
+.menulist::before{content:"";position:absolute;top:-6px;right:17px;width:11px;height:11px;background:var(--card);border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+@keyframes menuIn{from{opacity:0;transform:translateY(-6px) scale(.9)}}
+.menulist a{text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:7px;display:block;line-height:1.4;transition:background .2s,color .2s}
 .menulist .msep{border:0;border-top:1px solid var(--line);margin:4px 6px}
 .menulist a:hover{background:var(--soft2);color:var(--accent-text)}
+.menulist a.active{color:#e0485a;background:#fdeef0}
+.menulist a .n{font-size:11px;font-weight:700;background:var(--soft);border-radius:999px;padding:0 6px;margin-left:4px;color:var(--ink)}
 .hero{margin:6px 0 14px}
 .hero h1{margin:0;font-size:26px;letter-spacing:-.03em}
 .hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--accent2) 62%)}
@@ -206,6 +217,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
   .hero h1{font-size:21px}.packs{grid-template-columns:repeat(2,1fr)}
   .btn{padding:7px 10px;font-size:12.5px}
 }
+.menulist a.cur{color:var(--accent-text);background:var(--soft2)}
 </style>
 </head>
 <body>
@@ -214,7 +226,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
   <a href="index.html" title="쌤플레이 홈"><img class="logo" src="assets/logo-capy.png" alt="쌤플레이"></a>
   <nav class="topnav" aria-label="주 메뉴"><a href="index.html">쌤플 프롬프트</a><a href="stickers.html" class="on">PPT 치트키</a></nav>
   <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button>
-    <nav id="menuList" class="menulist" hidden><a href="index.html#fav">찜 목록</a><hr class="msep"><a href="index.html">쌤플 고르기</a><a href="stickers.html">PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
+    <nav id="menuList" class="menulist" hidden><a href="index.html#fav" id="favLink">찜 목록 <span class="n" id="favCount">0</span></a><a href="index.html#hist" id="histLink">사용 이력 <span class="n" id="histCount">0</span></a><hr class="msep"><a href="index.html">쌤플 고르기</a><a href="stickers.html" class="cur" aria-current="page">PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
 </header>
 <div class="hero">
   <h1>바로 복붙 <em>PPT 치트키</em></h1>
@@ -576,5 +588,6 @@ document.addEventListener('paste',e=>{if(BG.open||e.target.matches('input,textar
 document.addEventListener('keydown',e=>{if(!BG.open&&e.key==='Delete'&&pack==='mine'&&sel.size&&!e.target.matches('input,textarea'))delSel()});
 loadMine().then(()=>{renderTabs();layout()});
 </script>
+<script>try{const n=k=>{const v=JSON.parse(localStorage.getItem(k)||'[]');return Array.isArray(v)?v.length:0};document.getElementById('favCount').textContent=n('favs');document.getElementById('histCount').textContent=n('hist')}catch{}</script>
 </body>
 </html>

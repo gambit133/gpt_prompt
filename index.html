@@ -979,6 +979,7 @@ $('dialog').onclick=e=>{if(e.target===$('dialog'))closeModal('dialog')};
 $('dialogPick').onclick=()=>{if(!dialogKey)return;const k=dialogKey;if(dialogFromWork){closeModal('dialog');enterWork(k,true,true)}else{suppressBack=true;history.replaceState({v:'work'},'');closeModal('dialog');suppressBack=false;enterWork(k,true,true)}};
 $('favLink').onclick=e=>{e.preventDefault();setMenu(false);hideHist();favOnly=!favOnly;$('favLink').classList.toggle('active',favOnly);if($('dialog').open)closeModal('dialog');$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
 saveFavs();if(location.hash==='#fav'){history.replaceState(null,'',location.pathname);setTimeout(()=>$('favLink').click(),0)}
+if(location.hash==='#hist'){history.replaceState(null,'',location.pathname);setTimeout(()=>showHist(),0)}
 
 /* ---------- 사용 이력 ---------- */
 let hist=[];try{hist=JSON.parse(localStorage.getItem('hist')||'[]');if(!Array.isArray(hist))hist=[]}catch{hist=[]}

@@ -41,6 +41,8 @@ header.wrap{padding:18px 20px 8px}
 .menulist a{text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:7px;display:block;line-height:1.4;transition:background .2s,color .2s}
 .menulist .msep{border:0;border-top:1px solid var(--line);margin:4px 6px}
 .menulist a:hover{background:var(--soft2);color:var(--accent-text)}
+.menulist a.active{color:#e0485a;background:#fdeef0}
+.menulist a .n{font-size:11px;font-weight:700;background:var(--soft);border-radius:999px;padding:0 6px;margin-left:4px;color:var(--ink)}
 /* slider arrows */
 .arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(255,254,250,.92);display:grid;place-items:center;font-size:20px;line-height:1;cursor:pointer;z-index:3;box-shadow:0 6px 14px -6px rgba(0,0,0,.4)}
 .arrow:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent-text)}
@@ -211,6 +213,7 @@ footer{padding:24px 0 36px;color:var(--muted);font-size:12.5px;text-align:center
 @media(max-width:860px){.shots{grid-template-columns:minmax(0,1fr)}.pts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.shots.two{grid-template-columns:minmax(0,1fr)}.pts{grid-template-columns:minmax(0,1fr)}.mob{flex-direction:column;text-align:center}.mob img{width:200px}.topnav a{font-size:13px;padding:6px 9px}.brand .logo{height:44px}}
 .zoom{display:block;cursor:zoom-in}.zoom:hover img{opacity:.92}
+.menulist a.cur{color:var(--accent-text);background:var(--soft2)}
 </style>
 </head>
 <body>
@@ -218,7 +221,7 @@ footer{padding:24px 0 36px;color:var(--muted);font-size:12.5px;text-align:center
   <div class="topbar">
     <a class="brand" href="index.html"><img class="logo" src="assets/logo-capy.png" alt="쌤플레이"></a>
     <nav class="topnav" aria-label="주 메뉴"><a href="index.html">쌤플 프롬프트</a><a href="stickers.html">PPT 치트키</a></nav>
-    <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="index.html#fav">찜 목록</a><hr class="msep"><a href="index.html">쌤플 고르기</a><a href="stickers.html">PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
+    <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="index.html#fav" id="favLink">찜 목록 <span class="n" id="favCount">0</span></a><a href="index.html#hist" id="histLink">사용 이력 <span class="n" id="histCount">0</span></a><hr class="msep"><a href="index.html">쌤플 고르기</a><a href="stickers.html">PPT 치트키</a><a href="about.html" class="cur" aria-current="page">사이트 소개</a></nav></div>
   </div>
 </header>
 
@@ -315,5 +318,6 @@ const mb=document.getElementById('menuBtn'),ml=document.getElementById('menuList
 // marquee strip
 const strip=document.getElementById('strip');const all=pickN(slides,16);[...all,...all].forEach(s=>{const im=document.createElement('img');im.src=s.thumb;im.alt=s.name;im.loading='lazy';strip.append(im)});
 </script>
+<script>try{const n=k=>{const v=JSON.parse(localStorage.getItem(k)||'[]');return Array.isArray(v)?v.length:0};document.getElementById('favCount').textContent=n('favs');document.getElementById('histCount').textContent=n('hist')}catch{}</script>
 </body>
 </html>
