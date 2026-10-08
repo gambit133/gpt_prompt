@@ -46,7 +46,13 @@ EXTRA['callig']=["환영합니다", "생일 축하해", "사랑하는 우리 반
 EXTRA['buttons']=["확인", "취소", "닫기", "홈", "도움말", "정답!", "오답", "타이머", "점수", "다음 문제", "이전 문제", "잠금", "링크", "다운로드", "위로"]
 EXTRA['phrases']=["동기 유발", "배움 열기", "배움 활동", "배움 정리", "차시 예고", "형성 평가", "과제", "준비물", "토의·토론", "오늘의 질문", "심화 학습", "실험 관찰"]
 EXTRA['official']=["상장 테두리", "트로피", "왕관", "금메달", "은메달", "동메달", "학사모", "졸업장", "꽃다발", "리본 매듭", "봉랍 인장", "박수"]
+EXTRA_SRC={}
+EXTRA_SRC['lesson-kit']=["학습 목표", "생각 열기", "활동", "토의·토론", "실험", "발표", "글쓰기", "읽기", "영상 보기", "퀴즈", "모둠 활동", "정리", "평가", "과제", "시간", "꿀팁"]
+EXTRA_SRC['raccoon']=["인사", "엄지 척", "처리 완료!", "안심하라구!", "박수", "고민", "아이디어", "책 읽기", "필기", "응원", "하트", "쉬는 중"]
+EXTRA_SRC['raccoon-detective']=["돋보기 수사", "발자국 추적", "수첩 메모", "사건 해결!", "추리 중", "손전등", "단서 발견", "유레카", "지도 보기", "사건 파일", "살금살금", "엄지 척"]
+EXTRA_SRC['crayon-animals']=["멍멍이", "야옹이", "토끼", "곰", "돼지", "병아리", "개구리", "코끼리", "펭귄", "오리", "다람쥐", "강아지 엉덩이"]
 LABELS = {k: l + EXTRA.get(k, []) for k, n, l in PACKS}
+LABELS.update(EXTRA_SRC)
 # What the page shows: sections > packs, each pack merged from one or more source folders (in order).
 GROUPS = [
     ('캐릭터', [
@@ -65,9 +71,10 @@ GROUPS = [
     ]),
     ('꾸미기', [
         ('deco', '말풍선·꾸미기', ['bubbles', 'ppt']),
-        ('frames', '수업 템플릿', ['frames', 'lesson-kit']),
+        ('frames', '수업 템플릿', ['frames']),
     ]),
     ('아이콘', [
+        ('lesson', '수업 PPT 아이콘', ['lesson-kit']),
         ('icons', '수업·과목 아이콘', ['icons', 'subjects']),
         ('lineicons', '라인 아이콘', ['lineicons']),
         ('official', '상장·공식', ['official']),
