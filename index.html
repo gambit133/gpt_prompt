@@ -200,9 +200,9 @@ body.school .field-subject{display:none}
 .switch input:checked+.slider{background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .switch input:checked+.slider::before{transform:translateX(20px)}
 .attach{margin:6px 0 10px;font-size:12px;color:var(--accent-text);font-weight:600;animation:fade .3s ease}
-.attrow{position:relative;display:flex;align-items:center;gap:8px;margin-top:10px}
-.attrow .toggle{margin-top:0;flex:1}
-.infobtn{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);color:var(--accent-text);font:italic 800 13px Georgia,serif;cursor:pointer;display:grid;place-items:center}
+.attrow{position:relative;margin-top:10px}
+.attrow .toggle{margin-top:0;padding-right:44px}
+.infobtn{position:absolute;right:8px;top:6px;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);color:var(--accent-text);font:italic 800 13px Georgia,serif;cursor:pointer;display:grid;place-items:center}
 .infobtn:hover,.infobtn[aria-expanded="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent-text)}
 .infobtn[hidden]{display:none}
 .autorules{position:absolute;z-index:30;right:0;top:calc(100% + 8px);width:min(420px,100%);background:var(--card);border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--muted);box-shadow:0 14px 30px -12px rgba(59,42,30,.45)}
