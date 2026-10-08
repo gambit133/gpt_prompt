@@ -149,7 +149,7 @@ body.school .field-subject{display:none}
 .selbar strong{font-size:14px}
 .selbar .spacer{flex:1}
 .badge2{display:inline-block;font-size:10.5px;background:var(--ink);color:#fff;border-radius:999px;padding:1px 8px}
-.work-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,470px);gap:14px;align-items:start;animation:fade .35s ease}
+.work-grid{display:grid;grid-template-columns:minmax(280px,36%) minmax(0,1fr);gap:14px;align-items:start;animation:fade .35s ease}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}}
 .preview{position:sticky;top:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .editor{min-width:0}
@@ -157,6 +157,18 @@ body.school .field-subject{display:none}
 .preview-img{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:0 14px 30px -24px rgba(59,42,30,.35)}
 .preview-img img{display:block;width:100%;max-height:max(360px,calc(100vh - 300px));object-fit:contain;border-radius:10px;background:#f7efe2;cursor:zoom-in}
 .preview-img .zoom{position:absolute;top:18px;right:18px;border:1px solid rgba(255,255,255,.7);background:rgba(255,254,250,.85);backdrop-filter:blur(6px);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;transition:all .2s}
+.preview-img .fgbtn{top:auto;bottom:18px;right:auto;left:18px}
+.preview-img .fgbtn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fguide{position:absolute;pointer-events:none;z-index:3;border-radius:10px;overflow:hidden}
+.fguide[hidden]{display:none}
+.fg{position:absolute;border:2px dashed;border-radius:8px;padding:4px 6px;font-size:11px;line-height:1.3;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.fg b{display:inline-block;color:#fff;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:800;white-space:nowrap}
+.fg span{font-weight:700;color:#fff;background:rgba(0,0,0,.45);border-radius:5px;padding:0 5px;white-space:nowrap}
+.fg.z1{left:2.5%;top:1.5%;width:95%;height:13%;align-items:flex-end;border-color:#e07a2f;background:rgba(224,122,47,.16)}.fg.z1 b{background:#e07a2f}
+.fg.z3{left:2.5%;top:16.5%;width:95%;height:80%;border-color:#2f8f6b;background:rgba(47,143,107,.13)}.fg.z3 b{background:#2f8f6b}
+.fg.z4{left:52%;top:86%;width:45.5%;height:9%;border-color:#2b74c7;background:rgba(43,116,199,.2)}.fg.z4 b{background:#2b74c7}
+@media(max-width:560px){.fg{font-size:9.5px;padding:3px 4px}.fg b,.fg span{font-size:9.5px}.preview-img .fgbtn{padding:5px 9px}}
+#selZoom{display:none}
 .preview-img .zoom:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent-text)}
 .preview-what{margin:0;font-size:12.5px;color:var(--muted);padding:0 4px}
 .alts{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
@@ -494,7 +506,7 @@ dialog.guide{width:min(96vw,640px)}
     <div class="selbar"><span class="stepnum">✓</span><span>선택한 쌤플</span><strong id="selName"></strong><span class="badge2" id="selTag"></span></div>
     <div class="work-grid">
       <aside class="preview">
-        <div class="preview-img"><img id="selImage" alt="선택한 예시"><button id="selZoom" class="zoom">🔍 크게</button></div>
+        <div class="preview-img"><img id="selImage" alt="선택한 예시"><div class="fguide" id="fguide" hidden aria-hidden="true"><div class="fg z1"><b>제목(주제) · 학년·과목</b><span>큰 제목 · 부제</span></div><div class="fg z3"><b id="fgBody">학습 내용 / 첨부 자료</b><span>본문 내용</span></div><div class="fg z4"><b>추가 가이드라인</b><span>개수·구성·톤</span></div></div><button id="fgBtn" class="zoom fgbtn" aria-pressed="false" title="입력한 내용이 그림의 어디에 들어가는지 보기">🧭 입력 항목</button><button id="selZoom" class="zoom">🔍 크게</button></div>
         <p class="preview-what" id="selWhat"></p>
         <details class="alts" id="alts" open><summary class="alts-label">다른 쌤플 더보기</summary><div id="altStrip" class="alt-strip"></div></details>
       </aside>
@@ -519,7 +531,7 @@ dialog.guide{width:min(96vw,640px)}
               <details class="exbox" id="topicEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="topic">🎲 다른 예시</button></summary><div class="examples" id="topicExList"></div></details></div>
           </div>
           <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료 첨부할게요!</label>
-          <p class="attach" id="attachInfo">첨부 자료 참고 문구가 프롬프트에 포함됩니다.<br><span class="attach-sub">첨부할 자료: 교과서·필기 사진, 학습지, 요약본, PDF·한글 문서, 수업 PPT 중 있는 것</span></p>
+          <p class="attach" id="attachInfo">ChatGPT에 <b>프롬프트를 붙여넣고, 자료도 같이 올려 주세요.</b> 자료 없이 보내면 내용을 지어낼 수 있어요.<br><span class="attach-sub">첨부할 자료: 교과서·필기 사진, 학습지, 요약본, PDF·한글 문서, 수업 PPT 중 있는 것</span></p>
           <div class="form">
             <div class="field wide content-wrap" id="contentWrap" hidden><label for="content" id="contentLabel">학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span></label>
               <div class="extra-grid"><textarea id="content" rows="5" placeholder="예) 핵심 내용: 자료의 중심 내용을 2~3문장으로&#10;용어·공식·인물: 꼭 들어갈 것을 쉼표로 나열&#10;시험 포인트: 자주 틀리는 것, 주의점을 한 줄씩"></textarea></div>
@@ -910,7 +922,7 @@ function setCurrent(n){
 }
 function lockStep3(lock){$('step3').classList.toggle('locked',lock);if(lock)$('step3').setAttribute('inert','');else $('step3').removeAttribute('inert')}
 function enterWork(key,scroll=true,noPush=false){
-  const changed=active!==key;active=key;if(changed&&typeof resetInputs==='function')resetInputs();const s=sample();role=s.role;if(tab!=='all')tab=s.group;const sch=isAdm(s);document.body.classList.toggle('school',sch);$('topicLabel').innerHTML=(sch?(s.group==='blank'?'양식 이름':'행사·자료 이름'):'제목(주제)')+' <i class="req">*</i><small class="lblhint">이미지 큰 제목이 돼요</small>';$('contentLabel').innerHTML=sch?'포함할 내용 <i class="req">*</i> <span style="font-weight:400">(일시·장소·준비물 등을 한 줄씩)</span>':'학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span>';
+  const changed=active!==key;active=key;if(changed&&typeof resetInputs==='function')resetInputs();const s=sample();role=s.role;if(tab!=='all')tab=s.group;const sch=isAdm(s);document.body.classList.toggle('school',sch);$('topicLabel').innerHTML=(sch?(s.group==='blank'?'양식 이름':'행사·자료 이름'):'제목(주제)')+' <i class="req">*</i><small class="lblhint">이미지 큰 제목이 돼요</small>';applyAttachMode();
   document.body.classList.toggle('teacher',role==='teacher');
   $('choose').hidden=true;$('work').hidden=false;if(!noPush&&navState()!=='work')navPush('work');
   $('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);
@@ -919,7 +931,7 @@ function enterWork(key,scroll=true,noPush=false){
 }
 function renderPreview(){
   const s=sample(),f=info[s.key];$('alts').open=!isMobile();
-  $('selImage').src=s.view||s.image;$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('ssImg').src=s.thumb;$('ssName').textContent=f.name;$('ssTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
+  $('selImage').src=s.view||s.image;guideLabels(s);$('selImage').alt=f.name+' 예시';$('selName').textContent=f.name;$('selTag').textContent=s.tag;$('ssImg').src=s.thumb;$('ssName').textContent=f.name;$('ssTag').textContent=s.tag;$('selWhat').textContent=(GUIDE[s.key]||[''])[0];
   const alts=samples.filter(x=>x.group===s.group);
   $('altStrip').replaceChildren(...alts.map(x=>{const b=document.createElement('button');b.className='alt'+(x.key===s.key?' active':'');b.title=info[x.key].name;
     const im=document.createElement('img');im.src=x.thumb;im.alt='';im.loading='lazy';const sp=document.createElement('span');sp.textContent=info[x.key].name;b.append(im,sp);
@@ -993,7 +1005,7 @@ function build(){
   const s=sample(),f=info[s.key];
   const grade=val('grade'),subject=val('subject'),topic=val('topic'),attach=$('attach').checked;
   const extras=val('extra').split(/\n+/).map(s=>s.trim()).filter(Boolean);
-  const contents=attach?[]:val('content').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const contents=val('content').split(/\n+/).map(s=>s.trim()).filter(Boolean);
   const who=[grade,subject].filter(Boolean).join(' ');
   const dT=(s.demoTopic||'구운몽').replace(/[「」『』\s]/g,''),dS=(s.demoSubject||'국어').replace(/\s/g,''),dW=s.demoWho||'고3 국어';
   const demo=!isAdm(s)&&topic.replace(/[「」『』\s]/g,'')===dT&&(subject.replace(/\s/g,'')===dS||!subject)&&(s.demoWho||!grade||/고등학교|대학생/.test(grade));
@@ -1014,7 +1026,7 @@ ${topic?`이미지 맨 위 큰 제목은 ${tq}${josa(topic,'으로','로')} 쓰�
     parts.push(`[이미지 역할 구분]\n- 예시 이미지('${f.name}'): 레이아웃·구성·색감·글꼴 느낌만 참고하는 '모양 기준'입니다. 그 안의 글과 내용은 쓰지 마세요.\n- 그 밖에 함께 올린 이미지(교과서·필기 사진, 학습지 스캔 등): 내용을 읽어 오는 '내용 출처'입니다. 그 사진의 배치·디자인·글꼴은 따라 하지 말고, 배치는 예시 이미지를 따르세요.`);
     parts.push(`[결과 형식]\n${f.shape.includes('. ')?f.shape.replace(/\.?$/,'.'):'맨 위에 큰 제목(필요하면 한 줄 부제)을 두고, '+f.shape+'.'} 독립된 한 장의 세로형 고해상도 ${isAdm(s)?'배포·게시용 자료':'학습 자료'}로 완성하고, 내용이 많아 글자가 작아지면 여러 장으로 나누세요.`);
     if(attach){
-      parts.push(`[첨부 자료 활용]\n함께 첨부한 자료(교과서·필기 사진, 학습지, 요약본, PDF, 수업 자료 등)를 먼저 꼼꼼히 읽고 핵심 내용을 뽑아 정리해 주세요.\n- 자료에 나온 용어·표기·순서·강조점을 그대로 우선 사용하세요.\n- 자료가 여러 개면 겹치는 내용은 합치고 빠진 부분은 보충하되, 자료에 없는 내용은 '보충'이라고 표시하세요.\n- 글씨가 흐릿하거나 범위가 불분명하면 만들기 전에 먼저 질문해 주세요.\n- 첨부 자료가 사진·스캔 이미지여도 그것은 내용을 읽는 용도입니다. 그 사진의 모양을 따라 그리지 말고, 배치와 구성은 예시 이미지('${f.name}')를 따르세요.`);
+      parts.push(`[첨부 자료 활용]\n함께 첨부한 자료(교과서·필기 사진, 학습지, 요약본, PDF, 수업 자료 등)를 먼저 꼼꼼히 읽고 핵심 내용을 뽑아 정리해 주세요.\n- 자료에 나온 용어·표기·순서·강조점을 그대로 우선 사용하세요.\n- 자료가 여러 개면 겹치는 내용은 합치고 빠진 부분은 보충하되, 자료에 없는 내용은 '보충'이라고 표시하세요.\n- 글씨가 흐릿하거나 범위가 불분명하면 만들기 전에 먼저 질문해 주세요.\n- 첨부 자료가 사진·스캔 이미지여도 그것은 내용을 읽는 용도입니다. 그 사진의 모양을 따라 그리지 말고, 배치와 구성은 예시 이미지('${f.name}')를 따르세요.${contents.length?'\n- 특히 다음을 꼭 담아 주세요: '+contents.join(' / '):''}`);
     }else{
       if(contents.length)parts.push(`[${isAdm(s)?'안내 내용':'학습 내용'}]\n첨부 자료 대신 아래 내용을 근거로 작성해 주세요. ${isAdm(s)?'아래에 없는 항목이 꼭 필요하면 ( )로 비워 두고, 날짜·장소·비용·이름은 지어내지 마세요.':"아래에 없는 내용을 보충했다면 이미지 안에 표시하지 말고 답변 글에서 따로 알려 주시고, 확실하지 않은 사실은 넣지 마세요."}\n${contents.map(x=>'- '+x).join('\n')}`);
       else parts.push(isAdm(s)?`[자료 없음]\n첨부 자료가 없으므로 ${topic?`'${topic}'에 `:''}일반적으로 들어가는 항목을 갖추되, 날짜·장소·비용·연락처·학교명은 ( )와 ○○로 비워 두고 지어내지 마세요.`:`[자료 없음]\n첨부 자료가 없으므로 ${topic?`'${topic}'의 `:''}교과서 수준의 일반적인 내용을 기준으로 작성해 주세요. 자료를 분석했다고 말하지 말고, 확실하지 않은 내용은 넣지 마세요.`);
@@ -1082,9 +1094,15 @@ function refreshPlaceholders(){
   const ex=poolFor('extra');$('extra').placeholder='예) '+[...ex.slice(0,1),...pick(ex.slice(1),2)].join('\n');
   const ce=contentExamples().items.slice(0,3);$('content').placeholder='예) '+ce.join('\n');
 }
+function fitGuide(){const im=$('selImage'),g=$('fguide');if(g.hidden||!im.naturalWidth)return;const cw=im.clientWidth,ch=im.clientHeight,s=Math.min(cw/im.naturalWidth,ch/im.naturalHeight),w=im.naturalWidth*s,h=im.naturalHeight*s;
+  g.style.left=(im.offsetLeft+(cw-w)/2)+'px';g.style.top=(im.offsetTop+(ch-h)/2)+'px';g.style.width=w+'px';g.style.height=h+'px'}
+function setGuide(on){const g=$('fguide'),b=$('fgBtn');g.hidden=!on;b.setAttribute('aria-pressed',on);try{localStorage.setItem('fguide',on?'1':'0')}catch{}if(on)fitGuide()}
+function guideLabels(s){if(!s)return;const adm=isAdm(s);$('fgBody').textContent=adm?(s.group==='blank'?'학습 내용 → 칸 구성':'안내 내용 / 첨부 자료'):'학습 내용 / 첨부 자료';const z1=document.querySelector('.fg.z1 b');z1.textContent=adm?(s.group==='blank'?'양식 이름':'행사·자료 이름 · 대상'):'제목(주제) · 학년·과목'}
 function applyAttachMode(){
   const attach=$('attach').checked;
-  $('contentWrap').hidden=attach;
+  $('contentWrap').hidden=false;$('contentWrap').classList.toggle('opt',attach);
+  const s0=sample(),sch0=!!(s0&&isAdm(s0));$('contentLabel').innerHTML=attach?(sch0?'강조할 내용 <span style="font-weight:400">(선택 · 첨부 자료에서 꼭 넣을 일시·장소·항목)</span>':'강조할 내용 <span style="font-weight:400">(선택 · 첨부 자료에서 꼭 넣을 범위·용어·문항)</span>'):(sch0?'포함할 내용 <i class="req">*</i> <span style="font-weight:400">(일시·장소·준비물 등을 한 줄씩)</span>':'학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span>');
+  $('content').placeholder=attach?'예) 2단원 2절 범위만\n용어는 교과서 표기 그대로\n3번 문항은 꼭 포함':$('content').dataset.ph;
   renderExamples('extra');renderExamples('content');refreshPlaceholders();
 }
 renderExamples('topic');applyAttachMode();
@@ -1092,6 +1110,8 @@ $('grade').addEventListener('change',()=>{renderExamples('topic');refreshPlaceho
 $('extra').addEventListener('input',()=>{setCurrent(2);build()});$('content').addEventListener('input',()=>{setCurrent(2);build();if(val('content'))$('contentWrap').classList.remove('invalid')});
 $('topic').addEventListener('input',()=>{renderExamples('content');$('content').placeholder='예) '+contentExamples().items.slice(0,3).join('\n')});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
+$('content').dataset.ph=$('content').placeholder;$('fgBtn').onclick=()=>setGuide($('fguide').hidden);$('selImage').addEventListener('load',fitGuide);window.addEventListener('resize',fitGuide);
+(()=>{let on=true;try{on=localStorage.getItem('fguide')!=='0'}catch{}setGuide(on)})();
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
 function updateLength(){const n=$('output').value.length;const long=n>3000;$('length').textContent=n.toLocaleString()+'자'+(long?' · 조금 길어요 (3,000자 이내 권장)':'');$('length').classList.toggle('warn',long)}
 $('output').addEventListener('input',updateLength);
@@ -1126,7 +1146,7 @@ $('copyImage').onclick=async()=>{
     $('refDownload').click();imgDone('이 브라우저는 이미지 복사가 안 되어 파일로 저장했습니다. 저장된 파일을 첨부하세요.');
   }
 };
-function resetInputs(){['grade','subject','topic','extra','content'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;$('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);build();}
+function resetInputs(){['grade','subject','topic','extra','content'].forEach(id=>$(id).value='');$('subjectSel').value='';$('subject').hidden=true;document.querySelectorAll('#step2 .field.invalid').forEach(f=>f.classList.remove('invalid'));$('reqMsg').hidden=true;Object.keys(tune).forEach(k=>delete tune[k]);renderTunes();$('attach').checked=true;$('attachInfo').hidden=false;applyAttachMode();$('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);build();}
 $('reset').onclick=()=>{resetInputs();toast('모두 지웠어요')};
 
 window.addEventListener('pageshow',()=>{syncSubject();renderExamples('topic');renderExamples('extra');if(active)build()});
