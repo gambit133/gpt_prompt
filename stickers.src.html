@@ -158,7 +158,8 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
   .pack .pv{grid-template-columns:repeat(4,1fr)}.pack .pv img:nth-child(n+5){display:none}
   .pack small{display:none}.peek{display:none!important}
 }
-@media(max-width:700px){.minepanel{grid-template-columns:minmax(0,1fr)}.bkcard{padding:6px 6px 6px 12px}.bkt{flex:1}.obtn{padding:7px 9px;font-size:12.5px}.tol input{width:70px}}
+@media(max-width:700px){.mbar{flex-wrap:nowrap;gap:10px;padding:7px 10px}.mbar .btn{flex:none;padding:8px 11px}.mbar .chk,.mbar .tol{white-space:nowrap;flex:none}.mbar .tol{flex:1;min-width:0}.mbar .tol input{flex:1;min-width:40px;max-width:160px;width:auto}.minepanel{grid-template-columns:minmax(0,1fr)}.bkcard{padding:6px 6px 6px 12px}.bkt{flex:1}.obtn{padding:7px 9px;font-size:12.5px}}
+@media(max-width:430px){.mbar .lg{display:none}}
 @media(max-width:560px){
   .packs{display:flex!important;overflow-x:auto;gap:6px;padding:2px 2px 6px;scroll-snap-type:x proximity;scrollbar-width:none}
   .packs::-webkit-scrollbar{display:none}
@@ -218,7 +219,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
     </div>
     <div class="minepanel" id="minePanel" hidden>
       <div class="mbar dropzone" id="dropZone">
-        <label class="btn primary sm" for="fileIn" title="클릭 · 끌어 놓기 · Ctrl+V">＋ 이미지 추가</label><input type="file" id="fileIn" accept="image/*" multiple hidden>
+        <label class="btn primary sm" for="fileIn" title="클릭 · 끌어 놓기 · Ctrl+V">＋ <span class="lg">이미지 </span>추가</label><input type="file" id="fileIn" accept="image/*" multiple hidden>
         <label class="chk" title="단색 배경을 투명하게 지워요"><input type="checkbox" id="bgRemove" checked>배경 지우기</label>
         <label class="tol" title="높을수록 배경과 비슷한 색까지 지워요">강도 <input type="range" id="bgTol" min="10" max="90" value="40"><output id="tolVal">40</output></label>
       </div>
