@@ -149,13 +149,13 @@ body.school .field-subject{display:none}
 .selbar strong{font-size:14px}
 .selbar .spacer{flex:1}
 .badge2{display:inline-block;font-size:10.5px;background:var(--ink);color:#fff;border-radius:999px;padding:1px 8px}
-.work-grid{display:grid;grid-template-columns:minmax(280px,36%) minmax(0,1fr);gap:14px;align-items:start;animation:fade .35s ease}
+.work-grid{display:grid;grid-template-columns:minmax(300px,42%) minmax(0,1fr);gap:14px;align-items:start;animation:fade .35s ease}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}}
 .preview{position:sticky;top:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .editor{min-width:0}
 .alts{min-width:0}
 .preview-img{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:0 14px 30px -24px rgba(59,42,30,.35)}
-.preview-img img{display:block;width:100%;max-height:max(360px,calc(100vh - 300px));object-fit:contain;border-radius:10px;background:#f7efe2;cursor:zoom-in}
+.preview-img img{display:block;width:100%;max-height:max(420px,calc(100vh - 190px));object-fit:contain;border-radius:10px;background:#f7efe2;cursor:zoom-in}
 .preview-img .zoom{position:absolute;top:18px;right:18px;border:1px solid rgba(255,255,255,.7);background:rgba(255,254,250,.85);backdrop-filter:blur(6px);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;transition:all .2s}
 #selZoom{display:none}
 .preview-img .zoom:hover{background:var(--accent);color:var(--on-accent);border-color:var(--accent-text)}
@@ -483,6 +483,18 @@ dialog.guide{width:min(96vw,640px)}
 #splash{position:fixed;inset:0;z-index:999;background:var(--paper);display:grid;place-items:center;transition:opacity .4s}#splash.out{opacity:0;pointer-events:none}#splash .sin{display:grid;justify-items:center;gap:6px}#splash img.lg{width:min(70vw,260px);height:auto}
 @media(prefers-reduced-motion:reduce){.capy img{animation:none}}
 .lblhint{font-weight:600;font-size:11.5px;color:var(--muted);margin-left:6px}
+/* input screen: larger type */
+#step2 .field label{font-size:13px}
+#step2 .field input,#step2 .field select{font-size:15px;height:42px}
+#step2 textarea{font-size:14.5px;line-height:1.6}
+#step2 .lblhint,#step2 .exbox summary{font-size:12.5px}
+#step2 .exbox .shuffle{font-size:12px}
+#step2 .tag{font-size:13px}
+#step2 .tune summary,#step2 .toggle{font-size:14px}
+#step2 .tune-row>b{font-size:12.5px;width:46px}
+#step2 .attach{font-size:13px}
+#step2 .attach-sub{font-size:12.5px}
+#step2 .autorules,#step2 #contentTip{font-size:13px}
 </style>
 </head>
 <body>
