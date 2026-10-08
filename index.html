@@ -90,12 +90,11 @@ body.school .field-subject{display:none}
 .topnav a:hover{color:var(--ink);background:var(--soft2)}
 .topnav a.on{color:var(--ink);background:var(--soft)}
 @media(max-width:520px){.topnav a{font-size:13px;padding:6px 9px}}
-.peek{position:fixed;z-index:90;width:380px;background:#fff;border:3px solid var(--accent);border-radius:18px;box-shadow:0 0 0 6px rgba(255,255,255,.85),0 30px 60px -16px rgba(40,28,18,.6);padding:8px;pointer-events:none;opacity:0;transform:scale(.97);transition:opacity .1s,transform .1s}
+.peek{position:fixed;z-index:90;width:380px;background:#fff;border:3px solid var(--accent);border-radius:18px;box-shadow:0 0 0 6px rgba(255,255,255,.85),0 30px 60px -16px rgba(40,28,18,.6);padding:8px;pointer-events:none;opacity:0;transform:scale(var(--s,.7));transform-origin:center;transition:opacity .12s,transform .16s cubic-bezier(.2,.8,.2,1)}
 .peek.show{opacity:1;transform:none}
-.peek img{display:block;width:100%;max-height:72vh;object-fit:contain;border-radius:10px;background:#f7efe2}
+.peek img{display:block;width:100%;max-height:calc(100vh - 70px);object-fit:contain;border-radius:10px;background:#f7efe2}
 .peek b{display:block;font-size:14px;margin:7px 0 2px;text-align:center}
-body.peeking .gallery .card:not(.peeksrc){opacity:.35;filter:saturate(.5);transition:opacity .12s,filter .12s}
-body.peeking .gallery .card.peeksrc{outline:3px solid var(--accent);outline-offset:2px;border-radius:14px}
+body.peeking .gallery .card:not(.peeksrc){opacity:.55;filter:saturate(.7);transition:opacity .12s,filter .12s}
 .gallery .card{transition:opacity .12s,filter .12s}
 @media(max-width:900px),(pointer:coarse){.peek{display:none}}
 .tabs{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;margin:2px 0 8px;padding:3px 2px 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -516,6 +515,30 @@ dialog.guide{width:min(96vw,640px)}
   .output{font-size:14.5px;line-height:1.65}
   .selbar,.selbar b{font-size:15px}
 }
+.lightbox{border:0;padding:0;background:transparent;max-width:100vw;max-height:100vh;width:100vw;height:100vh;cursor:zoom-out}
+.lightbox[open]{display:grid;place-items:center}
+.lightbox::backdrop{background:rgba(20,14,10,.86)}
+.lightbox img{max-width:94vw;max-height:90vh;object-fit:contain;border-radius:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7);background:#fff}
+.lightbox .lbhint{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.75);font-size:12.5px}
+#histView .hhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:12px}
+#histView h2{margin:0;font-size:18px}
+#histView .hsub{font-size:12.5px;color:var(--muted)}
+#histView .sp{flex:1}
+#histClearAll.armed{background:#d2452f;color:#fff;border-color:#d2452f}
+.hday{margin:16px 2px 8px;font-size:13px;font-weight:800;color:var(--accent-text)}
+.hitem{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:8px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.hitem:hover{border-color:var(--accent);box-shadow:0 8px 18px -12px rgba(59,42,30,.45)}
+.hitem img{width:64px;height:90px;object-fit:cover;object-position:top;border-radius:8px;flex:none;background:#f7efe2;border:1px solid var(--line)}
+.hitem .hb{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.hitem .ht{font-size:15px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hitem .hm{font-size:12.5px;color:var(--muted)}
+.hitem .hc{font-size:12.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hitem .hchips{display:flex;flex-wrap:wrap;gap:4px}
+.hitem .hchips span{font-size:11.5px;background:var(--soft2);border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--muted)}
+.hitem .ha{display:flex;flex-direction:column;gap:6px;flex:none}
+.hitem .ha button{font-size:12.5px;padding:6px 10px}
+.hempty{padding:30px 10px;text-align:center;color:var(--muted);font-size:14px}
+@media(max-width:560px){.hitem img{width:52px;height:74px}.hitem .ha button{padding:6px 8px}}
 </style>
 </head>
 <body>
@@ -524,7 +547,7 @@ dialog.guide{width:min(96vw,640px)}
   <div class="topbar">
     <a class="brand" id="homeLink" href="#" title="홈으로"><img class="logo" src="assets/logo-capy.png" alt="쌤플레이"></a>
     <nav class="topnav" aria-label="주 메뉴"><a href="#" id="navSample" class="on">쌤플 프롬프트</a><a href="stickers.html">PPT 치트키</a></nav>
-    <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="#" id="favLink">찜 목록 <span class="n" id="favCount">0</span></a><hr class="msep"><a href="#" id="menuHome">쌤플 고르기</a><a href="stickers.html">PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
+    <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="#" id="favLink">찜 목록 <span class="n" id="favCount">0</span></a><a href="#" id="histLink">사용 이력 <span class="n" id="histCount">0</span></a><hr class="msep"><a href="#" id="menuHome">쌤플 고르기</a><a href="stickers.html">PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
   </div>
 </header>
 
@@ -540,6 +563,10 @@ dialog.guide{width:min(96vw,640px)}
     <p id="noResult" class="hint" hidden>해당하는 쌤플이 없어요. 다른 스타일이나 분류를 골라 보세요.</p>
   </section>
 
+  <section class="step current" id="histView" hidden aria-labelledby="hTitle">
+    <div class="hhead"><h2 id="hTitle">사용 이력</h2><span class="hsub">프롬프트 생성 기록 · 이 브라우저에만 저장돼요</span><span class="sp"></span><button type="button" class="secondary small" id="histClearAll">전체 기록 지우기</button></div>
+    <div id="histList"></div>
+  </section>
   <section id="work" hidden aria-label="프롬프트 만들기">
     <button class="stickysel" id="stickySel" hidden type="button" title="크게 보기"><img id="ssImg" alt=""><strong id="ssName"></strong><span class="badge2" id="ssTag"></span></button>
     <a href="#" id="changePick" class="backlink">← 다른 쌤플 고르기</a>
@@ -606,11 +633,12 @@ dialog.guide{width:min(96vw,640px)}
   </section>
 </main>
 
-<footer class="wrap">쌤플레이 · 입력 내용은 저장되지 않습니다</footer>
+<footer class="wrap">쌤플레이 · 입력 내용은 서버로 보내지 않아요</footer>
 
 <div id="peek" class="peek" aria-hidden="true"><img alt=""><b></b></div>
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
 <div id="float" class="float" hidden role="status"><span class="capy capy-dance h48" aria-hidden="true"><img loading="lazy" src="assets/capy-dance.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-dance.png'"></span><div class="ftext"><b id="floatTitle">프롬프트 복사 완료</b><span id="floatText">ChatGPT에 프롬프트와 참고 자료를 올려서 생성해 주세요. 예시 이미지 링크는 프롬프트에 들어 있어요.</span></div><button id="floatSave" class="primary small" hidden>📁 예시 이미지 저장</button><button id="floatImg" class="secondary small">🖼️ 예시 이미지 복사 (선택)</button><button id="floatHelp" type="button" aria-label="사용법 다시 보기" title="사용법 다시 보기">?</button><button id="floatX" aria-label="닫기">✕</button></div>
+<dialog id="lightbox" class="lightbox" aria-label="예시 이미지 크게 보기"><img id="lbImg" alt=""><span class="lbhint">아무 곳이나 누르면 닫혀요</span></dialog>
 <dialog id="guide" class="guide" aria-labelledby="gTitle">
   <button id="guideX" class="dx" aria-label="닫기">✕</button>
   <div class="gwrap">
@@ -887,7 +915,7 @@ function renderTabs(){
 let peekT;function showPeek(s,name,el){if(matchMedia('(max-width:900px),(pointer:coarse)').matches)return;clearTimeout(peekT);const pk=$('peek');const open=pk.classList.contains('show');
   peekT=setTimeout(()=>{const im=pk.querySelector('img');const full=s.view||s.image;im.src=s.thumb||full;if(s.thumb&&s.thumb!==full){const pre=new Image();pre.onload=()=>{if(pk.dataset.k===s.key)im.src=full};pre.src=full}
     pk.dataset.k=s.key;pk.querySelector('b').textContent=name;document.querySelectorAll('.card.peeksrc').forEach(c=>c.classList.remove('peeksrc'));const card=el.closest('.card');if(card)card.classList.add('peeksrc');document.body.classList.add('peeking');
-    const r=el.getBoundingClientRect();const w=380;let x=r.right+16;if(x+w>innerWidth-8)x=r.left-w-16;pk.style.left=Math.max(8,x)+'px';pk.style.top=Math.max(8,Math.min(r.top-20,innerHeight-Math.min(innerHeight*.72+70,600)-8))+'px';pk.classList.add('show')},open?0:60)}
+    const r=el.getBoundingClientRect();const w=Math.min(400,innerWidth-16),h=Math.min(innerHeight-16,w*1.5+40);const cx=r.left+r.width/2,cy=r.top+r.height/2;pk.style.width=w+'px';pk.style.left=Math.max(8,Math.min(innerWidth-w-8,cx-w/2))+'px';pk.style.top=Math.max(8,Math.min(innerHeight-h-8,cy-h/2))+'px';pk.style.setProperty('--s',Math.max(.4,Math.min(.95,r.width/w)));pk.classList.add('show')},open?0:60)}
 function hidePeek(){clearTimeout(peekT);peekT=setTimeout(()=>{$('peek').classList.remove('show');document.body.classList.remove('peeking');document.querySelectorAll('.card.peeksrc').forEach(c=>c.classList.remove('peeksrc'))},40)}
 window.addEventListener('scroll',hidePeek,{passive:true});
 function renderGallery(){
@@ -938,21 +966,61 @@ $('dialog').addEventListener('keydown',e=>{if(e.key==='ArrowLeft')dialogStep(-1)
 $('dialogX').onclick=()=>closeModal('dialog');
 $('dialog').onclick=e=>{if(e.target===$('dialog'))closeModal('dialog')};
 $('dialogPick').onclick=()=>{if(!dialogKey)return;const k=dialogKey;if(dialogFromWork){closeModal('dialog');enterWork(k,true,true)}else{suppressBack=true;history.replaceState({v:'work'},'');closeModal('dialog');suppressBack=false;enterWork(k,true,true)}};
-$('favLink').onclick=e=>{e.preventDefault();setMenu(false);favOnly=!favOnly;$('favLink').classList.toggle('active',favOnly);if($('dialog').open)closeModal('dialog');$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
+$('favLink').onclick=e=>{e.preventDefault();setMenu(false);hideHist();favOnly=!favOnly;$('favLink').classList.toggle('active',favOnly);if($('dialog').open)closeModal('dialog');$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';renderGallery();window.scrollTo({top:0,behavior:'smooth'})};
 saveFavs();if(location.hash==='#fav'){history.replaceState(null,'',location.pathname);setTimeout(()=>$('favLink').click(),0)}
+
+/* ---------- 사용 이력 ---------- */
+let hist=[];try{hist=JSON.parse(localStorage.getItem('hist')||'[]');if(!Array.isArray(hist))hist=[]}catch{hist=[]}
+function saveHist(){try{localStorage.setItem('hist',JSON.stringify(hist))}catch{}$('histCount').textContent=hist.length}
+function recordHist(){const s=sample();if(!s)return;const lines=id=>val(id).split(/\n+/).map(x=>x.trim()).filter(Boolean);
+  const r={key:s.key,grade:val('grade'),sub:val('subject'),topic:val('topic'),content:lines('content'),extra:lines('extra'),attach:$('attach').checked,tune:{...tune}};
+  const sig=JSON.stringify(r);const top=hist[0];if(top&&top.sig===sig){top.t=Date.now()}else hist.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:Date.now(),sig,...r});
+  hist=hist.slice(0,80);saveHist()}
+function dayLabel(ts){const d=new Date(ts),n=new Date();const k=x=>x.getFullYear()+'.'+String(x.getMonth()+1).padStart(2,'0')+'.'+String(x.getDate()).padStart(2,'0');const y=new Date(n);y.setDate(n.getDate()-1);return k(d)===k(n)?'오늘':k(d)===k(y)?'어제':k(d)}
+function tuneShort(tn){return TUNE_DEFS.map(([key,,opts])=>{const o=opts.find(x=>x[1]===tn[key]);return o?o[0]:''}).filter(Boolean)}
+function renderHist(){const box=$('histList');$('histClearAll').hidden=!hist.length;disarmClear();
+  if(!hist.length){box.innerHTML='<p class="hempty">아직 기록이 없어요.<br>입력 화면에서 <b>프롬프트 생성</b>을 누르면 여기에 저장돼요.</p>';return}
+  const out=[];let last='';
+  for(const r of hist){const s=byKey(r.key);if(!s)continue;const dl=dayLabel(r.t);if(dl!==last){const h=document.createElement('h3');h.className='hday';h.textContent=dl;out.push(h);last=dl}
+    const it=document.createElement('div');it.className='hitem';it.tabIndex=0;it.setAttribute('role','button');it.title='이 설정으로 다시 쓰기';
+    const im=new Image();im.src=s.thumb||s.image;im.alt='';im.loading='lazy';
+    const hb=document.createElement('div');hb.className='hb';
+    const ht=document.createElement('div');ht.className='ht';ht.textContent=r.topic||'(제목 없음)';
+    const tm=new Date(r.t);const hm=document.createElement('div');hm.className='hm';hm.textContent=[info[r.key].name,[r.grade,r.sub].filter(Boolean).join(' '),r.attach?'📎 자료 첨부':'',String(tm.getHours()).padStart(2,'0')+':'+String(tm.getMinutes()).padStart(2,'0')].filter(Boolean).join(' · ');
+    hb.append(ht,hm);
+    if(r.content.length){const hc=document.createElement('div');hc.className='hc';hc.textContent=(r.attach?'강조: ':'내용: ')+r.content.join(' / ');hb.append(hc)}
+    const chips=[...tuneShort(r.tune||{}),...(r.extra.length?['가이드라인 '+r.extra.length+'개']:[])];
+    if(chips.length){const hc=document.createElement('div');hc.className='hchips';hc.replaceChildren(...chips.map(c=>{const sp=document.createElement('span');sp.textContent=c;return sp}));hb.append(hc)}
+    const ha=document.createElement('div');ha.className='ha';const re=document.createElement('button');re.type='button';re.className='primary small';re.textContent='다시 쓰기';const del=document.createElement('button');del.type='button';del.className='secondary small';del.textContent='지우기';del.setAttribute('aria-label','이 기록 지우기');
+    re.onclick=e=>{e.stopPropagation();restoreHist(r)};del.onclick=e=>{e.stopPropagation();hist=hist.filter(x=>x.id!==r.id);saveHist();renderHist()};it.onclick=()=>restoreHist(r);it.onkeydown=e=>{if(e.key==='Enter')restoreHist(r)};
+    ha.append(re,del);it.append(im,hb,ha);out.push(it)}
+  box.replaceChildren(...out)}
+function disarmClear(){const b=$('histClearAll');b.classList.remove('armed');b.textContent='전체 기록 지우기'}
+$('histClearAll').onclick=()=>{const b=$('histClearAll');if(!b.classList.contains('armed')){b.classList.add('armed');b.textContent='한 번 더 누르면 모두 지워요';setTimeout(disarmClear,3500);return}hist=[];saveHist();renderHist();toast('사용 이력을 모두 지웠어요')};
+function showHist(push=true){setMenu(false);if($('dialog').open)closeModal('dialog');favOnly=false;$('favLink').classList.remove('active');$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=true;$('histView').hidden=false;$('histLink').classList.add('active');renderHist();if(push)navPush('history');window.scrollTo({top:0,behavior:'smooth'})}
+function hideHist(){$('histView').hidden=true;$('histLink').classList.remove('active')}
+function restoreHist(r){if(!byKey(r.key))return;hideHist();enterWork(r.key,true);
+  applyPreset({grade:r.grade,sub:r.sub,topic:r.topic,content:r.content||[],extra:r.extra||[]});
+  $('attach').checked=!!r.attach;$('attachInfo').hidden=!r.attach;applyAttachMode();
+  Object.keys(tune).forEach(k=>delete tune[k]);Object.assign(tune,r.tune||{});renderTunes();build();toast('이전 설정을 불러왔어요')}
+$('histLink').onclick=e=>{e.preventDefault();showHist()};
+saveHist();
 
 /* ---------- back button (mobile) ---------- */
 let dialogFromWork=false,suppressBack=false,popping=false,resetOnPop=false;
 function navState(){return history.state&&history.state.v}
 function navPush(v){if(navState()!==v)history.pushState({v},'')}
-function showChoose(){$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
+function showChoose(){hideHist();$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
 function closeModal(id){if(!$(id).open)return;$(id).close();if(!popping&&!suppressBack&&navState()===id)history.back()}
-['dialog','guide'].forEach(id=>$(id).addEventListener('cancel',e=>{e.preventDefault();closeModal(id)}));
+['dialog','guide','lightbox'].forEach(id=>$(id).addEventListener('cancel',e=>{e.preventDefault();closeModal(id)}));
 window.addEventListener('popstate',()=>{const v=navState();popping=true;
   if(v!=='guide'&&$('guide').open)$('guide').close();
   if(v!=='dialog'&&$('dialog').open)$('dialog').close();
+  if(v!=='lightbox'&&$('lightbox').open)$('lightbox').close();
   popping=false;
-  if(v!=='work'&&v!=='dialog'&&v!=='guide'&&!$('work').hidden){if(resetOnPop){resetOnPop=false;goHome()}else showChoose()}
+  if(v==='history'){showHist(false);return}
+  if(v!=='history'&&!$('histView').hidden){hideHist();showChoose();return}
+  if(v!=='work'&&v!=='dialog'&&v!=='guide'&&v!=='lightbox'&&!$('work').hidden){if(resetOnPop){resetOnPop=false;goHome()}else showChoose()}
   else if(resetOnPop){resetOnPop=false;goHome()}});
 function leaveWork(reset){if(navState()==='work'){resetOnPop=!!reset;history.back()}else if(reset)goHome();else showChoose()}
 
@@ -967,7 +1035,7 @@ function lockStep3(lock){$('step3').classList.toggle('locked',lock);if(lock)$('s
 function enterWork(key,scroll=true,noPush=false){
   const changed=active!==key;active=key;if(changed&&typeof resetInputs==='function')resetInputs();const s=sample();role=s.role;if(tab!=='all')tab=s.group;const sch=isAdm(s);document.body.classList.toggle('school',sch);$('topicLabel').innerHTML=(sch?(s.group==='blank'?'양식 이름':'행사·자료 이름'):'제목(주제)')+' <i class="req">*</i><small class="lblhint">이미지 큰 제목이 돼요</small>';applyAttachMode();
   document.body.classList.toggle('teacher',role==='teacher');
-  $('choose').hidden=true;$('work').hidden=false;if(!noPush&&navState()!=='work')navPush('work');
+  hideHist();$('choose').hidden=true;$('work').hidden=false;if(!noPush&&navState()!=='work')navPush('work');
   $('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);
   renderPreview();renderExamples('topic');renderExamples('extra');renderExamples('content');refreshPlaceholders();build();
   if(scroll)window.scrollTo({top:0,behavior:'smooth'});
@@ -981,15 +1049,17 @@ function renderPreview(){
     b.onclick=()=>{enterWork(x.key,false)};return b}));
   const act=$('altStrip').querySelector('.alt.active');if(act)act.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
 }
-function goHome(){favOnly=false;$('favLink').classList.remove('active');$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
+function goHome(){hideHist();favOnly=false;$('favLink').classList.remove('active');$('stickySel').hidden=true;$('work').hidden=true;$('choose').hidden=false;setCurrent(1);tab='all';styleFilter='전체';query='';renderGallery();window.scrollTo({top:0,behavior:'smooth'})}
 $('changePick').onclick=e=>{e.preventDefault();leaveWork(false)};
 $('navSample').onclick=e=>{e.preventDefault();$('homeLink').click()};
 $('homeLink').onclick=e=>{e.preventDefault();if($('dialog').open)closeModal('dialog');if(!$('work').hidden)leaveWork(true);else goHome()};
-$('menuHome').onclick=e=>{e.preventDefault();setMenu(false);if($('dialog').open)closeModal('dialog');if(!$('work').hidden)leaveWork(true);else goHome()};
+$('menuHome').onclick=e=>{e.preventDefault();setMenu(false);if($('dialog').open)closeModal('dialog');if(!$('histView').hidden){hideHist();goHome();return}if(!$('work').hidden)leaveWork(true);else goHome()};
 function setMenu(open){$('menuList').hidden=!open;$('menuBtn').classList.toggle('open',open);$('menuBtn').setAttribute('aria-expanded',open)}
 $('menuBtn').onclick=e=>{e.stopPropagation();setMenu($('menuList').hidden)};
 document.addEventListener('click',e=>{if(!document.querySelector('.menu').contains(e.target))setMenu(false)});
-$('selImage').onclick=$('selZoom').onclick=$('stickySel').onclick=()=>openDialog(active);
+$('selZoom').onclick=$('stickySel').onclick=()=>openDialog(active);
+$('selImage').onclick=()=>{const s=sample();if(!s)return;$('lbImg').src=s.view||s.image;$('lbImg').alt=info[s.key].name+' 예시';if(!$('lightbox').open){$('lightbox').showModal();navPush('lightbox')}};
+$('lightbox').onclick=()=>closeModal('lightbox');
 const ssIO=new IntersectionObserver(es=>{const en=es[es.length-1];$('stickySel').hidden=$('work').hidden||en.isIntersecting||en.boundingClientRect.top>0},{threshold:0});ssIO.observe(document.querySelector('.preview-img'));
 const REQUIRED=['grade','subject','topic'];
 const REQ_NAME={grade:'학년',subject:'과목',topic:'주제',content:'학습 내용'};
@@ -997,7 +1067,7 @@ function syncSubject(){const v=$('subjectSel').value;if(v&&v!=='__custom'){$('su
 function validate(){syncSubject();const missing=[];let req=$('attach').checked?REQUIRED:[...REQUIRED,'content'];const s0=sample();if(s0&&isAdm(s0))req=req.filter(x=>x!=='subject');for(const id of req){const bad=!val(id);$(id).closest('.field').classList.toggle('invalid',bad);if(bad)missing.push(REQ_NAME[id])}
   $('reqMsg').hidden=!missing.length;if(missing.length)$('reqMsg').textContent=missing.join(', ')+(missing.length>1?'을(를)':'을(를)')+' 입력해 주세요.';return !missing.length}
 $('next').onclick=()=>{if(!validate()){const first=document.querySelector('#step2 .field.invalid input,#step2 .field.invalid select,#step2 .field.invalid textarea');if(first){if(isMobile())first.scrollIntoView({behavior:'smooth',block:'center'});else first.focus()}return}
-  unlocked=true;setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});if(!isMobile())setTimeout(()=>$('output').focus({preventScroll:true}),400)};
+  unlocked=true;recordHist();setCurrent(3);$('step3').scrollIntoView({behavior:'smooth',block:'start'});if(!isMobile())setTimeout(()=>$('output').focus({preventScroll:true}),400)};
 $('subjectSel').addEventListener('change',()=>{fillKey=null;const v=$('subjectSel').value;if(v==='__custom'){$('subject').hidden=false;$('subject').value='';if(!isMobile())$('subject').focus()}else{$('subject').hidden=true;$('subject').value=v}$('subject').dispatchEvent(new Event('input'));renderExamples('topic');renderExamples('extra');renderExamples('content');refreshPlaceholders()});
 REQUIRED.forEach(id=>$(id).addEventListener('input',()=>{if(val(id))$(id).closest('.field').classList.remove('invalid');if(REQUIRED.every(i=>val(i))&&($('attach').checked||val('content')))$('reqMsg').hidden=true}));
 $('output').addEventListener('focus',()=>setCurrent(3));
