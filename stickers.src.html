@@ -16,7 +16,7 @@ body{background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",
 header{display:flex;align-items:center;gap:12px;padding:14px 0 6px}
 header .logo{height:48px;display:block}
 .topnav{display:flex;gap:4px;margin-left:auto}
-.topnav a{font-size:14px;font-weight:800;color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:999px}
+.topnav a{font-size:16px;font-weight:800;color:var(--muted);text-decoration:none;padding:9px 16px;border-radius:999px}
 .topnav a:hover{color:var(--ink);background:var(--soft2)}
 .topnav a.on{color:var(--ink);background:var(--soft)}
 .menu{position:relative;flex:none}
@@ -26,23 +26,24 @@ header .logo{height:48px;display:block}
 .menulist{position:absolute;right:0;top:calc(100% + 10px);background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:0 18px 34px -16px rgba(0,0,0,.4);padding:4px;min-width:140px;z-index:60;display:grid}
 .menulist[hidden]{display:none}
 .menulist a{text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:600;padding:7px 10px;border-radius:7px}
+.menulist .msep{border:0;border-top:1px solid var(--line);margin:4px 6px}
 .menulist a:hover{background:var(--soft2);color:var(--accent-text)}
 .hero{margin:6px 0 14px}
 .hero h1{margin:0;font-size:26px;letter-spacing:-.03em}
 .hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--accent2) 62%)}
 .hero p{margin:6px 0 0;font-size:14px;color:var(--muted);line-height:1.55}
-.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;align-items:start}
-.side{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;padding:2px 4px 8px 2px;scrollbar-width:thin}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px;align-items:start}
+.side{position:sticky;top:12px;padding:2px}
 .side h2{font-size:12px;color:var(--muted);margin:2px 2px 8px}
-.packs{display:grid;gap:8px}
-.pack{position:relative;width:100%;border:1.5px solid var(--line);background:var(--card);border-radius:16px;padding:10px;cursor:pointer;text-align:left;font:inherit;color:var(--ink);transition:transform .15s,box-shadow .15s,border-color .15s}
+.packs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pack{position:relative;width:100%;border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:7px;cursor:pointer;text-align:left;font:inherit;color:var(--ink);transition:transform .15s,box-shadow .15s,border-color .15s}
 .pack:hover{border-color:var(--line2);transform:translateY(-2px);box-shadow:0 10px 20px -14px rgba(59,42,30,.45)}
 .pack.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring);background:#fff}
-.pack .pv{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:8px}
+.pack .pv{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:5px}
 .pack .pv img{width:100%;aspect-ratio:1;object-fit:contain}
-.pack b{font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.pack b{font-size:12.5px;display:flex;justify-content:space-between;align-items:center}
 .pack b span{font-size:11px;font-weight:700;color:var(--muted);background:var(--soft);border-radius:999px;padding:2px 8px}
-.pack small{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.pack small{display:none}
 .peek{position:fixed;z-index:80;width:360px;background:#fff;border:1.5px solid var(--line2);border-radius:16px;box-shadow:0 24px 40px -18px rgba(59,42,30,.5);padding:12px;display:none;pointer-events:none}
 .peek.show{display:block}
 .peek b{display:block;font-size:13px;margin-bottom:8px}
@@ -76,7 +77,7 @@ header .logo{height:48px;display:block}
 .item .lb{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;background:rgba(255,253,248,.95);padding:1px 6px;border-radius:6px}
 .item:hover .lb{opacity:1}
 .marquee{position:absolute;border:1.5px dashed var(--sel);background:rgba(47,125,225,.1);pointer-events:none;display:none;z-index:30}
-.tip{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;margin:0 0 24px}
+.tip{margin:0 0 24px}
 .tip div{font-size:12.5px;color:var(--muted);line-height:1.6;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .tip b{color:var(--ink)}
 .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:70;max-width:92vw;text-align:center}
@@ -84,7 +85,8 @@ header .logo{height:48px;display:block}
 footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
 @media(max-width:900px){
   .layout{grid-template-columns:1fr}
-  .side{position:static;max-height:none;overflow:visible;padding:0}
+  .side{position:static;padding:0}
+  .packs{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))!important}
   .side h2{display:none}
   .packs{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
   .pack .pv{grid-template-columns:repeat(4,1fr)}.pack .pv img:nth-child(n+5){display:none}
@@ -103,14 +105,14 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
   <a href="index.html" title="쌤플레이 홈"><img class="logo" src="assets/logo-capy.png" alt="쌤플레이"></a>
   <nav class="topnav" aria-label="주 메뉴"><a href="index.html">쌤플 프롬프트</a><a href="stickers.html" class="on">PPT 치트키</a></nav>
   <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button>
-    <nav id="menuList" class="menulist" hidden><a href="index.html">쌤플 고르기</a><a href="index.html#fav">♥ 찜 목록</a><a href="stickers.html">🧩 PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
+    <nav id="menuList" class="menulist" hidden><a href="index.html#fav">찜 목록</a><hr class="msep"><a href="index.html">쌤플 고르기</a><a href="stickers.html">PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
 </header>
 <div class="hero">
   <h1>바로 복붙 가능한 <em>PPT 치트키</em> 모음집!</h1>
-  <p>모두 투명 배경이에요. 끌어서 배치하고, 빈 곳을 드래그해 여러 개를 고른 뒤 <b>선택 복사</b> → PPT에서 <b>Ctrl+V</b>.</p>
+  <p>투명 배경 · 끌어서 배치 · 골라서 <b>복사</b> → PPT에서 <b>Ctrl+V</b></p>
 </div>
 <div class="layout">
-  <aside class="side"><h2>치트키 묶음 · 마우스를 올리면 전체 미리보기</h2><div class="packs" id="tabs" role="tablist" aria-label="치트키 묶음"></div></aside>
+  <aside class="side"><h2>묶음 · 올리면 미리보기</h2><div class="packs" id="tabs" role="tablist" aria-label="치트키 묶음"></div></aside>
   <section class="main">
     <div class="toolbar">
       <button class="btn primary" id="copyBtn" disabled>📋 선택 복사</button>
@@ -124,11 +126,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
       <span class="bgsw" role="group" aria-label="미리보기 배경"><button data-bg="check" class="on" title="투명 확인(체크무늬)" style="background:conic-gradient(#ddd 25%,#fff 0 50%,#ddd 0 75%,#fff 0) 0 0/12px 12px"></button><button data-bg="white" title="흰 배경" style="background:#fff;border:1px solid #ddd"></button><button data-bg="dark" title="어두운 배경" style="background:#2b2b2b"></button></span>
     </div>
     <div class="board bg-check" id="board"><div class="marquee" id="marquee"></div></div>
-    <div class="tip">
-      <div><b>고르기</b> · 클릭으로 선택, Shift+클릭으로 추가, 빈 곳을 드래그하면 영역 선택(휴대폰은 탭할 때마다 추가). 선택한 것들은 함께 움직여요.</div>
-      <div><b>복사</b> · 📋 선택 복사 또는 Ctrl+C, 하나만은 더블클릭. 고른 배치 그대로 한 장의 투명 PNG가 복사돼요.</div>
-      <div><b>PPT에 검은 배경이 생기면</b> · PPT에서 <b>Ctrl+Alt+V(선택하여 붙여넣기) → 그림(PNG)</b>을 고르거나, <b>📁 선택 저장</b> 후 [삽입 → 그림]으로 넣으세요. 흰 슬라이드라면 “흰 배경으로 복사”를 켜도 돼요.</div>
-    </div>
+    <div class="tip"><div><b>고르기</b> 클릭·Shift+클릭·빈 곳 드래그 · <b>복사</b> Ctrl+C 또는 더블클릭 · <b>PPT에 검게 붙으면</b> Ctrl+Alt+V → 그림, 또는 📁 저장 후 삽입</div></div>
   </section>
 </div>
 </div>
@@ -144,13 +142,13 @@ const DISPLAY=124,GAP=26;
 function toast(m,ms=2200){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),ms)}
 function setMenu(o){$('menuList').hidden=!o;$('menuBtn').classList.toggle('open',o);$('menuBtn').setAttribute('aria-expanded',o)}
 $('menuBtn').onclick=e=>{e.stopPropagation();setMenu($('menuList').hidden)};document.addEventListener('click',e=>{if(!e.target.closest('.menu'))setMenu(false)});
-const DESC={capy:'쌤플레이 마스코트 동작 12가지',callig:'게시판·카드용 손글씨 문구',buttons:'퀴즈·게임 하이퍼링크 버튼',labels:'학습지·PPT 강조 문구',icons:'수업에 자주 쓰는 아이콘',ppt:'번호·화살표·말풍선·리본',subjects:'과목과 학교생활 아이콘',emoji:'표정·반응 이모티콘'};
+const DESC={capy:'쌤플레이 마스코트 동작 12가지',callig:'게시판·카드용 손글씨 문구',buttons:'퀴즈·게임 하이퍼링크 버튼',labels:'학습지·PPT 강조 문구',icons:'수업에 자주 쓰는 아이콘',ppt:'번호·화살표·말풍선·리본',subjects:'과목과 학교생활 아이콘',emoji:'표정·반응 이모티콘',animals:'학교 소품을 든 아기 동물',phrases:'학습지 제목·강조 라벨',official:'공문·상장·행사용 그래픽',lineicons:'통일된 2색 선 아이콘 20개',anime:'애니풍 오리지널 학생 캐릭터'};
 const src=(p,it)=>`${p.dir}/${it.file}`;
 function showPeek(p,btn){if(innerWidth<=900)return;const pk=$('peek');pk.querySelector('b').textContent=`${p.name} · ${p.items.length}개`;
   pk.querySelector('.g').replaceChildren(...p.items.map(it=>{const im=new Image();im.src=src(p,it);im.alt='';return im}));
   const r=btn.getBoundingClientRect();pk.style.left=(r.right+12)+'px';pk.classList.add('show');const h=pk.offsetHeight;pk.style.top=Math.max(8,Math.min(r.top,innerHeight-h-8))+'px'}
 function renderTabs(){$('tabs').replaceChildren(...PACKS.map(p=>{const b=document.createElement('button');b.className='pack'+(p.key===pack?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',p.key===pack);
-  const pv=document.createElement('div');pv.className='pv';p.items.slice(0,6).forEach(it=>{const im=new Image();im.src=src(p,it);im.alt='';im.loading='lazy';pv.append(im)});
+  const pv=document.createElement('div');pv.className='pv';p.items.slice(0,3).forEach(it=>{const im=new Image();im.src=src(p,it);im.alt='';im.loading='lazy';pv.append(im)});
   const nm=document.createElement('b');nm.textContent=p.name;const n=document.createElement('span');n.textContent=p.items.length+'개';nm.append(n);const sm=document.createElement('small');sm.textContent=DESC[p.key]||'';
   b.append(pv,nm,sm);b.onmouseenter=()=>showPeek(p,b);b.onmouseleave=()=>$('peek').classList.remove('show');
   b.onclick=()=>{$('peek').classList.remove('show');pack=p.key;try{localStorage.setItem('stkPack',pack)}catch{}renderTabs();layout();if(innerWidth<=900)board.scrollIntoView({behavior:'smooth',block:'start'})};return b}))}

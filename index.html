@@ -48,6 +48,7 @@ header.wrap{padding:18px 16px 8px}
 .menulist::before{content:"";position:absolute;top:-6px;right:17px;width:11px;height:11px;background:var(--card);border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
 @keyframes menuIn{from{opacity:0;transform:translateY(-6px) scale(.9)}}
 .menulist a{text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:7px;display:block;line-height:1.4;transition:background .2s,color .2s}
+.menulist .msep{border:0;border-top:1px solid var(--line);margin:4px 6px}
 .menulist a:hover{background:var(--soft2);color:var(--accent-text)}
 @media(max-width:1099px){.tagline{display:none}}
 main.wrap{padding-top:12px;padding-bottom:24px}
@@ -85,7 +86,7 @@ body.school .field-subject{display:none}
 .fillex{border:1.5px solid var(--line2);background:var(--card);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;color:var(--accent-text);cursor:pointer;transition:all .15s}
 .fillex:hover{border-color:var(--accent-text);background:var(--soft2)}
 .topnav{display:flex;gap:4px;margin-left:auto;margin-right:4px}
-.topnav a{font-size:14px;font-weight:800;color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:999px}
+.topnav a{font-size:16px;font-weight:800;color:var(--muted);text-decoration:none;padding:9px 16px;border-radius:999px}
 .topnav a:hover{color:var(--ink);background:var(--soft2)}
 .topnav a.on{color:var(--ink);background:var(--soft)}
 @media(max-width:520px){.topnav a{font-size:13px;padding:6px 9px}}
@@ -463,7 +464,7 @@ dialog.guide{width:min(96vw,640px)}
   <div class="topbar">
     <a class="brand" id="homeLink" href="#" title="홈으로"><img class="logo" src="assets/logo-capy.png" alt="쌤플레이"></a>
     <nav class="topnav" aria-label="주 메뉴"><a href="#" id="navSample" class="on">쌤플 프롬프트</a><a href="stickers.html">PPT 치트키</a></nav>
-    <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="#" id="menuHome">쌤플 고르기</a><a href="#" id="favLink">♥ 찜 목록 <span class="n" id="favCount">0</span></a><a href="stickers.html">🧩 PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
+    <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button><nav id="menuList" class="menulist" hidden><a href="#" id="favLink">찜 목록 <span class="n" id="favCount">0</span></a><hr class="msep"><a href="#" id="menuHome">쌤플 고르기</a><a href="stickers.html">PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
   </div>
 </header>
 
@@ -588,8 +589,8 @@ dialog.guide{width:min(96vw,640px)}
       <p class="gnote">프롬프트를 붙여넣으셨으면, <b>정확한 생성을 위해 예시 이미지도 넣어 주세요!</b></p>
       <div class="gact-row"><button id="gCopyImage" class="primary gbig">🖼️ 예시 이미지 복사</button><button id="gSave" class="secondary gbig">📁 예시 이미지 저장</button></div>
       <p class="gstatus" id="gStatus"></p>
-      <div class="gact-row"><a id="gOpen" class="secondary gbig" href="https://chatgpt.com/" target="_blank" rel="noopener" title="새 탭으로 ChatGPT를 엽니다. 입력창에 Ctrl+V로 붙여넣으세요.">ChatGPT 열기 ↗</a><button id="guideClose" class="secondary gbig">닫기</button></div>
-      <p class="gnote" style="margin-top:4px">프롬프트는 이미 복사돼 있어요. ChatGPT 입력창에 Ctrl+V(휴대폰은 길게 눌러 붙여넣기)로 넣고, 예시 이미지를 붙인 뒤 보내세요.</p>
+      <div class="gact-row"><button id="guideClose" class="secondary gbig">닫기</button></div>
+      <p class="gnote" style="margin-top:4px">이제 <b>ChatGPT를 열어서 프롬프트를 붙여넣어 주세요.</b> (Ctrl+V, 휴대폰은 입력창을 길게 눌러 붙여넣기)</p>
       <label class="noshow"><input id="noGuide" type="checkbox">다음부터 이 안내 띄우지 않기 (복사 후 플로팅 안내만 표시)</label>
     </div>
   </div>
@@ -1090,7 +1091,7 @@ let noGuide=false,howOpen=false;try{noGuide=localStorage.getItem('noGuide')==='1
 function applyHow(){$('howto').hidden=!howOpen;document.querySelector('.gwrap').classList.toggle('anim',howOpen);$('howToggle').textContent=howOpen?'▼ 사용법 접기':'▶ 사용법 자세히 보기';$('howToggle').setAttribute('aria-expanded',howOpen)}
 $('howToggle').onclick=()=>{howOpen=!howOpen;applyHow();if(howOpen)$('howto').scrollIntoView({behavior:'smooth',block:'nearest'})};
 $('noGuide').onchange=()=>{noGuide=$('noGuide').checked;try{localStorage.setItem('noGuide',noGuide?'1':'0')}catch{}};
-function openGuide(force){const s=sample();if(!s)return;if(noGuide&&force!==true)return;$('noGuide').checked=noGuide;howOpen=false;applyHow();$('gThumb').src=s.thumb;$('gThumbU').src=s.thumb;$('gThumbR').src=s.thumb;$('gOpen').href='https://chatgpt.com/';$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';if(!$('guide').open){$('guide').showModal();navPush('guide')}}
+function openGuide(force){const s=sample();if(!s)return;if(noGuide&&force!==true)return;$('noGuide').checked=noGuide;howOpen=false;applyHow();$('gThumb').src=s.thumb;$('gThumbU').src=s.thumb;$('gThumbR').src=s.thumb;$('gTyped').textContent=$('output').value.replace(/\s+/g,' ').slice(0,90)+'…';$('gStatus').textContent='';if(!$('guide').open){$('guide').showModal();navPush('guide')}}
 $('guideX').onclick=$('guideClose').onclick=()=>closeModal('guide');
 $('guide').onclick=e=>{if(e.target===$('guide'))closeModal('guide')};
 $('gCopyImage').onclick=()=>$('copyImage').click();$('gSave').onclick=()=>$('refDownload').click();
