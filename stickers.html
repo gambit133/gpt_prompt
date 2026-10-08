@@ -76,6 +76,21 @@ header .logo{height:48px;display:block}
 .item.dragging{cursor:grabbing}
 .item .lb{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;background:rgba(255,253,248,.95);padding:1px 6px;border-radius:6px}
 .item:hover .lb{opacity:1}
+.minepanel{border:1.5px dashed var(--line2);background:#fff;border-radius:16px;padding:12px;margin-bottom:10px}
+.minepanel[hidden]{display:none}
+.mrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mrow .sp{flex:1}
+.tol{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.tol input{width:90px;accent-color:var(--accent)}
+.mhint{font-size:12.5px;color:var(--muted);margin:8px 0 0;line-height:1.55}
+.mhint b{color:var(--ink)}.mhint .warn{color:#c0392b;font-weight:700}
+.board.drop{outline:3px dashed var(--accent);outline-offset:-8px}
+.empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:14px;line-height:1.7;padding:20px;pointer-events:none}
+.empty b{display:block;font-size:16px;color:var(--ink);margin-bottom:4px}
+.pack.mine{border-style:dashed}
+.pack .pv .plus{display:grid;place-items:center;aspect-ratio:1;border-radius:8px;background:var(--soft2);color:var(--accent-text);font-weight:800;font-size:18px}
+.btn.mineonly,.btn.notmine{display:none}
+body.inmine .btn.mineonly,body:not(.inmine) .btn.notmine{display:inline-flex}
 .marquee{position:absolute;border:1.5px dashed var(--sel);background:rgba(47,125,225,.1);pointer-events:none;display:none;z-index:30}
 .tip{margin:0 0 24px}
 .tip div{font-size:12.5px;color:var(--muted);line-height:1.6;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
@@ -120,13 +135,26 @@ footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
       <button class="btn" id="allBtn">전체 선택</button>
       <button class="btn" id="noneBtn">선택 해제</button>
       <button class="btn" id="resetBtn">↺ 배치 초기화</button>
+      <button class="btn notmine" id="addMineBtn" disabled>⭐ 내 치트키에 담기</button>
+      <button class="btn mineonly" id="delBtn" disabled>🗑 선택 삭제</button>
       <span class="sp"></span>
       <label class="chk" title="흰 슬라이드에 붙일 때, 배경이 검게 나오는 PPT라면 켜세요"><input type="checkbox" id="whiteBg">흰 배경으로 복사</label>
       <span class="selinfo" id="selInfo">0개 선택</span>
       <span class="bgsw" role="group" aria-label="미리보기 배경"><button data-bg="check" class="on" title="투명 확인(체크무늬)" style="background:conic-gradient(#ddd 25%,#fff 0 50%,#ddd 0 75%,#fff 0) 0 0/12px 12px"></button><button data-bg="white" title="흰 배경" style="background:#fff;border:1px solid #ddd"></button><button data-bg="dark" title="어두운 배경" style="background:#2b2b2b"></button></span>
     </div>
+    <div class="minepanel" id="minePanel" hidden>
+      <div class="mrow">
+        <label class="btn primary" for="fileIn">＋ 내 이미지 추가</label><input type="file" id="fileIn" accept="image/*" multiple hidden>
+        <label class="chk" title="사진·그림의 단색 배경을 투명하게 지웁니다"><input type="checkbox" id="bgRemove" checked>배경 자동 제거</label>
+        <label class="tol" title="높일수록 배경과 비슷한 색을 더 많이 지웁니다">세기 <input type="range" id="bgTol" min="10" max="90" value="40"></label>
+        <span class="sp"></span>
+        <button class="btn" id="exportBtn">💾 백업 저장</button>
+        <label class="btn" for="importIn">📂 백업 불러오기</label><input type="file" id="importIn" accept=".json,application/json" hidden>
+      </div>
+      <p class="mhint">다른 묶음에서 골라 <b>⭐ 내 치트키에 담기</b>, 또는 이미지를 이 판에 끌어 놓거나 <b>Ctrl+V</b>로 붙여넣으세요. 이 브라우저에만 저장되니 가끔 <b>백업 저장</b>해 두세요. <span id="backupInfo"></span></p>
+    </div>
     <div class="board bg-check" id="board"><div class="marquee" id="marquee"></div></div>
-    <div class="tip"><div><b>고르기</b> 클릭·Shift+클릭·빈 곳 드래그 · <b>복사</b> Ctrl+C 또는 더블클릭 · <b>PPT에 검게 붙으면</b> Ctrl+Alt+V → 그림, 또는 📁 저장 후 삽입</div></div>
+    <div class="tip"><div><b>고르기</b> 클릭·Shift+클릭·빈 곳 드래그 · <b>복사</b> Ctrl+C 또는 더블클릭 · <b>⭐ 내 치트키</b> 골라 담기·내 이미지 추가(배경 제거)·백업 · <b>PPT에 검게 붙으면</b> Ctrl+Alt+V → 그림, 또는 📁 저장 후 삽입</div></div>
   </section>
 </div>
 </div>
@@ -143,18 +171,77 @@ function toast(m,ms=2200){$('toast').textContent=m;$('toast').classList.add('sho
 function setMenu(o){$('menuList').hidden=!o;$('menuBtn').classList.toggle('open',o);$('menuBtn').setAttribute('aria-expanded',o)}
 $('menuBtn').onclick=e=>{e.stopPropagation();setMenu($('menuList').hidden)};document.addEventListener('click',e=>{if(!e.target.closest('.menu'))setMenu(false)});
 const DESC={capy:'쌤플레이 마스코트 동작 12가지',callig:'게시판·카드용 손글씨 문구',buttons:'퀴즈·게임 하이퍼링크 버튼',labels:'학습지·PPT 강조 문구',icons:'수업에 자주 쓰는 아이콘',ppt:'번호·화살표·말풍선·리본',subjects:'과목과 학교생활 아이콘',emoji:'표정·반응 이모티콘',animals:'학교 소품을 든 아기 동물',phrases:'학습지 제목·강조 라벨',official:'공문·상장·행사용 그래픽',lineicons:'통일된 2색 선 아이콘 20개',anime:'애니풍 오리지널 학생 캐릭터','capy-science':'흰 가운 입은 과학 카피바라','capy-health':'보건 조끼 입은 카피바라','capy-korean':'한복 조끼 입은 국어 카피바라','capy-admin':'넥타이 맨 업무 카피바라','anime-girl':'한 여학생의 12가지 동작','anime-boy':'한 남학생의 12가지 동작',frames:'글을 써 넣는 빈 템플릿'};
-const src=(p,it)=>`${p.dir}/${it.file}`;
+const src=(p,it)=>it.src||`${p.dir}/${it.file}`;
+/* ---------- 내 치트키 (IndexedDB) ---------- */
+const MINE={key:'mine',name:'⭐ 내 치트키',dir:'',items:[]};PACKS.unshift(MINE);DESC.mine='내가 담고 올린 이미지';
+const cur=()=>PACKS.find(x=>x.key===pack);
+let dbp;function idb(){return dbp||(dbp=new Promise((res,rej)=>{const r=indexedDB.open('saemplay',1);r.onupgradeneeded=()=>r.result.createObjectStore('mine',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}))}
+async function dbAll(){const d=await idb();return new Promise((res,rej)=>{const q=d.transaction('mine').objectStore('mine').getAll();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>rej(q.error)})}
+async function dbWrite(fn){const d=await idb();return new Promise((res,rej)=>{const tx=d.transaction('mine','readwrite');fn(tx.objectStore('mine'));tx.oncomplete=res;tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error)})}
+async function loadMine(){try{MINE.items=(await dbAll()).sort((a,b)=>a.t-b.t);navigator.storage?.persist?.()}catch{MINE.items=[];MINE.off=true}}
+const rid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+async function saveNew(list){if(MINE.off){toast('이 브라우저(시크릿 창 등)에서는 내 치트키를 저장할 수 없어요');return false}
+  try{await dbWrite(st=>list.forEach(x=>st.put(x)));MINE.items.push(...list);return true}catch{toast('저장 공간이 부족해요. 백업 후 일부를 지워 주세요');return false}}
+async function addToMine(){const p=cur();if(!p||p.key==='mine'||!sel.size)return;const now=Date.now();
+  const list=[...sel].sort((a,b)=>a-b).map((k,i)=>{const it=p.items[k];return {id:rid('r'),t:now+i,src:src(p,it),w:it.w,h:it.h,label:it.label||p.name}});
+  if(await saveNew(list)){renderTabs();toast(list.length+'개를 ⭐ 내 치트키에 담았어요')}}
+function removeBg(d,tol){const W=d.width,H=d.height,a=d.data;
+  let n=0,tr=0;const step=Math.max(1,(W/40)|0);for(let x=0;x<W;x+=step)for(const y of[0,H-1]){n++;if(a[(y*W+x)*4+3]<200)tr++}
+  if(tr>n*.5)return false; // already transparent
+  // background colour: most common border colour (coarse buckets)
+  const cnt=new Map();const vote=i=>{const k=(a[i]>>4)<<8|(a[i+1]>>4)<<4|(a[i+2]>>4);cnt.set(k,(cnt.get(k)||0)+1)};
+  for(let x=0;x<W;x++){vote(x*4);vote(((H-1)*W+x)*4)}for(let y=0;y<H;y++){vote(y*W*4);vote((y*W+W-1)*4)}
+  let best=0,bk=0;cnt.forEach((v,k)=>{if(v>best){best=v;bk=k}});
+  let r=0,g=0,b=0,c=0;const acc=i=>{const k=(a[i]>>4)<<8|(a[i+1]>>4)<<4|(a[i+2]>>4);if(k===bk){r+=a[i];g+=a[i+1];b+=a[i+2];c++}};
+  for(let x=0;x<W;x++){acc(x*4);acc(((H-1)*W+x)*4)}for(let y=0;y<H;y++){acc(y*W*4);acc((y*W+W-1)*4)}r/=c;g/=c;b/=c;
+  const t2=tol*tol,soft=(tol*1.7)**2,seen=new Uint8Array(W*H),q=new Int32Array(W*H);let h=0,tl=0;
+  const dist=i=>{const j=i*4,dr=a[j]-r,dg=a[j+1]-g,db=a[j+2]-b;return dr*dr+dg*dg+db*db};
+  const push=i=>{if(!seen[i]){seen[i]=1;if(dist(i)<=soft)q[tl++]=i}};
+  for(let x=0;x<W;x++){push(x);push((H-1)*W+x)}for(let y=0;y<H;y++){push(y*W);push(y*W+W-1)}
+  while(h<tl){const i=q[h++],dd=dist(i);
+    if(dd<=t2)a[i*4+3]=0;else{a[i*4+3]=Math.round(a[i*4+3]*Math.min(1,(Math.sqrt(dd)-tol)/(tol*.7)));continue}
+    const x=i%W;if(x>0)push(i-1);if(x<W-1)push(i+1);if(i>=W)push(i-W);if(i<W*(H-1))push(i+W)}
+  return true}
+async function processImage(file){const bm=await createImageBitmap(file);const max=640,sc=Math.min(1,max/Math.max(bm.width,bm.height));
+  const W=Math.max(1,Math.round(bm.width*sc)),H=Math.max(1,Math.round(bm.height*sc));const c=document.createElement('canvas');c.width=W;c.height=H;
+  const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(bm,0,0,W,H);const d=g.getImageData(0,0,W,H);
+  if($('bgRemove').checked&&removeBg(d,+$('bgTol').value))g.putImageData(d,0,0);
+  const a=d.data;let x0=W,y0=H,x1=-1,y1=-1;for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(a[(y*W+x)*4+3]>8){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+  if(x1<0)throw new Error('empty');const pad=4;x0=Math.max(0,x0-pad);y0=Math.max(0,y0-pad);x1=Math.min(W-1,x1+pad);y1=Math.min(H-1,y1+pad);
+  const o=document.createElement('canvas');o.width=x1-x0+1;o.height=y1-y0+1;o.getContext('2d').drawImage(c,x0,y0,o.width,o.height,0,0,o.width,o.height);
+  return {src:o.toDataURL('image/png'),w:o.width,h:o.height}}
+async function addFiles(files){const imgs=[...files].filter(f=>f&&f.type&&f.type.startsWith('image/'));if(!imgs.length)return;toast('이미지 정리 중…',6000);
+  const now=Date.now(),out=[];for(const [i,f] of imgs.entries()){try{const r=await processImage(f);out.push({id:rid('u'),t:now+i,src:r.src,w:r.w,h:r.h,label:(f.name||'내 이미지').replace(/\.[^.]+$/,'').slice(0,30)})}catch{}}
+  if(!out.length){toast('이미지를 읽지 못했어요');return}
+  if(await saveNew(out)){pack='mine';try{localStorage.setItem('stkPack',pack)}catch{}renderTabs();layout();toast(out.length+'개 추가'+($('bgRemove').checked?' · 배경 제거':''))}}
+async function delSel(){if(pack!=='mine'||!sel.size)return;const ids=[...sel].map(k=>MINE.items[k]&&MINE.items[k].id).filter(Boolean);
+  try{await dbWrite(st=>ids.forEach(id=>st.delete(id)))}catch{toast('삭제하지 못했어요');return}
+  MINE.items=MINE.items.filter(x=>!ids.includes(x.id));renderTabs();layout();toast(ids.length+'개 삭제')}
+function exportMine(){if(!MINE.items.length){toast('백업할 내 치트키가 없어요');return}
+  const blob=new Blob([JSON.stringify({app:'saemplay-mine',v:1,at:new Date().toISOString(),items:MINE.items})],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`쌤플레이-내치트키-백업-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  try{localStorage.setItem('mineBackupAt',String(Date.now()))}catch{}backupInfo();toast(MINE.items.length+'개 백업 파일 저장 완료')}
+async function importMine(file){try{const j=JSON.parse(await file.text());if(!j||!Array.isArray(j.items))throw 0;
+    const have=new Set(MINE.items.map(x=>x.id));const okSrc=s=>/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(s)||/^assets\/stickers\/[\w-]+\/[\w-]+\.png$/.test(s);
+    const add=j.items.filter(x=>x&&typeof x.id==='string'&&typeof x.src==='string'&&!have.has(x.id)&&okSrc(x.src)).map(x=>({id:x.id.slice(0,60),t:+x.t||Date.now(),src:x.src,w:Math.max(1,+x.w||200),h:Math.max(1,+x.h||200),label:String(x.label||'').slice(0,40)}));
+    const skipped=j.items.length-add.length;if(add.length&&!(await saveNew(add)))return;MINE.items.sort((a,b)=>a.t-b.t);pack='mine';renderTabs();layout();
+    toast(add.length+'개 불러옴'+(skipped?` · ${skipped}개는 이미 있거나 제외`:''),3200)}catch{toast('백업 파일을 읽지 못했어요')}}
+function backupInfo(){const el=$('backupInfo');if(!el)return;let at=0;try{at=+localStorage.getItem('mineBackupAt')||0}catch{}
+  if(!MINE.items.length){el.textContent='';el.className='';return}
+  const days=at?Math.floor((Date.now()-at)/864e5):null;el.className=(days===null||days>=7)?'warn':'';el.textContent=days===null?'아직 백업한 적이 없어요.':days===0?'오늘 백업함.':`마지막 백업 ${days}일 전.`}
+
 function showPeek(p,btn){if(innerWidth<=900)return;const pk=$('peek');pk.querySelector('b').textContent=`${p.name} · ${p.items.length}개`;
   pk.querySelector('.g').replaceChildren(...p.items.map(it=>{const im=new Image();im.src=src(p,it);im.alt='';return im}));
   const r=btn.getBoundingClientRect();pk.style.left=(r.right+12)+'px';pk.classList.add('show');const h=pk.offsetHeight;pk.style.top=Math.max(8,Math.min(r.top,innerHeight-h-8))+'px'}
 function renderTabs(){$('tabs').replaceChildren(...PACKS.map(p=>{const b=document.createElement('button');b.className='pack'+(p.key===pack?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',p.key===pack);
-  const pv=document.createElement('div');pv.className='pv';p.items.slice(0,3).forEach(it=>{const im=new Image();im.src=src(p,it);im.alt='';im.loading='lazy';pv.append(im)});
+  const pv=document.createElement('div');pv.className='pv';if(p.key==='mine'){b.classList.add('mine');if(!p.items.length){const pl=document.createElement('span');pl.className='plus';pl.textContent='＋';pv.append(pl)}}p.items.slice(0,3).forEach(it=>{const im=new Image();im.src=src(p,it);im.alt='';im.loading='lazy';pv.append(im)});
   const nm=document.createElement('b');nm.textContent=p.name;const n=document.createElement('span');n.textContent=p.items.length+'개';nm.append(n);const sm=document.createElement('small');sm.textContent=DESC[p.key]||'';
   b.append(pv,nm,sm);b.onmouseenter=()=>showPeek(p,b);b.onmouseleave=()=>$('peek').classList.remove('show');
   b.onclick=()=>{$('peek').classList.remove('show');pack=p.key;try{localStorage.setItem('stkPack',pack)}catch{}renderTabs();layout();if(innerWidth<=900)board.scrollIntoView({behavior:'smooth',block:'start'})};return b}))}
 function layout(){
-  board.querySelectorAll('.item').forEach(e=>e.remove());sel.clear();
-  const p=PACKS.find(x=>x.key===pack);const W=board.clientWidth;
+  board.querySelectorAll('.item,.empty').forEach(e=>e.remove());sel.clear();
+  if(!PACKS.some(x=>x.key===pack))pack=PACKS[1].key;const p=cur();const inMine=p.key==='mine';document.body.classList.toggle('inmine',inMine);$('minePanel').hidden=!inMine;backupInfo();
+  if(inMine&&!p.items.length){const em=document.createElement('div');em.className='empty';em.innerHTML='<div><b>아직 비어 있어요</b>다른 묶음에서 골라 ⭐ 내 치트키에 담거나,<br>내 이미지를 끌어 놓거나 Ctrl+V로 붙여넣으세요.</div>';board.append(em);board.style.height='300px';syncSel();return}const W=board.clientWidth;
   const size=W<520?Math.floor((W-GAP*4)/3):DISPLAY;const cols=Math.max(3,Math.floor((W-GAP)/(size+GAP)));
   const ox=Math.max(GAP,(W-cols*(size+GAP)+GAP)/2);
   items=p.items.map((it,i)=>{const r=Math.min(size/it.w,size/it.h);const w=Math.round(it.w*r),h=Math.round(it.h*r);
@@ -165,7 +252,7 @@ function layout(){
   board.style.height=(GAP*2+Math.ceil(p.items.length/cols)*(size+GAP))+'px';syncSel();
 }
 function place(o){o.el.style.left=o.x+'px';o.el.style.top=o.y+'px'}
-function syncSel(){items.forEach((o,i)=>o.el.classList.toggle('sel',sel.has(i)));$('selInfo').textContent=sel.size+'개 선택';$('copyBtn').disabled=$('saveBtn').disabled=!sel.size}
+function syncSel(){items.forEach((o,i)=>o.el.classList.toggle('sel',sel.has(i)));$('selInfo').textContent=sel.size+'개 선택';$('copyBtn').disabled=$('saveBtn').disabled=$('addMineBtn').disabled=$('delBtn').disabled=!sel.size}
 let mode=null,start=null,orig=null,moved=false,base=null;
 board.addEventListener('pointerdown',e=>{
   const rect=board.getBoundingClientRect();const px=e.clientX-rect.left,py=e.clientY-rect.top;
@@ -213,7 +300,15 @@ document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))re
   if(e.key==='Enter'&&e.target.classList.contains('item')){const i=items.findIndex(o=>o.el===e.target);sel=new Set([i]);syncSel();copySel()}});
 try{const sp=localStorage.getItem('stkPack');if(PACKS.some(p=>p.key===sp))pack=sp;const bg=localStorage.getItem('stkBg');if(bg)document.querySelector(`.bgsw button[data-bg="${bg}"]`)?.click();$('whiteBg').checked=localStorage.getItem('stkWhite')==='1'}catch{}
 let rz;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(!sel.size)layout()},200)});
-renderTabs();layout();
+$('addMineBtn').onclick=addToMine;$('delBtn').onclick=delSel;$('exportBtn').onclick=exportMine;
+$('fileIn').onchange=e=>{addFiles(e.target.files);e.target.value=''};
+$('importIn').onchange=e=>{const f=e.target.files[0];if(f)importMine(f);e.target.value=''};
+['dragenter','dragover'].forEach(ev=>board.addEventListener(ev,e=>{if([...e.dataTransfer.types].includes('Files')){e.preventDefault();board.classList.add('drop')}}));
+['dragleave','drop'].forEach(ev=>board.addEventListener(ev,()=>board.classList.remove('drop')));
+board.addEventListener('drop',e=>{if(e.dataTransfer.files.length){e.preventDefault();addFiles(e.dataTransfer.files)}});
+document.addEventListener('paste',e=>{if(e.target.matches('input,textarea'))return;const fs=[...(e.clipboardData?.files||[])].filter(f=>f.type.startsWith('image/'));if(fs.length){e.preventDefault();addFiles(fs)}});
+document.addEventListener('keydown',e=>{if(e.key==='Delete'&&pack==='mine'&&sel.size&&!e.target.matches('input,textarea'))delSel()});
+loadMine().then(()=>{renderTabs();layout()});
 </script>
 </body>
 </html>
