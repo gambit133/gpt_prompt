@@ -142,7 +142,7 @@ const DISPLAY=124,GAP=26;
 function toast(m,ms=2200){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),ms)}
 function setMenu(o){$('menuList').hidden=!o;$('menuBtn').classList.toggle('open',o);$('menuBtn').setAttribute('aria-expanded',o)}
 $('menuBtn').onclick=e=>{e.stopPropagation();setMenu($('menuList').hidden)};document.addEventListener('click',e=>{if(!e.target.closest('.menu'))setMenu(false)});
-const DESC={capy:'쌤플레이 마스코트 동작 12가지',callig:'게시판·카드용 손글씨 문구',buttons:'퀴즈·게임 하이퍼링크 버튼',labels:'학습지·PPT 강조 문구',icons:'수업에 자주 쓰는 아이콘',ppt:'번호·화살표·말풍선·리본',subjects:'과목과 학교생활 아이콘',emoji:'표정·반응 이모티콘',animals:'학교 소품을 든 아기 동물',phrases:'학습지 제목·강조 라벨',official:'공문·상장·행사용 그래픽',lineicons:'통일된 2색 선 아이콘 20개',anime:'애니풍 오리지널 학생 캐릭터'};
+const DESC={capy:'쌤플레이 마스코트 동작 12가지',callig:'게시판·카드용 손글씨 문구',buttons:'퀴즈·게임 하이퍼링크 버튼',labels:'학습지·PPT 강조 문구',icons:'수업에 자주 쓰는 아이콘',ppt:'번호·화살표·말풍선·리본',subjects:'과목과 학교생활 아이콘',emoji:'표정·반응 이모티콘',animals:'학교 소품을 든 아기 동물',phrases:'학습지 제목·강조 라벨',official:'공문·상장·행사용 그래픽',lineicons:'통일된 2색 선 아이콘 20개',anime:'애니풍 오리지널 학생 캐릭터','capy-science':'흰 가운 입은 과학 카피바라','capy-health':'보건 조끼 입은 카피바라','capy-korean':'한복 조끼 입은 국어 카피바라','capy-admin':'넥타이 맨 업무 카피바라','anime-girl':'한 여학생의 12가지 동작','anime-boy':'한 남학생의 12가지 동작',frames:'글을 써 넣는 빈 템플릿'};
 const src=(p,it)=>`${p.dir}/${it.file}`;
 function showPeek(p,btn){if(innerWidth<=900)return;const pk=$('peek');pk.querySelector('b').textContent=`${p.name} · ${p.items.length}개`;
   pk.querySelector('.g').replaceChildren(...p.items.map(it=>{const im=new Image();im.src=src(p,it);im.alt='';return im}));
