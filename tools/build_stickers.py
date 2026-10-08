@@ -2,7 +2,7 @@
 """Build stickers.html from stickers.src.html + assets/stickers/<pack>/*.png.
 
 Usage: python tools/build_stickers.py
-Pack order, names and per-sticker labels live in PACKS below; files are read from disk.
+Per-folder sticker labels live in PACKS/EXTRA; how folders are merged and grouped on the page lives in GROUPS.
 """
 import io, json, os
 from PIL import Image
@@ -34,8 +34,6 @@ PACKS = [
     ('retro', '옛날 학교 추억', ["칠판과 분필", "주판", "양은 도시락", "난로와 도시락", "학교 종", "풍금", "옛날 책걸상", "상장", "연필깎이", "공책과 몽당연필", "딱지", "구슬"]),
     ('frames', '수업 템플릿 프레임', ['단원명','학습 목표','오늘의 주제','핵심 내용','요약','빈 표','생각 나누기','확인 문제','메모']),
 ]
-ORDER = ['capy','retro-kids','new-kids','watercolor','hands','bubbles','retro','capy-science','capy-health','capy-korean','capy-admin','anime-girl','anime-boy','animals','frames','callig','phrases','buttons','labels','official','icons','lineicons','ppt','subjects','emoji']
-PREVIEW = {'capy':[0,3,8,11],'callig':[0,2,4,7],'buttons':[0,4,9,10],'labels':[0,1,2,4],'icons':[2,6,7,8],'ppt':[0,5,8,10],'subjects':[0,2,5,6],'emoji':[0,2,5,10],'animals':[0,1,2,4],'phrases':[0,1,4,5],'official':[0,1,2,8],'lineicons':[0,3,8,14],'anime':[0,2,7,8],'retro-kids':[0,1,8,2],'new-kids':[0,1,8,6],'watercolor':[0,1,3,10],'hands':[0,2,7,11],'bubbles':[0,2,3,7],'retro':[0,2,4,7]}
 EXTRA={}
 EXTRA['capy']=["손 들기", "노트북", "그림 그리기", "노래하기", "달리기", "깃발", "늦었다!", "깜짝", "울먹임", "화이팅", "선물", "간식"]
 EXTRA['animals']=["햄스터", "오리", "부엉이", "사자", "기린", "코알라", "아기 돼지", "거북이", "고래", "양", "원숭이", "개구리"]
@@ -48,18 +46,47 @@ EXTRA['callig']=["환영합니다", "생일 축하해", "사랑하는 우리 반
 EXTRA['buttons']=["확인", "취소", "닫기", "홈", "도움말", "정답!", "오답", "타이머", "점수", "다음 문제", "이전 문제", "잠금", "링크", "다운로드", "위로"]
 EXTRA['phrases']=["동기 유발", "배움 열기", "배움 활동", "배움 정리", "차시 예고", "형성 평가", "과제", "준비물", "토의·토론", "오늘의 질문", "심화 학습", "실험 관찰"]
 EXTRA['official']=["상장 테두리", "트로피", "왕관", "금메달", "은메달", "동메달", "학사모", "졸업장", "꽃다발", "리본 매듭", "봉랍 인장", "박수"]
-PACKS=[(k,n,l+EXTRA.get(k,[])) for k,n,l in PACKS]
-PACKS.sort(key=lambda p: ORDER.index(p[0]) if p[0] in ORDER else 99)
+LABELS = {k: l + EXTRA.get(k, []) for k, n, l in PACKS}
+# What the page shows: sections > packs, each pack merged from one or more source folders (in order).
+GROUPS = [
+    ('캐릭터', [
+        ('capy', '카피바라', ['capy', 'capy-science', 'capy-health', 'capy-korean', 'capy-admin']),
+        ('raccoon', '너구리', ['raccoon', 'raccoon-detective']),
+        ('kids', '철수·영희', ['new-kids', 'retro-kids']),
+        ('people', '학생·사람들', ['watercolor', 'anime-girl', 'anime-boy']),
+        ('animals', '귀여운 동물', ['animals', 'crayon-animals']),
+        ('hands', '손 들기', ['hands']),
+        ('emoji', '이모티콘', ['emoji']),
+    ]),
+    ('글자', [
+        ('callig', '캘리그라피', ['callig']),
+        ('labels', '학습 문구·배지', ['phrases', 'labels']),
+        ('buttons', 'PPT 버튼', ['buttons']),
+    ]),
+    ('꾸미기', [
+        ('deco', '말풍선·꾸미기', ['bubbles', 'ppt']),
+        ('frames', '수업 템플릿', ['frames', 'lesson-kit']),
+    ]),
+    ('아이콘', [
+        ('icons', '수업·과목 아이콘', ['icons', 'subjects']),
+        ('lineicons', '라인 아이콘', ['lineicons']),
+        ('official', '상장·공식', ['official']),
+        ('retro', '옛날 학교 추억', ['retro']),
+    ]),
+]
 out = []
-for key, name, labels in PACKS:
-    d = os.path.join(ROOT, 'assets', 'stickers', key)
-    if not os.path.isdir(d): continue
-    files = sorted(f for f in os.listdir(d) if f.endswith('.png'))
-    items = []
-    for i, f in enumerate(files):
-        w, h = Image.open(os.path.join(d, f)).size
-        items.append({'file': f, 'w': w, 'h': h, 'label': labels[i] if i < len(labels) else ''})
-    out.append({'key': key, 'name': name, 'dir': f'assets/stickers/{key}', 'items': items, 'preview': PREVIEW.get(key, [0, 1, 2, 3])})
+for sec, packs in GROUPS:
+    for key, name, srcs in packs:
+        items = []
+        for sk in srcs:
+            d = os.path.join(ROOT, 'assets', 'stickers', sk)
+            if not os.path.isdir(d): continue
+            labels = LABELS.get(sk, [])
+            for i, f in enumerate(sorted(f for f in os.listdir(d) if f.endswith('.png'))):
+                w, h = Image.open(os.path.join(d, f)).size
+                items.append({'src': f'assets/stickers/{sk}/{f}', 'w': w, 'h': h, 'label': labels[i] if i < len(labels) else ''})
+        if items:
+            out.append({'key': key, 'name': name, 'sec': sec, 'dir': '', 'items': items})
 src = io.open(os.path.join(ROOT, 'stickers.src.html'), encoding='utf-8').read()
-io.open(os.path.join(ROOT, 'stickers.html'), 'w', encoding='utf-8', newline='\n').write(src.replace('__PACKS__', json.dumps(out, ensure_ascii=False)))
+io.open(os.path.join(ROOT, 'stickers.html'), 'w', encoding='utf-8', newline=chr(10)).write(src.replace('__PACKS__', json.dumps(out, ensure_ascii=False)))
 print('packs', [(p['key'], len(p['items'])) for p in out])
