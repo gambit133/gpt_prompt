@@ -463,6 +463,7 @@ dialog.guide{width:min(96vw,640px)}
 .imgload{position:absolute;inset:10px;display:grid;place-items:center;background:rgba(245,240,231,.85);border-radius:12px;z-index:1}.imgload[hidden]{display:none}
 #splash{position:fixed;inset:0;z-index:999;background:var(--paper);display:grid;place-items:center;transition:opacity .4s}#splash.out{opacity:0;pointer-events:none}#splash .sin{display:grid;justify-items:center;gap:6px}#splash img.lg{width:min(70vw,260px);height:auto}
 @media(prefers-reduced-motion:reduce){.capy img{animation:none}}
+.lblhint{font-weight:600;font-size:11.5px;color:var(--muted);margin-left:6px}
 </style>
 </head>
 <body>
@@ -514,7 +515,7 @@ dialog.guide{width:min(96vw,640px)}
             <div class="field field-subject"><label for="subjectSel">과목 <i class="req">*</i></label>
               <select id="subjectSel" autocomplete="off"><option value="">과목 선택</option><option>국어</option><option>영어</option><option>수학</option><option>과학</option><option>사회</option><option>역사</option><option>한국사</option><option>도덕</option><option>기술·가정</option><option>정보</option><option>음악</option><option>미술</option><option>체육</option><option value="__custom">직접 입력…</option></select>
               <input id="subject" placeholder="과목 직접 입력" autocomplete="off" hidden style="margin-top:6px"></div>
-            <div class="field wide"><label for="topic" id="topicLabel">주제 <i class="req">*</i></label><input id="topic" placeholder="예: 단원명 또는 다룰 범위">
+            <div class="field wide"><label for="topic" id="topicLabel">제목(주제) <i class="req">*</i><small class="lblhint">이미지 큰 제목이 돼요</small></label><input id="topic" placeholder="예: 단원명 또는 다룰 범위">
               <details class="exbox" id="topicEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="topic">🎲 다른 예시</button></summary><div class="examples" id="topicExList"></div></details></div>
           </div>
           <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료 첨부할게요!</label>
@@ -909,7 +910,7 @@ function setCurrent(n){
 }
 function lockStep3(lock){$('step3').classList.toggle('locked',lock);if(lock)$('step3').setAttribute('inert','');else $('step3').removeAttribute('inert')}
 function enterWork(key,scroll=true,noPush=false){
-  const changed=active!==key;active=key;if(changed&&typeof resetInputs==='function')resetInputs();const s=sample();role=s.role;if(tab!=='all')tab=s.group;const sch=isAdm(s);document.body.classList.toggle('school',sch);$('topicLabel').innerHTML=sch?(s.group==='blank'?'양식 이름 <i class="req">*</i>':'행사·자료 이름 <i class="req">*</i>'):'주제 <i class="req">*</i>';$('contentLabel').innerHTML=sch?'포함할 내용 <i class="req">*</i> <span style="font-weight:400">(일시·장소·준비물 등을 한 줄씩)</span>':'학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span>';
+  const changed=active!==key;active=key;if(changed&&typeof resetInputs==='function')resetInputs();const s=sample();role=s.role;if(tab!=='all')tab=s.group;const sch=isAdm(s);document.body.classList.toggle('school',sch);$('topicLabel').innerHTML=(sch?(s.group==='blank'?'양식 이름':'행사·자료 이름'):'제목(주제)')+' <i class="req">*</i><small class="lblhint">이미지 큰 제목이 돼요</small>';$('contentLabel').innerHTML=sch?'포함할 내용 <i class="req">*</i> <span style="font-weight:400">(일시·장소·준비물 등을 한 줄씩)</span>':'학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span>';
   document.body.classList.toggle('teacher',role==='teacher');
   $('choose').hidden=true;$('work').hidden=false;if(!noPush&&navState()!=='work')navPush('work');
   $('step3').classList.remove('done');hideFloat();unlocked=false;setCurrent(2);
