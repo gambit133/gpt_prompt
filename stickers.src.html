@@ -314,7 +314,7 @@ function layout(){
   items=p.items.map((it,i)=>{const r=Math.min(size/it.w,size/it.h);let w=Math.round(it.w*r),h=Math.round(it.h*r);
     let cx=ox+(i%cols)*(size+GAP)+(size-w)/2,cy=GAP+Math.floor(i/cols)*(size+GAP)+(size-h)/2;
     const w0=w,h0=h;if(inMine&&it.pos){w=Math.max(16,Math.min(it.pos.w,W-8));h=Math.max(16,Math.round(it.pos.h*w/it.pos.w));cx=Math.min(Math.max(0,it.pos.x),W-w);cy=Math.max(0,it.pos.y)}
-    const el=document.createElement('div');el.className='item';el.style.cssText=`left:${cx}px;top:${cy}px;width:${w}px;height:${h}px`;el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',(it.label||'스티커 '+(i+1))+' — 끌어서 옮기기, 더블클릭으로 복사');
+    const el=document.createElement('div');el.className='item';el.style.cssText=`left:${cx}px;top:${cy}px;width:${w}px;height:${h}px`;el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',(it.label||'스티커 '+(i+1))+' — 끌어서 옮기기');
     const img=new Image();img.src=src(p,it);img.alt='';img.draggable=false;img.decoding='async';const lb=document.createElement('span');lb.className='lb';lb.textContent=it.label||'';el.append(img,lb);['nw','ne','sw','se'].forEach(c=>{const hd=document.createElement('span');hd.className='hd '+c;hd.dataset.h=c;el.append(hd)});board.append(el);
     if(inMine&&it.pos&&it.pos.z)el.style.zIndex=it.pos.z;
     return {el,img,x:cx,y:cy,w,h,w0,h0,url:new URL(src(p,it),location.href).href}});
@@ -326,13 +326,13 @@ let posT;function savePos(){if(pack!=='mine')return;clearTimeout(posT);posT=setT
 function posCtx(){const c=$('ctx');if(!sel.size||mode){c.hidden=true;return}const L=[...sel].map(k=>items[k]).filter(Boolean);if(!L.length){c.hidden=true;return}c.hidden=false;const x0=Math.min(...L.map(o=>o.x)),y0=Math.min(...L.map(o=>o.y)),x1=Math.max(...L.map(o=>o.x+o.w)),y1=Math.max(...L.map(o=>o.y+o.h));const W=board.clientWidth,cw=c.offsetWidth,ch=c.offsetHeight;c.style.left=Math.max(6,Math.min(W-cw-6,(x0+x1)/2-cw/2))+'px';c.style.top=(y0-ch-14>4?y0-ch-14:y1+14)+'px'}
 function edHead(){const p=cur();$('edTitle').textContent=p?p.name:'';$('edCount').textContent=(p?p.items.length:0)+'개'}
 function syncSel(){items.forEach((o,i)=>o.el.classList.toggle('sel',sel.has(i)));$('selInfo').textContent=sel.size?sel.size+'개 선택됨':(matchMedia('(pointer:coarse)').matches?'그림을 탭해 고르세요':'클릭하거나 빈 곳을 드래그해 고르세요');$('selInfo').classList.toggle('on',!!sel.size);posCtx();$('copyBtn').disabled=$('saveBtn').disabled=$('addMineBtn').disabled=$('delBtn').disabled=!sel.size}
-let mode=null,start=null,orig=null,moved=false,base=null;
+let mode=null,start=null,orig=null,moved=false,base=null,tapOff=-1;
 board.addEventListener('pointerdown',e=>{
   if(e.target.closest('.ctx'))return;
   const hd=e.target.closest('.hd');if(hd){const el=hd.closest('.item');const i=items.findIndex(o=>o.el===el);if(!sel.has(i)){sel=new Set([i]);syncSel()}board.setPointerCapture(e.pointerId);const r0=board.getBoundingClientRect();start={x:e.clientX-r0.left,y:e.clientY-r0.top,h:hd.dataset.h,k:i};moved=false;mode='resize';orig=[...sel].map(k=>({k,x:items[k].x,y:items[k].y,w:items[k].w,h:items[k].h}));board.classList.add('busy');e.stopPropagation();return}
   const rect=board.getBoundingClientRect();const px=e.clientX-rect.left,py=e.clientY-rect.top;
   const el=e.target.closest('.item');start={x:px,y:py};moved=false;
-  if(el){board.setPointerCapture(e.pointerId);const i=items.findIndex(o=>o.el===el);
+  if(el){board.setPointerCapture(e.pointerId);const i=items.findIndex(o=>o.el===el);tapOff=(e.pointerType==='touch'&&sel.has(i))?i:-1;
     if(e.shiftKey||e.ctrlKey||e.metaKey||(e.pointerType==='touch'&&sel.size&&!sel.has(i))){sel.has(i)&&e.pointerType!=='touch'?sel.delete(i):sel.add(i)}else if(!sel.has(i)){sel.clear();sel.add(i)}
     syncSel();mode='move';orig=[...sel].map(k=>({k,x:items[k].x,y:items[k].y}));el.classList.add('dragging');
     const top=Math.max(...items.map(o=>+o.el.style.zIndex||0))+1;[...sel].forEach(k=>items[k].el.style.zIndex=top)}
@@ -345,9 +345,8 @@ board.addEventListener('pointermove',e=>{if(!mode)return;const rect=board.getBou
   if(mode==='move'){board.classList.add('busy');const W=board.clientWidth,H=board.clientHeight;orig.forEach(({k,x,y})=>{const o=items[k];o.x=Math.min(Math.max(-o.w*.5,x+dx),W-o.w*.5);o.y=Math.min(Math.max(-o.h*.5,y+dy),H-o.h*.5);place(o)})}
   else{const x=Math.min(px,start.x),y=Math.min(py,start.y),w=Math.abs(dx),h=Math.abs(dy);marq.style.left=x+'px';marq.style.top=y+'px';marq.style.width=w+'px';marq.style.height=h+'px';
     sel=new Set(base);items.forEach((o,i)=>{if(o.x<x+w&&o.x+o.w>x&&o.y<y+h&&o.y+o.h>y)sel.add(i)});syncSel()}});
-function endPointer(){if(mode==='marquee'){marq.style.display='none';if(!moved&&!base.size){sel.clear();syncSel()}}items.forEach(o=>o.el.classList.remove('dragging'));const wasEdit=(mode==='move'||mode==='resize')&&moved;mode=null;board.classList.remove('busy');posCtx();if(wasEdit)savePos()}
+function endPointer(){if(mode==='marquee'){marq.style.display='none';if(!moved&&!base.size){sel.clear();syncSel()}}if(mode==='move'&&!moved&&tapOff>=0){sel.delete(tapOff);syncSel()}tapOff=-1;items.forEach(o=>o.el.classList.remove('dragging'));const wasEdit=(mode==='move'||mode==='resize')&&moved;mode=null;board.classList.remove('busy');posCtx();if(wasEdit)savePos()}
 board.addEventListener('pointerup',endPointer);board.addEventListener('pointercancel',endPointer);
-board.addEventListener('dblclick',e=>{const el=e.target.closest('.item');if(!el)return;const i=items.findIndex(o=>o.el===el);sel=new Set([i]);syncSel();copySel()});
 const SCALE=2.6;
 async function composeCanvas(idx){const list=idx.map(k=>items[k]);await Promise.all(list.map(o=>o.img.decode().catch(()=>{})));
   const minx=Math.min(...list.map(o=>o.x)),miny=Math.min(...list.map(o=>o.y)),maxx=Math.max(...list.map(o=>o.x+o.w)),maxy=Math.max(...list.map(o=>o.y+o.h));
