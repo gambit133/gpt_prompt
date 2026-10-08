@@ -73,7 +73,6 @@ GROUPS = [
     ]),
     ('꾸미기', [
         ('deco', '말풍선·꾸미기', ['bubbles', 'ppt']),
-        ('frames', '수업 템플릿', ['frames']),
     ]),
     ('아이콘', [
         ('lesson', '수업 PPT 아이콘', ['lesson-kit']),
