@@ -3,6 +3,7 @@
 Keeps everything enclosed by a neutral-black outline; the brownish/coloured background and glow go.
 usage: python tools/cut_outline_bg.py in.png out.png [--white] [x0,y0,x1,y1 ...]
   --white: stickers have a white die-cut border instead of a black outline
+  --checker: background is a painted grey/white checkerboard; stickers have saturated colour borders
   optional boxes get stronger gap closing (for a sticker whose outline has a small gap)
 """
 import sys
@@ -20,7 +21,16 @@ def cut(black, it):
 
 
 WHITE = '--white' in sys.argv
-src, dst, *boxes = [a for a in sys.argv[1:] if a != '--white']
+CHECKER = '--checker' in sys.argv
+src, dst, *boxes = [a for a in sys.argv[1:] if a not in ('--white', '--checker')]
+if CHECKER:
+    A = np.array(Image.open(src).convert('RGBA')); rgb = A[:, :, :3].astype(int)
+    fg = ((rgb.max(2) - rgb.min(2)) > 45) | (rgb.max(2) < 90)  # checker squares are grey/white
+    fg = nd.binary_fill_holes(nd.binary_closing(nd.binary_opening(fg, iterations=2), iterations=3))
+    lab, n = nd.label(fg); size = nd.sum(fg, lab, range(1, n + 1))
+    keep = np.isin(lab, [i + 1 for i in range(n) if size[i] > 5000])
+    A[:, :, 3] = np.where(keep, 255, 0); Image.fromarray(A).save(dst)
+    print(dst, 'kept', round(keep.mean(), 3)); sys.exit()
 A = np.array(Image.open(src).convert('RGBA')); rgb = A[:, :, :3].astype(int)
 black = ((rgb.min(2) > 238) if WHITE else (rgb.max(2) < 60)) & (rgb.max(2) - rgb.min(2) < 14)
 keep = cut(black, 3)
