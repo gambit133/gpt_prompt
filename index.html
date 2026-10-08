@@ -200,7 +200,13 @@ body.school .field-subject{display:none}
 .switch input:checked+.slider{background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .switch input:checked+.slider::before{transform:translateX(20px)}
 .attach{margin:6px 0 10px;font-size:12px;color:var(--accent-text);font-weight:600;animation:fade .3s ease}
-.autorules{grid-column:1/-1;margin:6px 0 2px;border:1.5px dashed var(--line2);border-radius:10px;background:var(--soft2);padding:8px 12px;font-size:12px;color:var(--muted)}
+.attrow{position:relative;display:flex;align-items:center;gap:8px;margin-top:10px}
+.attrow .toggle{margin-top:0;flex:1}
+.infobtn{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);color:var(--accent-text);font:italic 800 13px Georgia,serif;cursor:pointer;display:grid;place-items:center}
+.infobtn:hover,.infobtn[aria-expanded="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent-text)}
+.infobtn[hidden]{display:none}
+.autorules{position:absolute;z-index:30;right:0;top:calc(100% + 8px);width:min(420px,100%);background:var(--card);border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--muted);box-shadow:0 14px 30px -12px rgba(59,42,30,.45)}
+.autorules::before{content:"";position:absolute;top:-7px;right:8px;width:12px;height:12px;background:var(--card);border-left:1.5px solid var(--line2);border-top:1.5px solid var(--line2);transform:rotate(45deg)}
 .autorules b{color:var(--accent-text);font-size:12.5px}
 .autorules ul{margin:4px 0 0;padding-left:18px;line-height:1.5}
 .autorules[hidden]{display:none}
@@ -529,13 +535,13 @@ dialog.guide{width:min(96vw,640px)}
               <details class="exbox" id="contentEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="content">🎲 다른 예시</button></summary><div class="examples" id="contentExList"></div></details></div>
             <div class="field wide extra-wrap"><label for="extra">추가 가이드라인 <span style="font-weight:400">(선택)</span></label>
               <div class="extra-grid"><textarea id="extra" rows="3" placeholder="예) 범위: 2단원 중 ○○ 소단원만&#10;형식: 정답·해설은 맨 뒤에 따로, 객관식 7개 + 서술형 3개&#10;강조: 자주 틀리는 개념 비교를 표로, 핵심 용어 병기"></textarea></div>
-              <details class="exbox" id="extraEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="extra">🎲 다른 예시</button></summary><div class="examples" id="extraExList"></div></details><div class="autorules" id="autoRules" hidden><b>📎 자료 첨부를 켜면 프롬프트에 자동으로 들어가는 지침</b><ul id="autoRulesList"></ul></div></div>
+              <details class="exbox" id="extraEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="extra">🎲 다른 예시</button></summary><div class="examples" id="extraExList"></div></details></div>
           </div>
           <details class="tune" id="tune">
             <summary>🎨 세부 조정 <span class="n" id="tuneCount"></span><span class="hint" style="font-weight:400;margin-left:4px">톤·색감·글꼴·삽화·글자량·비율</span></summary>
             <div class="tune-groups" id="tuneGroups"></div>
           </details>
-          <label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료 첨부할게요!</label>
+          <div class="attrow"><label class="toggle"><span class="switch"><input id="attach" type="checkbox" checked><span class="slider"></span></span>📎 ChatGPT에 자료 첨부할게요!</label><button type="button" class="infobtn" id="attachTipBtn" aria-label="자료 첨부 시 추가되는 지침 보기" aria-expanded="false" aria-controls="autoRules">i</button><div class="autorules" id="autoRules" role="tooltip" hidden><b>프롬프트에 자동으로 들어가는 지침</b><ul id="autoRulesList"></ul></div></div>
           <p class="attach" id="attachInfo">ChatGPT에 <b>프롬프트를 붙여넣고, 자료도 같이 올려 주세요.</b> 자료 없이 보내면 내용을 지어낼 수 있어요.<br><span class="attach-sub">첨부할 자료: 교과서·필기 사진, 학습지, 요약본, PDF·한글 문서, 수업 PPT 중 있는 것</span></p>
           <p class="req-msg" id="reqMsg" hidden>* 표시 항목을 채워 주세요.</p>
           <div class="actions"><button id="next" class="primary">프롬프트 생성</button></div>
@@ -1091,9 +1097,10 @@ function refreshPlaceholders(){
   const ex=poolFor('extra');$('extra').placeholder='예) '+[...ex.slice(0,1),...pick(ex.slice(1),2)].join('\n');
   const ce=contentExamples().items.slice(0,3);$('content').placeholder='예) '+ce.join('\n');
 }
+function tipShow(on){$('autoRules').hidden=!on;$('attachTipBtn').setAttribute('aria-expanded',on)}
 function applyAttachMode(){
   const attach=$('attach').checked;
-  $('contentWrap').hidden=false;$('autoRules').hidden=!attach;if(attach){const s1=sample();$('autoRulesList').replaceChildren(...[ATTACH_HEAD,...attachRules(s1&&info[s1.key]?info[s1.key].name:'')].map(x=>{const li=document.createElement('li');li.textContent=x;return li}))}$('contentWrap').classList.toggle('opt',attach);
+  $('contentWrap').hidden=false;$('attachTipBtn').hidden=!attach;if(!attach)tipShow(false);if(attach){const s1=sample();$('autoRulesList').replaceChildren(...[ATTACH_HEAD,...attachRules(s1&&info[s1.key]?info[s1.key].name:'')].map(x=>{const li=document.createElement('li');li.textContent=x;return li}))}$('contentWrap').classList.toggle('opt',attach);
   const s0=sample(),sch0=!!(s0&&isAdm(s0));$('contentLabel').innerHTML=attach?(sch0?'강조할 내용 <span style="font-weight:400">(선택 · 첨부 자료에서 꼭 넣을 일시·장소·항목)</span>':'강조할 내용 <span style="font-weight:400">(선택 · 첨부 자료에서 꼭 넣을 범위·용어·문항)</span>'):(sch0?'포함할 내용 <i class="req">*</i> <span style="font-weight:400">(일시·장소·준비물 등을 한 줄씩)</span>':'학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span>');
   $('content').placeholder=attach?'예) 2단원 2절 범위만\n용어는 교과서 표기 그대로\n3번 문항은 꼭 포함':$('content').dataset.ph;
   renderExamples('extra');renderExamples('content');refreshPlaceholders();
@@ -1103,7 +1110,10 @@ $('grade').addEventListener('change',()=>{renderExamples('topic');refreshPlaceho
 $('extra').addEventListener('input',()=>{setCurrent(2);build()});$('content').addEventListener('input',()=>{setCurrent(2);build();if(val('content'))$('contentWrap').classList.remove('invalid')});
 $('topic').addEventListener('input',()=>{renderExamples('content');$('content').placeholder='예) '+contentExamples().items.slice(0,3).join('\n')});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
-$('content').dataset.ph=$('content').placeholder;$('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
+$('content').dataset.ph=$('content').placeholder;$('attachTipBtn').onclick=e=>{e.stopPropagation();tipShow($('autoRules').hidden)};
+document.addEventListener('click',e=>{if(!e.target.closest('#autoRules,#attachTipBtn'))tipShow(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')tipShow(false)});
+$('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
 function updateLength(){const n=$('output').value.length;const long=n>3000;$('length').textContent=n.toLocaleString()+'자'+(long?' · 조금 길어요 (3,000자 이내 권장)':'');$('length').classList.toggle('warn',long)}
 $('output').addEventListener('input',updateLength);
 
