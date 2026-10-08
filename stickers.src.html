@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>쌤플레이 · 투명 PNG 스티커</title>
+<meta name="description" content="PPT와 학습지에 바로 붙여 쓰는 투명 배경 PNG 스티커 모음. 끌어서 배치하고, 드래그로 여러 개를 골라 한 번에 복사하세요.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--paper:#fbf6ec;--card:#fffdf8;--ink:#3b2a1e;--muted:#6e5b49;--line:#ead9c2;--line2:#cdb48c;--accent:#f0962a;--accent2:#ffbb45;--accent-dark:#c2721a;--accent-text:#7a4712;--on-accent:#2e2016;--ring:rgba(240,150,42,.3);--soft:#fdeccc;--soft2:#fbf2e0;--sel:#2f7de1}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",Pretendard,"Malgun Gothic",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+header{display:flex;align-items:center;gap:12px;padding:16px 0 6px}
+header .logo{height:46px;display:block}
+header h1{font-size:18px;margin:0;letter-spacing:-.02em}
+header nav{margin-left:auto;display:flex;gap:6px}
+header nav a{font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:999px;border:1.5px solid var(--line);background:var(--card)}
+header nav a:hover{color:var(--ink);border-color:var(--line2)}
+.lead{font-size:13.5px;color:var(--muted);margin:4px 0 12px;line-height:1.55}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font:700 13px inherit;color:var(--muted);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.tab .n{font-size:11px;font-weight:600;background:var(--soft);border-radius:999px;padding:1px 7px}
+.tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--on-accent);border-color:transparent}
+.toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 0;background:var(--paper)}
+.btn{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;font:700 13px inherit;color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.btn:hover{border-color:var(--line2)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:var(--on-accent);box-shadow:0 3px 0 var(--accent-dark)}
+.btn:disabled{opacity:.45;cursor:default;box-shadow:none}
+.toolbar .sp{flex:1}
+.selinfo{font-size:12.5px;color:var(--muted);font-weight:600}
+.bgsw{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.bgsw button{border:0;width:30px;height:30px;cursor:pointer}
+.bgsw button.on{outline:2px solid var(--sel);outline-offset:-3px}
+.board{position:relative;border:1.5px solid var(--line);border-radius:16px;min-height:420px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;margin-bottom:12px}
+.board.bg-check{background-color:#fff;background-image:linear-gradient(45deg,#eee 25%,transparent 25%),linear-gradient(-45deg,#eee 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#eee 75%),linear-gradient(-45deg,transparent 75%,#eee 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}
+.board.bg-white{background:#fff}
+.board.bg-dark{background:#2b2b2b}
+.item{position:absolute;cursor:grab;touch-action:none;border-radius:8px;outline:2px solid transparent;outline-offset:2px;transition:outline-color .12s}
+.item img{display:block;width:100%;height:100%;pointer-events:none;-webkit-user-drag:none}
+.item:hover{outline-color:rgba(47,125,225,.35)}
+.item.sel{outline-color:var(--sel);background:rgba(47,125,225,.07)}
+.item.dragging{cursor:grabbing}
+.marquee{position:absolute;border:1.5px dashed var(--sel);background:rgba(47,125,225,.1);pointer-events:none;display:none}
+.tip{font-size:12px;color:var(--muted);margin:0 0 24px;line-height:1.6}
+.tip b{color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
+@media(max-width:640px){header nav{display:none}header h1{font-size:17px;white-space:nowrap}header .logo{height:38px}header nav a{padding:5px 8px;font-size:12px}.btn{padding:7px 10px;font-size:12.5px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a href="index.html" title="쌤플 고르기"><img class="logo" src="assets/logo-capy.png" alt="쌤플레이"></a>
+  <h1>투명 PNG 스티커</h1>
+  <nav><a href="index.html">쌤플 고르기</a><a href="about.html">사이트 소개</a></nav>
+</header>
+<p class="lead">PPT와 학습지에 바로 붙여 쓰는 투명 배경 스티커입니다. <b>끌어서 옮기고</b>, 빈 곳을 <b>드래그해 여러 개를 고른 뒤</b> 복사하면 고른 배치 그대로 한 장의 투명 PNG로 붙여넣을 수 있어요.</p>
+<div class="tabs" id="tabs" role="tablist" aria-label="스티커 묶음"></div>
+<div class="toolbar">
+  <button class="btn primary" id="copyBtn" disabled>📋 선택 복사</button>
+  <button class="btn" id="saveBtn" disabled>📁 선택 저장</button>
+  <button class="btn" id="allBtn">전체 선택</button>
+  <button class="btn" id="noneBtn">선택 해제</button>
+  <button class="btn" id="resetBtn">배치 초기화</button>
+  <span class="sp"></span>
+  <span class="selinfo" id="selInfo">0개 선택</span>
+  <span class="bgsw" role="group" aria-label="배경"><button data-bg="check" class="on" title="투명 확인(체크무늬)" style="background:conic-gradient(#ddd 25%,#fff 0 50%,#ddd 0 75%,#fff 0) 0 0/12px 12px"></button><button data-bg="white" title="흰 배경" style="background:#fff"></button><button data-bg="dark" title="어두운 배경" style="background:#2b2b2b"></button></span>
+</div>
+<div class="board bg-check" id="board"><div class="marquee" id="marquee"></div></div>
+<p class="tip"><b>사용법</b> · 스티커를 누르면 선택, Shift+클릭으로 추가 선택(휴대폰은 탭할 때마다 추가) · 빈 곳을 드래그하면 영역 안 스티커가 모두 선택(PC) · 선택한 스티커를 끌면 함께 이동 · 스티커를 더블클릭하면 그 하나만 바로 복사 · Ctrl+C 복사, Ctrl+A 전체 선택<br><b>PPT에 붙여넣기</b> · 복사 후 슬라이드에서 Ctrl+V. 배경이 하얗게 붙으면 <b>📁 선택 저장</b>으로 받은 PNG를 [삽입 → 그림]으로 넣으세요.</p>
+</div>
+<footer>쌤플레이 · 스티커는 학교 수업·학습 자료에 자유롭게 쓰세요</footer>
+<div class="toast" id="toast"></div>
+<script>
+const PACKS=__PACKS__;
+const $=id=>document.getElementById(id);
+const board=$('board'),marq=$('marquee');
+let pack=PACKS[0].key,items=[],sel=new Set();
+const DISPLAY=118,GAP=22;
+function toast(m){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2000)}
+function renderTabs(){$('tabs').replaceChildren(...PACKS.map(p=>{const b=document.createElement('button');b.className='tab'+(p.key===pack?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',p.key===pack);b.innerHTML=`<span></span><span class="n">${p.items.length}</span>`;b.firstChild.textContent=p.name;b.onclick=()=>{pack=p.key;try{localStorage.setItem('stkPack',pack)}catch{}renderTabs();layout()};return b}))}
+function layout(){
+  board.querySelectorAll('.item').forEach(e=>e.remove());sel.clear();
+  const p=PACKS.find(x=>x.key===pack);const W=board.clientWidth;
+  const size=W<520?Math.floor((W-GAP*4)/3):DISPLAY;const cols=Math.max(3,Math.floor((W-GAP)/(size+GAP)));
+  const ox=Math.max(GAP,(W-cols*(size+GAP)+GAP)/2);
+  items=p.items.map((it,i)=>{const r=Math.min(size/it.w,size/it.h);const w=Math.round(it.w*r),h=Math.round(it.h*r);
+    const cx=ox+(i%cols)*(size+GAP)+(size-w)/2,cy=GAP+Math.floor(i/cols)*(size+GAP)+(size-h)/2;
+    const el=document.createElement('div');el.className='item';el.style.cssText=`left:${cx}px;top:${cy}px;width:${w}px;height:${h}px`;el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',(it.label||'스티커 '+(i+1))+' — 끌어서 옮기기, 더블클릭으로 복사');
+    const img=new Image();img.src=`${p.dir}/${it.file}`;img.alt='';img.draggable=false;img.decoding='async';el.append(img);board.append(el);
+    return {el,img,x:cx,y:cy,w,h,src:img.src}});
+  board.style.height=(GAP*2+Math.ceil(p.items.length/cols)*(size+GAP))+'px';syncSel();
+}
+function place(o){o.el.style.left=o.x+'px';o.el.style.top=o.y+'px'}
+function syncSel(){items.forEach((o,i)=>o.el.classList.toggle('sel',sel.has(i)));$('selInfo').textContent=sel.size+'개 선택';$('copyBtn').disabled=$('saveBtn').disabled=!sel.size}
+// pointer interaction
+let mode=null,start=null,orig=null,moved=false,base=null;
+board.addEventListener('pointerdown',e=>{
+  const rect=board.getBoundingClientRect();const px=e.clientX-rect.left,py=e.clientY-rect.top;
+  const el=e.target.closest('.item');start={x:px,y:py};moved=false;board.setPointerCapture(e.pointerId);
+  if(el){const i=items.findIndex(o=>o.el===el);
+    if(e.shiftKey||e.ctrlKey||e.metaKey||(e.pointerType==='touch'&&sel.size&&!sel.has(i))){sel.has(i)&&e.pointerType!=='touch'?sel.delete(i):sel.add(i)}else if(!sel.has(i)){sel.clear();sel.add(i)}
+    syncSel();mode='move';orig=[...sel].map(k=>({k,x:items[k].x,y:items[k].y}));items.forEach(o=>o.el.classList.remove('dragging'));el.classList.add('dragging');
+    const top=Math.max(...items.map(o=>+o.el.style.zIndex||0))+1;[...sel].forEach(k=>items[k].el.style.zIndex=top)}
+  else if(e.pointerType==='touch'){board.releasePointerCapture(e.pointerId);if(!e.shiftKey){sel.clear();syncSel()}return}
+  else{mode='marquee';base=(e.shiftKey||e.ctrlKey||e.metaKey)?new Set(sel):new Set();marq.style.cssText=`display:block;left:${px}px;top:${py}px;width:0;height:0`}
+});
+board.addEventListener('pointermove',e=>{if(!mode)return;const rect=board.getBoundingClientRect();const px=e.clientX-rect.left,py=e.clientY-rect.top;const dx=px-start.x,dy=py-start.y;if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
+  if(mode==='move'){const W=board.clientWidth,H=board.clientHeight;orig.forEach(({k,x,y})=>{const o=items[k];o.x=Math.min(Math.max(-o.w*.5,x+dx),W-o.w*.5);o.y=Math.min(Math.max(-o.h*.5,y+dy),H-o.h*.5);place(o)})}
+  else{const x=Math.min(px,start.x),y=Math.min(py,start.y),w=Math.abs(dx),h=Math.abs(dy);marq.style.left=x+'px';marq.style.top=y+'px';marq.style.width=w+'px';marq.style.height=h+'px';
+    sel=new Set(base);items.forEach((o,i)=>{if(o.x<x+w&&o.x+o.w>x&&o.y<y+h&&o.y+o.h>y)sel.add(i)});syncSel()}});
+function endPointer(){if(mode==='marquee'){marq.style.display='none';if(!moved&&!base.size){sel.clear();syncSel()}}items.forEach(o=>o.el.classList.remove('dragging'));mode=null}
+board.addEventListener('pointerup',endPointer);board.addEventListener('pointercancel',endPointer);
+board.addEventListener('dblclick',e=>{const el=e.target.closest('.item');if(!el)return;const i=items.findIndex(o=>o.el===el);sel=new Set([i]);syncSel();copySel()});
+// compose selected items into one transparent PNG
+const SCALE=2.6;
+async function composeBlob(idx){const list=idx.map(k=>items[k]);await Promise.all(list.map(o=>o.img.decode().catch(()=>{})));
+  const minx=Math.min(...list.map(o=>o.x)),miny=Math.min(...list.map(o=>o.y)),maxx=Math.max(...list.map(o=>o.x+o.w)),maxy=Math.max(...list.map(o=>o.y+o.h));
+  const c=document.createElement('canvas');c.width=Math.ceil((maxx-minx)*SCALE);c.height=Math.ceil((maxy-miny)*SCALE);const g=c.getContext('2d');g.imageSmoothingQuality='high';
+  [...idx].sort((a,b)=>(+items[a].el.style.zIndex||0)-(+items[b].el.style.zIndex||0)).forEach(k=>{const o=items[k];g.drawImage(o.img,(o.x-minx)*SCALE,(o.y-miny)*SCALE,o.w*SCALE,o.h*SCALE)});
+  return new Promise(r=>c.toBlob(r,'image/png'))}
+async function copySel(){if(!sel.size)return;const idx=[...sel];
+  try{if(!window.ClipboardItem||!navigator.clipboard?.write)throw 0;await navigator.clipboard.write([new ClipboardItem({'image/png':composeBlob(idx)})]);toast(idx.length+'개 복사 완료 · PPT에서 Ctrl+V')}
+  catch{toast('이 브라우저는 이미지 복사가 안 돼요. 저장해서 넣어 주세요.');saveSel()}}
+async function saveSel(){if(!sel.size)return;const blob=await composeBlob([...sel]);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`쌤플레이-스티커-${pack}-${sel.size}개.png`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast('PNG 저장 완료')}
+$('copyBtn').onclick=copySel;$('saveBtn').onclick=saveSel;
+$('allBtn').onclick=()=>{sel=new Set(items.map((_,i)=>i));syncSel()};$('noneBtn').onclick=()=>{sel.clear();syncSel()};$('resetBtn').onclick=layout;
+document.querySelectorAll('.bgsw button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bgsw button').forEach(x=>x.classList.toggle('on',x===b));board.className='board bg-'+b.dataset.bg;try{localStorage.setItem('stkBg',b.dataset.bg)}catch{}});
+document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;const mod=e.ctrlKey||e.metaKey;
+  if(mod&&e.key.toLowerCase()==='c'&&sel.size){e.preventDefault();copySel()}
+  if(mod&&e.key.toLowerCase()==='a'){e.preventDefault();sel=new Set(items.map((_,i)=>i));syncSel()}
+  if(e.key==='Escape'){sel.clear();syncSel()}
+  if(e.key==='Enter'&&e.target.classList.contains('item')){const i=items.findIndex(o=>o.el===e.target);sel=new Set([i]);syncSel();copySel()}});
+try{const sp=localStorage.getItem('stkPack');if(PACKS.some(p=>p.key===sp))pack=sp;const bg=localStorage.getItem('stkBg');if(bg)document.querySelector(`.bgsw button[data-bg="${bg}"]`)?.click()}catch{}
+let rz;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(!sel.size)layout()},200)});
+renderTabs();layout();
+</script>
+</body>
+</html>

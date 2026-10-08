@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+"""Build stickers.html from stickers.src.html + assets/stickers/<pack>/*.png.
+
+Usage: python tools/build_stickers.py
+Pack order, names and per-sticker labels live in PACKS below; files are read from disk.
+"""
+import io, json, os
+from PIL import Image
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PACKS = [
+    ('capy', '카피바라 캐릭터', ['인사','책 읽기','필기','질문','엄지 척','박수','생각 중','아이디어','축하','하트','쉬는 중','응원']),
+    ('icons', '수업 아이콘', ['연필','책','전구','시계','돋보기','체크','별','트로피','지구본','계산기','물음표','하트']),
+    ('subjects', '과목·학교생활', ['국어','수학','과학','사회','영어','음악','미술','체육','정보','급식','가방','학교']),
+    ('labels', '문구 배지', ['참 잘했어요','중요!','정답','다시 보기','시험에 나와요','꼭 기억!','오늘의 목표','질문 있어요?','모둠 활동','발표 시간','쉬는 시간','복습하기']),
+    ('emoji', '이모티콘', ['웃음','윙크','하트 눈','놀람','생각 중','엄지 척','박수','울먹임','화남','졸림','축하','아이디어']),
+    ('ppt', 'PPT 꾸미기', ['1','2','3','4','5','오른쪽 화살표','곡선 화살표','양방향 화살표','말풍선','생각 풍선','제목 리본','메모지','체크박스','형광펜','반짝임']),
+]
+out = []
+for key, name, labels in PACKS:
+    d = os.path.join(ROOT, 'assets', 'stickers', key)
+    if not os.path.isdir(d): continue
+    files = sorted(f for f in os.listdir(d) if f.endswith('.png'))
+    items = []
+    for i, f in enumerate(files):
+        w, h = Image.open(os.path.join(d, f)).size
+        items.append({'file': f, 'w': w, 'h': h, 'label': labels[i] if i < len(labels) else ''})
+    out.append({'key': key, 'name': name, 'dir': f'assets/stickers/{key}', 'items': items})
+src = io.open(os.path.join(ROOT, 'stickers.src.html'), encoding='utf-8').read()
+io.open(os.path.join(ROOT, 'stickers.html'), 'w', encoding='utf-8', newline='\n').write(src.replace('__PACKS__', json.dumps(out, ensure_ascii=False)))
+print('packs', [(p['key'], len(p['items'])) for p in out])
