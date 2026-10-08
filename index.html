@@ -126,7 +126,7 @@ body.peeking .gallery .card:not(.peeksrc){opacity:.55;filter:saturate(.7);transi
 .card-pick{all:unset;display:block;cursor:zoom-in;width:100%}
 .card-pick:focus-visible{outline:3px solid var(--warn);outline-offset:-3px;border-radius:10px}
 .thumbwrap{position:relative}
-.card .thumb{display:block;width:100%;height:272px;object-fit:cover;object-position:top;background:#f7efe2;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.card .thumb{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:top;background:#f7efe2;border-bottom:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
 .card:hover .thumb{transform:scale(1.04)}
 .card .badge{position:absolute;right:6px;bottom:6px;background:rgba(59,42,30,.82);color:#fff;font-size:10px;font-weight:600;border-radius:999px;padding:2px 7px;backdrop-filter:blur(3px)}
 .card .meta{padding:8px 10px 9px;background:var(--card);display:flex;align-items:center;gap:8px}
@@ -465,7 +465,6 @@ dialog.guide{width:min(96vw,640px)}
   .tab{padding:6px 11px;font-size:12.5px}
   .ddbtn{padding:0 10px}
   .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .card .thumb{height:200px}
   .tune-groups{grid-template-columns:minmax(0,1fr);gap:7px}
   .primary{flex-basis:100%}
   .dside h3{font-size:17px}
