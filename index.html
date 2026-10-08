@@ -555,7 +555,7 @@ dialog.guide{width:min(96vw,640px)}
 
 <div id="peek" class="peek" aria-hidden="true"><img alt=""><b></b></div>
 <div id="toast" class="toast" aria-hidden="true"><span class="ok">✓</span><span id="toastText"></span></div>
-<div id="float" class="float" hidden role="status"><span class="capy capy-dance h48" aria-hidden="true"><img loading="lazy" src="assets/capy-dance.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-dance.png'"></span><div class="ftext"><b id="floatTitle">프롬프트 복사 완료</b><span id="floatText">프롬프트를 붙여넣으셨으면, 정확한 생성을 위해 예시 이미지도 넣어 주세요!</span></div><button id="floatSave" class="primary small" hidden>📁 예시 이미지 저장</button><button id="floatImg" class="primary small">🖼️ 예시 이미지 복사</button><button id="floatHelp" type="button" aria-label="사용법 다시 보기" title="사용법 다시 보기">?</button><button id="floatX" aria-label="닫기">✕</button></div>
+<div id="float" class="float" hidden role="status"><span class="capy capy-dance h48" aria-hidden="true"><img loading="lazy" src="assets/capy-dance.webp" alt="" onerror="this.onerror=null;this.src='assets/capy-dance.png'"></span><div class="ftext"><b id="floatTitle">프롬프트 복사 완료</b><span id="floatText">ChatGPT에 프롬프트와 예시 이미지, 참고 자료를 올려서 생성해 주세요.</span></div><button id="floatSave" class="primary small" hidden>📁 예시 이미지 저장</button><button id="floatImg" class="primary small">🖼️ 예시 이미지 복사</button><button id="floatHelp" type="button" aria-label="사용법 다시 보기" title="사용법 다시 보기">?</button><button id="floatX" aria-label="닫기">✕</button></div>
 <dialog id="guide" class="guide" aria-labelledby="gTitle">
   <button id="guideX" class="dx" aria-label="닫기">✕</button>
   <div class="gwrap">
@@ -1096,7 +1096,7 @@ $('copy').onclick=async()=>{
   $('step3').classList.add('done');$('step3').classList.remove('current');
   showFloat();openGuide();
 };
-let floatTimer;function showFloat(title,text,btn=true,ms=15000,save=false){$('floatSave').hidden=!save;$('floatTitle').textContent=title||'프롬프트 복사 완료';$('floatText').textContent=text||'프롬프트를 붙여넣으셨으면, 정확한 생성을 위해 예시 이미지도 넣어 주세요!';$('floatImg').hidden=!btn;$('float').hidden=false;clearTimeout(floatTimer);floatTimer=setTimeout(hideFloat,ms)}function hideFloat(){$('float').hidden=true}
+let floatTimer;function showFloat(title,text,btn=true,ms=15000,save=false){$('floatSave').hidden=!save;$('floatTitle').textContent=title||'프롬프트 복사 완료';$('floatText').textContent=text||'ChatGPT에 프롬프트와 예시 이미지, 참고 자료를 올려서 생성해 주세요.';$('floatImg').hidden=!btn;$('float').hidden=false;clearTimeout(floatTimer);floatTimer=setTimeout(hideFloat,ms)}function hideFloat(){$('float').hidden=true}
 $('floatX').onclick=hideFloat;$('floatSave').onclick=()=>$('refDownload').click();$('floatHelp').onclick=()=>openGuide(true);$('floatImg').onclick=()=>$('copyImage').click();
 let noGuide=false,howOpen=false;try{noGuide=localStorage.getItem('noGuide')==='1'}catch{}
 function applyHow(){$('howto').hidden=!howOpen;document.querySelector('.gwrap').classList.toggle('anim',howOpen);$('howToggle').textContent=howOpen?'▼ 사용법 접기':'▶ 사용법 자세히 보기';$('howToggle').setAttribute('aria-expanded',howOpen)}
