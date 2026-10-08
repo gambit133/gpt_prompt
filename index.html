@@ -205,6 +205,10 @@ body.school .field-subject{display:none}
 .infobtn{position:absolute;right:8px;top:6px;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line2);background:var(--card);color:var(--accent-text);font:italic 800 13px Georgia,serif;cursor:pointer;display:grid;place-items:center}
 .infobtn:hover,.infobtn[aria-expanded="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent-text)}
 .infobtn[hidden]{display:none}
+.content-wrap{position:relative}
+#contentTipBtn{top:-4px;right:0;width:22px;height:22px;font-size:12px}
+#contentTip{top:24px;width:min(320px,100%);line-height:1.6}
+#contentTip::before{right:5px}
 .autorules{position:absolute;z-index:30;right:0;top:calc(100% + 8px);width:min(420px,100%);background:var(--card);border:1.5px solid var(--line2);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--muted);box-shadow:0 14px 30px -12px rgba(59,42,30,.45)}
 .autorules::before{content:"";position:absolute;top:-7px;right:8px;width:12px;height:12px;background:var(--card);border-left:1.5px solid var(--line2);border-top:1.5px solid var(--line2);transform:rotate(45deg)}
 .autorules b{color:var(--accent-text);font-size:12.5px}
@@ -533,7 +537,7 @@ dialog.guide{width:min(96vw,640px)}
               <details class="exbox" id="topicEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="topic">🎲 다른 예시</button></summary><div class="examples" id="topicExList"></div></details></div>
           </div>
           <div class="form">
-            <div class="field wide content-wrap" id="contentWrap" hidden><label for="content" id="contentLabel">학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span></label>
+            <div class="field wide content-wrap" id="contentWrap" hidden><button type="button" class="infobtn" id="contentTipBtn" aria-label="학습 내용 작성 요령" aria-expanded="false" aria-controls="contentTip">i</button><div class="autorules" id="contentTip" role="tooltip" hidden>양식에 딱 맞추지 않아도 돼요.<br>대략적으로 적어도 ChatGPT가 알아서 잘 정리해요.<br>참고할 첨부 자료와 요청 사항만 분명하게 알려 주세요.</div><label for="content" id="contentLabel">학습 내용 <i class="req">*</i> <span style="font-weight:400">(첨부 대신 핵심 내용을 적어 주세요)</span></label>
               <div class="extra-grid"><textarea id="content" rows="5" placeholder="예) 핵심 내용: 자료의 중심 내용을 2~3문장으로&#10;용어·공식·인물: 꼭 들어갈 것을 쉼표로 나열&#10;시험 포인트: 자주 틀리는 것, 주의점을 한 줄씩"></textarea></div>
               <details class="exbox" id="contentEx"><summary>예시 보기 <button type="button" class="shuffle" data-pool="content">🎲 다른 예시</button></summary><div class="examples" id="contentExList"></div></details></div>
             <div class="field wide extra-wrap"><label for="extra">추가 가이드라인 <span style="font-weight:400">(선택)</span></label>
@@ -1116,9 +1120,11 @@ $('grade').addEventListener('change',()=>{renderExamples('topic');refreshPlaceho
 $('extra').addEventListener('input',()=>{setCurrent(2);build()});$('content').addEventListener('input',()=>{setCurrent(2);build();if(val('content'))$('contentWrap').classList.remove('invalid')});
 $('topic').addEventListener('input',()=>{renderExamples('content');$('content').placeholder='예) '+contentExamples().items.slice(0,3).join('\n')});
 async function imageBlob(src){const b=await fetch(src).then(r=>r.blob());const bm=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bm.width;c.height=bm.height;c.getContext('2d').drawImage(bm,0,0);return new Promise(res=>c.toBlob(res,'image/png'))}
-$('content').dataset.ph=$('content').placeholder;$('attachTipBtn').onclick=e=>{e.stopPropagation();tipShow($('autoRules').hidden)};
-document.addEventListener('click',e=>{if(!e.target.closest('#autoRules,#attachTipBtn'))tipShow(false)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')tipShow(false)});
+$('content').dataset.ph=$('content').placeholder;$('attachTipBtn').onclick=e=>{e.stopPropagation();ctipShow(false);tipShow($('autoRules').hidden)};
+function ctipShow(on){$('contentTip').hidden=!on;$('contentTipBtn').setAttribute('aria-expanded',on)}
+$('contentTipBtn').onclick=e=>{e.stopPropagation();tipShow(false);ctipShow($('contentTip').hidden)};
+document.addEventListener('click',e=>{if(!e.target.closest('#autoRules,#attachTipBtn'))tipShow(false);if(!e.target.closest('#contentTip,#contentTipBtn'))ctipShow(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){tipShow(false);ctipShow(false)}});
 $('attach').addEventListener('change',()=>{$('attachInfo').hidden=!$('attach').checked;applyAttachMode();build()});
 function updateLength(){const n=$('output').value.length;const long=n>3000;$('length').textContent=n.toLocaleString()+'자'+(long?' · 조금 길어요 (3,000자 이내 권장)':'');$('length').classList.toggle('warn',long)}
 $('output').addEventListener('input',updateLength);
