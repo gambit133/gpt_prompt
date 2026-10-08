@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>쌤플레이 · 투명 PNG 스티커</title>
-<meta name="description" content="PPT와 학습지에 바로 붙여 쓰는 투명 배경 PNG 스티커 모음. 끌어서 배치하고, 드래그로 여러 개를 골라 한 번에 복사하세요.">
+<title>쌤플레이 · PPT 치트키</title>
+<meta name="description" content="바로 복붙 가능한 PPT 치트키 모음집! 투명 배경 캐릭터·아이콘·캘리그라피·버튼을 끌어서 배치하고 한 번에 복사하세요.">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -12,79 +12,148 @@
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",Pretendard,"Malgun Gothic",sans-serif;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
-header{display:flex;align-items:center;gap:12px;padding:16px 0 6px}
-header .logo{height:46px;display:block}
-header h1{font-size:18px;margin:0;letter-spacing:-.02em}
-header nav{margin-left:auto;display:flex;gap:6px}
-header nav a{font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:999px;border:1.5px solid var(--line);background:var(--card)}
-header nav a:hover{color:var(--ink);border-color:var(--line2)}
-.lead{font-size:13.5px;color:var(--muted);margin:4px 0 12px;line-height:1.55}
-.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:none;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font:700 13px inherit;color:var(--muted);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
-.tab .n{font-size:11px;font-weight:600;background:var(--soft);border-radius:999px;padding:1px 7px}
-.tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--on-accent);border-color:transparent}
-.toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 0;background:var(--paper)}
-.btn{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;font:700 13px inherit;color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
-.btn:hover{border-color:var(--line2)}
-.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:var(--on-accent);box-shadow:0 3px 0 var(--accent-dark)}
-.btn:disabled{opacity:.45;cursor:default;box-shadow:none}
+.wrap{max-width:1440px;margin:0 auto;padding:0 20px}
+header{display:flex;align-items:center;gap:12px;padding:14px 0 6px}
+header .logo{height:48px;display:block}
+.topnav{display:flex;gap:4px;margin-left:auto}
+.topnav a{font-size:14px;font-weight:800;color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:999px}
+.topnav a:hover{color:var(--ink);background:var(--soft2)}
+.topnav a.on{color:var(--ink);background:var(--soft)}
+.menu{position:relative;flex:none}
+.hamb{width:36px;height:36px;border:0;border-radius:10px;background:transparent;display:grid;place-items:center;padding:0;cursor:pointer}
+.hamb:hover,.hamb.open{background:var(--soft2)}
+.hamb .hb{display:flex;gap:4px}.hamb .hb i{width:4px;height:4px;border-radius:50%;background:var(--ink)}
+.menulist{position:absolute;right:0;top:calc(100% + 10px);background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:0 18px 34px -16px rgba(0,0,0,.4);padding:4px;min-width:140px;z-index:60;display:grid}
+.menulist[hidden]{display:none}
+.menulist a{text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:600;padding:7px 10px;border-radius:7px}
+.menulist a:hover{background:var(--soft2);color:var(--accent-text)}
+.hero{margin:6px 0 14px}
+.hero h1{margin:0;font-size:26px;letter-spacing:-.03em}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--accent2) 62%)}
+.hero p{margin:6px 0 0;font-size:14px;color:var(--muted);line-height:1.55}
+.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;align-items:start}
+.side{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;padding:2px 4px 8px 2px;scrollbar-width:thin}
+.side h2{font-size:12px;color:var(--muted);margin:2px 2px 8px}
+.packs{display:grid;gap:8px}
+.pack{position:relative;width:100%;border:1.5px solid var(--line);background:var(--card);border-radius:16px;padding:10px;cursor:pointer;text-align:left;font:inherit;color:var(--ink);transition:transform .15s,box-shadow .15s,border-color .15s}
+.pack:hover{border-color:var(--line2);transform:translateY(-2px);box-shadow:0 10px 20px -14px rgba(59,42,30,.45)}
+.pack.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring);background:#fff}
+.pack .pv{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:8px}
+.pack .pv img{width:100%;aspect-ratio:1;object-fit:contain}
+.pack b{font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.pack b span{font-size:11px;font-weight:700;color:var(--muted);background:var(--soft);border-radius:999px;padding:2px 8px}
+.pack small{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.peek{position:fixed;z-index:80;width:360px;background:#fff;border:1.5px solid var(--line2);border-radius:16px;box-shadow:0 24px 40px -18px rgba(59,42,30,.5);padding:12px;display:none;pointer-events:none}
+.peek.show{display:block}
+.peek b{display:block;font-size:13px;margin-bottom:8px}
+.peek .g{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background-color:#fff;background-image:linear-gradient(45deg,#f2f2f2 25%,transparent 25%),linear-gradient(-45deg,#f2f2f2 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#f2f2f2 75%),linear-gradient(-45deg,transparent 75%,#f2f2f2 75%);background-size:14px 14px;background-position:0 0,0 7px,7px -7px,-7px 0;border-radius:10px;padding:6px}
+.peek .g img{width:100%;aspect-ratio:1;object-fit:contain}
+.main{min-width:0}
+.toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:9px 10px 11px;margin-bottom:10px;background:rgba(255,253,248,.94);backdrop-filter:blur(6px);border:1.5px solid var(--line);border-radius:16px}
 .toolbar .sp{flex:1}
-.selinfo{font-size:12.5px;color:var(--muted);font-weight:600}
-.bgsw{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
-.bgsw button{border:0;width:30px;height:30px;cursor:pointer}
-.bgsw button.on{outline:2px solid var(--sel);outline-offset:-3px}
-.board{position:relative;border:1.5px solid var(--line);border-radius:16px;min-height:420px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;margin-bottom:12px}
+.selinfo{font-size:12.5px;color:var(--muted);font-weight:700}
+.btn{position:relative;border:2px solid var(--ink);background:var(--card);border-radius:12px;padding:8px 13px;font:800 13px inherit;color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center;box-shadow:0 4px 0 var(--ink);transform:translateY(-2px);transition:transform .08s,box-shadow .08s,background .15s}
+.btn:hover{background:var(--soft2)}
+.btn:active{transform:translateY(2px);box-shadow:0 0 0 var(--ink)}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.btn:disabled{opacity:.4;cursor:default;transform:none;box-shadow:0 2px 0 var(--ink)}
+.chk{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;user-select:none}
+.chk input{appearance:none;width:34px;height:20px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;transition:background .2s;margin:0}
+.chk input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .2s}
+.chk input:checked{background:var(--accent)}.chk input:checked::after{left:16px}
+.bgsw{display:inline-flex;gap:4px;padding:3px;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+.bgsw button{border:0;width:26px;height:26px;border-radius:8px;cursor:pointer}
+.bgsw button.on{outline:2.5px solid var(--sel);outline-offset:1px}
+.board{position:relative;border:1.5px solid var(--line);border-radius:18px;min-height:460px;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;margin-bottom:10px}
 .board.bg-check{background-color:#fff;background-image:linear-gradient(45deg,#eee 25%,transparent 25%),linear-gradient(-45deg,#eee 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#eee 75%),linear-gradient(-45deg,transparent 75%,#eee 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}
-.board.bg-white{background:#fff}
-.board.bg-dark{background:#2b2b2b}
-.item{position:absolute;cursor:grab;touch-action:none;border-radius:8px;outline:2px solid transparent;outline-offset:2px;transition:outline-color .12s}
-.item img{display:block;width:100%;height:100%;pointer-events:none;-webkit-user-drag:none}
+.board.bg-white{background:#fff}.board.bg-dark{background:#2b2b2b}
+.item{position:absolute;cursor:grab;touch-action:none;border-radius:10px;outline:2px solid transparent;outline-offset:3px;transition:outline-color .12s}
+.item img{display:block;width:100%;height:100%;pointer-events:none;-webkit-user-drag:none;transition:transform .12s}
 .item:hover{outline-color:rgba(47,125,225,.35)}
+.item:hover img{transform:scale(1.04)}
 .item.sel{outline-color:var(--sel);background:rgba(47,125,225,.07)}
 .item.dragging{cursor:grabbing}
-.marquee{position:absolute;border:1.5px dashed var(--sel);background:rgba(47,125,225,.1);pointer-events:none;display:none}
-.tip{font-size:12px;color:var(--muted);margin:0 0 24px;line-height:1.6}
+.item .lb{position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;background:rgba(255,253,248,.95);padding:1px 6px;border-radius:6px}
+.item:hover .lb{opacity:1}
+.marquee{position:absolute;border:1.5px dashed var(--sel);background:rgba(47,125,225,.1);pointer-events:none;display:none;z-index:30}
+.tip{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;margin:0 0 24px}
+.tip div{font-size:12.5px;color:var(--muted);line-height:1.6;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .tip b{color:var(--ink)}
-.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:50}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:70;max-width:92vw;text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 footer{font-size:12px;color:var(--muted);text-align:center;padding:10px 0 30px}
-@media(max-width:640px){header nav{display:none}header h1{font-size:17px;white-space:nowrap}header .logo{height:38px}header nav a{padding:5px 8px;font-size:12px}.btn{padding:7px 10px;font-size:12.5px}}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .side{position:static;max-height:none;overflow:visible;padding:0}
+  .side h2{display:none}
+  .packs{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .pack .pv{grid-template-columns:repeat(4,1fr)}.pack .pv img:nth-child(n+5){display:none}
+  .pack small{display:none}.peek{display:none!important}
+}
+@media(max-width:560px){
+  .wrap{padding:0 14px}header .logo{height:40px}.topnav a{font-size:13px;padding:6px 9px}
+  .hero h1{font-size:21px}.packs{grid-template-columns:repeat(2,1fr)}
+  .btn{padding:7px 10px;font-size:12.5px}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-  <a href="index.html" title="쌤플 고르기"><img class="logo" src="assets/logo-capy.png" alt="쌤플레이"></a>
-  <h1>투명 PNG 스티커</h1>
-  <nav><a href="index.html">쌤플 고르기</a><a href="about.html">사이트 소개</a></nav>
+  <a href="index.html" title="쌤플레이 홈"><img class="logo" src="assets/logo-capy.png" alt="쌤플레이"></a>
+  <nav class="topnav" aria-label="주 메뉴"><a href="index.html">쌤플 프롬프트</a><a href="stickers.html" class="on">PPT 치트키</a></nav>
+  <div class="menu"><button id="menuBtn" class="hamb" aria-label="더 보기 메뉴" aria-expanded="false"><span class="hb"><i></i><i></i><i></i></span></button>
+    <nav id="menuList" class="menulist" hidden><a href="index.html">쌤플 고르기</a><a href="index.html#fav">♥ 찜 목록</a><a href="stickers.html">🧩 PPT 치트키</a><a href="about.html">사이트 소개</a></nav></div>
 </header>
-<p class="lead">PPT와 학습지에 바로 붙여 쓰는 투명 배경 스티커입니다. <b>끌어서 옮기고</b>, 빈 곳을 <b>드래그해 여러 개를 고른 뒤</b> 복사하면 고른 배치 그대로 한 장의 투명 PNG로 붙여넣을 수 있어요.</p>
-<div class="tabs" id="tabs" role="tablist" aria-label="스티커 묶음"></div>
-<div class="toolbar">
-  <button class="btn primary" id="copyBtn" disabled>📋 선택 복사</button>
-  <button class="btn" id="saveBtn" disabled>📁 선택 저장</button>
-  <button class="btn" id="allBtn">전체 선택</button>
-  <button class="btn" id="noneBtn">선택 해제</button>
-  <button class="btn" id="resetBtn">배치 초기화</button>
-  <span class="sp"></span>
-  <span class="selinfo" id="selInfo">0개 선택</span>
-  <span class="bgsw" role="group" aria-label="배경"><button data-bg="check" class="on" title="투명 확인(체크무늬)" style="background:conic-gradient(#ddd 25%,#fff 0 50%,#ddd 0 75%,#fff 0) 0 0/12px 12px"></button><button data-bg="white" title="흰 배경" style="background:#fff"></button><button data-bg="dark" title="어두운 배경" style="background:#2b2b2b"></button></span>
+<div class="hero">
+  <h1>바로 복붙 가능한 <em>PPT 치트키</em> 모음집!</h1>
+  <p>모두 투명 배경이에요. 끌어서 배치하고, 빈 곳을 드래그해 여러 개를 고른 뒤 <b>선택 복사</b> → PPT에서 <b>Ctrl+V</b>.</p>
 </div>
-<div class="board bg-check" id="board"><div class="marquee" id="marquee"></div></div>
-<p class="tip"><b>사용법</b> · 스티커를 누르면 선택, Shift+클릭으로 추가 선택(휴대폰은 탭할 때마다 추가) · 빈 곳을 드래그하면 영역 안 스티커가 모두 선택(PC) · 선택한 스티커를 끌면 함께 이동 · 스티커를 더블클릭하면 그 하나만 바로 복사 · Ctrl+C 복사, Ctrl+A 전체 선택<br><b>PPT에 붙여넣기</b> · 복사 후 슬라이드에서 Ctrl+V. 배경이 하얗게 붙으면 <b>📁 선택 저장</b>으로 받은 PNG를 [삽입 → 그림]으로 넣으세요.</p>
+<div class="layout">
+  <aside class="side"><h2>치트키 묶음 · 마우스를 올리면 전체 미리보기</h2><div class="packs" id="tabs" role="tablist" aria-label="치트키 묶음"></div></aside>
+  <section class="main">
+    <div class="toolbar">
+      <button class="btn primary" id="copyBtn" disabled>📋 선택 복사</button>
+      <button class="btn" id="saveBtn" disabled>📁 선택 저장</button>
+      <button class="btn" id="allBtn">전체 선택</button>
+      <button class="btn" id="noneBtn">선택 해제</button>
+      <button class="btn" id="resetBtn">↺ 배치 초기화</button>
+      <span class="sp"></span>
+      <label class="chk" title="흰 슬라이드에 붙일 때, 배경이 검게 나오는 PPT라면 켜세요"><input type="checkbox" id="whiteBg">흰 배경으로 복사</label>
+      <span class="selinfo" id="selInfo">0개 선택</span>
+      <span class="bgsw" role="group" aria-label="미리보기 배경"><button data-bg="check" class="on" title="투명 확인(체크무늬)" style="background:conic-gradient(#ddd 25%,#fff 0 50%,#ddd 0 75%,#fff 0) 0 0/12px 12px"></button><button data-bg="white" title="흰 배경" style="background:#fff;border:1px solid #ddd"></button><button data-bg="dark" title="어두운 배경" style="background:#2b2b2b"></button></span>
+    </div>
+    <div class="board bg-check" id="board"><div class="marquee" id="marquee"></div></div>
+    <div class="tip">
+      <div><b>고르기</b> · 클릭으로 선택, Shift+클릭으로 추가, 빈 곳을 드래그하면 영역 선택(휴대폰은 탭할 때마다 추가). 선택한 것들은 함께 움직여요.</div>
+      <div><b>복사</b> · 📋 선택 복사 또는 Ctrl+C, 하나만은 더블클릭. 고른 배치 그대로 한 장의 투명 PNG가 복사돼요.</div>
+      <div><b>PPT에 검은 배경이 생기면</b> · PPT에서 <b>Ctrl+Alt+V(선택하여 붙여넣기) → 그림(PNG)</b>을 고르거나, <b>📁 선택 저장</b> 후 [삽입 → 그림]으로 넣으세요. 흰 슬라이드라면 “흰 배경으로 복사”를 켜도 돼요.</div>
+    </div>
+  </section>
 </div>
-<footer>쌤플레이 · 스티커는 학교 수업·학습 자료에 자유롭게 쓰세요</footer>
+</div>
+<div class="peek" id="peek"><b></b><div class="g"></div></div>
+<footer>쌤플레이 · 치트키는 학교 수업·학습 자료에 자유롭게 쓰세요</footer>
 <div class="toast" id="toast"></div>
 <script>
-const PACKS=[{"key": "capy", "name": "카피바라 캐릭터", "dir": "assets/stickers/capy", "items": [{"file": "01.png", "w": 333, "h": 360, "label": "인사"}, {"file": "02.png", "w": 312, "h": 349, "label": "책 읽기"}, {"file": "03.png", "w": 346, "h": 346, "label": "필기"}, {"file": "04.png", "w": 334, "h": 356, "label": "질문"}, {"file": "05.png", "w": 360, "h": 330, "label": "엄지 척"}, {"file": "06.png", "w": 359, "h": 337, "label": "박수"}, {"file": "07.png", "w": 323, "h": 335, "label": "생각 중"}, {"file": "08.png", "w": 341, "h": 336, "label": "아이디어"}, {"file": "09.png", "w": 357, "h": 347, "label": "축하"}, {"file": "10.png", "w": 348, "h": 337, "label": "하트"}, {"file": "11.png", "w": 360, "h": 263, "label": "쉬는 중"}, {"file": "12.png", "w": 360, "h": 338, "label": "응원"}]}, {"key": "icons", "name": "수업 아이콘", "dir": "assets/stickers/icons", "items": [{"file": "01.png", "w": 301, "h": 316, "label": "연필"}, {"file": "02.png", "w": 343, "h": 245, "label": "책"}, {"file": "03.png", "w": 344, "h": 345, "label": "전구"}, {"file": "04.png", "w": 299, "h": 300, "label": "시계"}, {"file": "05.png", "w": 333, "h": 336, "label": "돋보기"}, {"file": "06.png", "w": 292, "h": 288, "label": "체크"}, {"file": "07.png", "w": 309, "h": 293, "label": "별"}, {"file": "08.png", "w": 341, "h": 330, "label": "트로피"}, {"file": "09.png", "w": 290, "h": 360, "label": "지구본"}, {"file": "10.png", "w": 258, "h": 308, "label": "계산기"}, {"file": "11.png", "w": 323, "h": 310, "label": "물음표"}, {"file": "12.png", "w": 318, "h": 276, "label": "하트"}]}, {"key": "subjects", "name": "과목·학교생활", "dir": "assets/stickers/subjects", "items": [{"file": "01.png", "w": 324, "h": 287, "label": "국어"}, {"file": "02.png", "w": 359, "h": 287, "label": "수학"}, {"file": "03.png", "w": 326, "h": 284, "label": "과학"}, {"file": "04.png", "w": 331, "h": 295, "label": "사회"}, {"file": "05.png", "w": 315, "h": 293, "label": "영어"}, {"file": "06.png", "w": 328, "h": 306, "label": "음악"}, {"file": "07.png", "w": 344, "h": 294, "label": "미술"}, {"file": "08.png", "w": 358, "h": 272, "label": "체육"}, {"file": "09.png", "w": 329, "h": 293, "label": "정보"}, {"file": "10.png", "w": 357, "h": 259, "label": "급식"}, {"file": "11.png", "w": 319, "h": 308, "label": "가방"}, {"file": "12.png", "w": 360, "h": 286, "label": "학교"}]}, {"key": "labels", "name": "문구 배지", "dir": "assets/stickers/labels", "items": [{"file": "01.png", "w": 360, "h": 224, "label": "참 잘했어요"}, {"file": "02.png", "w": 360, "h": 229, "label": "중요!"}, {"file": "03.png", "w": 360, "h": 235, "label": "정답"}, {"file": "04.png", "w": 360, "h": 184, "label": "다시 보기"}, {"file": "05.png", "w": 360, "h": 219, "label": "시험에 나와요"}, {"file": "06.png", "w": 360, "h": 180, "label": "꼭 기억!"}, {"file": "07.png", "w": 360, "h": 195, "label": "오늘의 목표"}, {"file": "08.png", "w": 360, "h": 196, "label": "질문 있어요?"}, {"file": "09.png", "w": 360, "h": 214, "label": "모둠 활동"}, {"file": "10.png", "w": 360, "h": 169, "label": "발표 시간"}, {"file": "11.png", "w": 360, "h": 191, "label": "쉬는 시간"}, {"file": "12.png", "w": 360, "h": 179, "label": "복습하기"}]}, {"key": "emoji", "name": "이모티콘", "dir": "assets/stickers/emoji", "items": [{"file": "01.png", "w": 360, "h": 308, "label": "웃음"}, {"file": "02.png", "w": 358, "h": 288, "label": "윙크"}, {"file": "03.png", "w": 306, "h": 289, "label": "하트 눈"}, {"file": "04.png", "w": 299, "h": 353, "label": "놀람"}, {"file": "05.png", "w": 299, "h": 297, "label": "생각 중"}, {"file": "06.png", "w": 332, "h": 284, "label": "엄지 척"}, {"file": "07.png", "w": 349, "h": 297, "label": "박수"}, {"file": "08.png", "w": 297, "h": 294, "label": "울먹임"}, {"file": "09.png", "w": 302, "h": 301, "label": "화남"}, {"file": "10.png", "w": 319, "h": 329, "label": "졸림"}, {"file": "11.png", "w": 360, "h": 328, "label": "축하"}, {"file": "12.png", "w": 341, "h": 342, "label": "아이디어"}]}, {"key": "ppt", "name": "PPT 꾸미기", "dir": "assets/stickers/ppt", "items": [{"file": "01.png", "w": 287, "h": 287, "label": "1"}, {"file": "02.png", "w": 287, "h": 287, "label": "2"}, {"file": "03.png", "w": 288, "h": 287, "label": "3"}, {"file": "04.png", "w": 289, "h": 288, "label": "4"}, {"file": "05.png", "w": 288, "h": 287, "label": "5"}, {"file": "06.png", "w": 282, "h": 226, "label": "오른쪽 화살표"}, {"file": "07.png", "w": 301, "h": 217, "label": "곡선 화살표"}, {"file": "08.png", "w": 326, "h": 177, "label": "양방향 화살표"}, {"file": "09.png", "w": 318, "h": 242, "label": "말풍선"}, {"file": "10.png", "w": 327, "h": 287, "label": "생각 풍선"}, {"file": "11.png", "w": 360, "h": 152, "label": "제목 리본"}, {"file": "12.png", "w": 274, "h": 263, "label": "메모지"}, {"file": "13.png", "w": 202, "h": 188, "label": "체크박스"}, {"file": "14.png", "w": 360, "h": 117, "label": "형광펜"}, {"file": "15.png", "w": 237, "h": 230, "label": "반짝임"}]}];
+const PACKS=[{"key": "capy", "name": "카피바라 캐릭터", "dir": "assets/stickers/capy", "items": [{"file": "01.png", "w": 333, "h": 360, "label": "인사"}, {"file": "02.png", "w": 312, "h": 349, "label": "책 읽기"}, {"file": "03.png", "w": 346, "h": 346, "label": "필기"}, {"file": "04.png", "w": 334, "h": 356, "label": "질문"}, {"file": "05.png", "w": 360, "h": 330, "label": "엄지 척"}, {"file": "06.png", "w": 359, "h": 337, "label": "박수"}, {"file": "07.png", "w": 323, "h": 335, "label": "생각 중"}, {"file": "08.png", "w": 341, "h": 336, "label": "아이디어"}, {"file": "09.png", "w": 357, "h": 347, "label": "축하"}, {"file": "10.png", "w": 348, "h": 337, "label": "하트"}, {"file": "11.png", "w": 360, "h": 263, "label": "쉬는 중"}, {"file": "12.png", "w": 360, "h": 338, "label": "응원"}], "preview": [0, 3, 8, 11]}, {"key": "callig", "name": "캘리그라피", "dir": "assets/stickers/callig", "items": [{"file": "01.png", "w": 420, "h": 147, "label": "참 잘했어요"}, {"file": "02.png", "w": 420, "h": 159, "label": "수고했어요"}, {"file": "03.png", "w": 420, "h": 145, "label": "고맙습니다"}, {"file": "04.png", "w": 420, "h": 127, "label": "사랑합니다"}, {"file": "05.png", "w": 415, "h": 193, "label": "힘내요"}, {"file": "06.png", "w": 420, "h": 164, "label": "할 수 있어!"}, {"file": "07.png", "w": 420, "h": 221, "label": "새 학기 새 출발"}, {"file": "08.png", "w": 420, "h": 199, "label": "축 졸업"}, {"file": "09.png", "w": 420, "h": 204, "label": "스승의 은혜 감사합니다"}, {"file": "10.png", "w": 420, "h": 151, "label": "꿈을 향해"}, {"file": "11.png", "w": 420, "h": 229, "label": "오늘도 행복하게"}, {"file": "12.png", "w": 420, "h": 227, "label": "함께라서 좋아요"}], "preview": [0, 2, 4, 7]}, {"key": "buttons", "name": "PPT 버튼", "dir": "assets/stickers/buttons", "items": [{"file": "01.png", "w": 341, "h": 226, "label": "시작하기"}, {"file": "02.png", "w": 334, "h": 226, "label": "다음"}, {"file": "03.png", "w": 337, "h": 226, "label": "이전"}, {"file": "04.png", "w": 337, "h": 226, "label": "처음으로"}, {"file": "05.png", "w": 337, "h": 226, "label": "정답 확인"}, {"file": "06.png", "w": 408, "h": 226, "label": "다시 하기"}, {"file": "07.png", "w": 401, "h": 227, "label": "힌트"}, {"file": "08.png", "w": 412, "h": 226, "label": "퀴즈 시작"}, {"file": "09.png", "w": 408, "h": 226, "label": "결과 보기"}, {"file": "10.png", "w": 274, "h": 273, "label": "O"}, {"file": "11.png", "w": 276, "h": 273, "label": "X"}, {"file": "12.png", "w": 273, "h": 273, "label": "재생"}, {"file": "13.png", "w": 272, "h": 274, "label": "일시정지"}, {"file": "14.png", "w": 276, "h": 274, "label": "소리"}, {"file": "15.png", "w": 274, "h": 273, "label": "메뉴"}], "preview": [0, 4, 9, 10]}, {"key": "labels", "name": "문구 배지", "dir": "assets/stickers/labels", "items": [{"file": "01.png", "w": 360, "h": 224, "label": "참 잘했어요"}, {"file": "02.png", "w": 360, "h": 229, "label": "중요!"}, {"file": "03.png", "w": 360, "h": 235, "label": "정답"}, {"file": "04.png", "w": 360, "h": 184, "label": "다시 보기"}, {"file": "05.png", "w": 360, "h": 219, "label": "시험에 나와요"}, {"file": "06.png", "w": 360, "h": 180, "label": "꼭 기억!"}, {"file": "07.png", "w": 360, "h": 195, "label": "오늘의 목표"}, {"file": "08.png", "w": 360, "h": 196, "label": "질문 있어요?"}, {"file": "09.png", "w": 360, "h": 214, "label": "모둠 활동"}, {"file": "10.png", "w": 360, "h": 169, "label": "발표 시간"}, {"file": "11.png", "w": 360, "h": 191, "label": "쉬는 시간"}, {"file": "12.png", "w": 360, "h": 179, "label": "복습하기"}], "preview": [0, 1, 2, 4]}, {"key": "icons", "name": "수업 아이콘", "dir": "assets/stickers/icons", "items": [{"file": "01.png", "w": 301, "h": 316, "label": "연필"}, {"file": "02.png", "w": 343, "h": 245, "label": "책"}, {"file": "03.png", "w": 344, "h": 345, "label": "전구"}, {"file": "04.png", "w": 299, "h": 300, "label": "시계"}, {"file": "05.png", "w": 333, "h": 336, "label": "돋보기"}, {"file": "06.png", "w": 292, "h": 288, "label": "체크"}, {"file": "07.png", "w": 309, "h": 293, "label": "별"}, {"file": "08.png", "w": 341, "h": 330, "label": "트로피"}, {"file": "09.png", "w": 290, "h": 360, "label": "지구본"}, {"file": "10.png", "w": 258, "h": 308, "label": "계산기"}, {"file": "11.png", "w": 323, "h": 310, "label": "물음표"}, {"file": "12.png", "w": 318, "h": 276, "label": "하트"}], "preview": [2, 6, 7, 8]}, {"key": "ppt", "name": "PPT 꾸미기", "dir": "assets/stickers/ppt", "items": [{"file": "01.png", "w": 287, "h": 287, "label": "1"}, {"file": "02.png", "w": 287, "h": 287, "label": "2"}, {"file": "03.png", "w": 288, "h": 287, "label": "3"}, {"file": "04.png", "w": 289, "h": 288, "label": "4"}, {"file": "05.png", "w": 288, "h": 287, "label": "5"}, {"file": "06.png", "w": 282, "h": 226, "label": "오른쪽 화살표"}, {"file": "07.png", "w": 301, "h": 217, "label": "곡선 화살표"}, {"file": "08.png", "w": 326, "h": 177, "label": "양방향 화살표"}, {"file": "09.png", "w": 318, "h": 242, "label": "말풍선"}, {"file": "10.png", "w": 327, "h": 287, "label": "생각 풍선"}, {"file": "11.png", "w": 360, "h": 152, "label": "제목 리본"}, {"file": "12.png", "w": 274, "h": 263, "label": "메모지"}, {"file": "13.png", "w": 202, "h": 188, "label": "체크박스"}, {"file": "14.png", "w": 360, "h": 117, "label": "형광펜"}, {"file": "15.png", "w": 237, "h": 230, "label": "반짝임"}], "preview": [0, 5, 8, 10]}, {"key": "subjects", "name": "과목·학교생활", "dir": "assets/stickers/subjects", "items": [{"file": "01.png", "w": 324, "h": 287, "label": "국어"}, {"file": "02.png", "w": 359, "h": 287, "label": "수학"}, {"file": "03.png", "w": 326, "h": 284, "label": "과학"}, {"file": "04.png", "w": 331, "h": 295, "label": "사회"}, {"file": "05.png", "w": 315, "h": 293, "label": "영어"}, {"file": "06.png", "w": 328, "h": 306, "label": "음악"}, {"file": "07.png", "w": 344, "h": 294, "label": "미술"}, {"file": "08.png", "w": 358, "h": 272, "label": "체육"}, {"file": "09.png", "w": 329, "h": 293, "label": "정보"}, {"file": "10.png", "w": 357, "h": 259, "label": "급식"}, {"file": "11.png", "w": 319, "h": 308, "label": "가방"}, {"file": "12.png", "w": 360, "h": 286, "label": "학교"}], "preview": [0, 2, 5, 6]}, {"key": "emoji", "name": "이모티콘", "dir": "assets/stickers/emoji", "items": [{"file": "01.png", "w": 360, "h": 308, "label": "웃음"}, {"file": "02.png", "w": 358, "h": 288, "label": "윙크"}, {"file": "03.png", "w": 306, "h": 289, "label": "하트 눈"}, {"file": "04.png", "w": 299, "h": 353, "label": "놀람"}, {"file": "05.png", "w": 299, "h": 297, "label": "생각 중"}, {"file": "06.png", "w": 332, "h": 284, "label": "엄지 척"}, {"file": "07.png", "w": 349, "h": 297, "label": "박수"}, {"file": "08.png", "w": 297, "h": 294, "label": "울먹임"}, {"file": "09.png", "w": 302, "h": 301, "label": "화남"}, {"file": "10.png", "w": 319, "h": 329, "label": "졸림"}, {"file": "11.png", "w": 360, "h": 328, "label": "축하"}, {"file": "12.png", "w": 341, "h": 342, "label": "아이디어"}], "preview": [0, 2, 5, 10]}];
 const $=id=>document.getElementById(id);
 const board=$('board'),marq=$('marquee');
 let pack=PACKS[0].key,items=[],sel=new Set();
-const DISPLAY=118,GAP=22;
-function toast(m){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2000)}
-function renderTabs(){$('tabs').replaceChildren(...PACKS.map(p=>{const b=document.createElement('button');b.className='tab'+(p.key===pack?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',p.key===pack);b.innerHTML=`<span></span><span class="n">${p.items.length}</span>`;b.firstChild.textContent=p.name;b.onclick=()=>{pack=p.key;try{localStorage.setItem('stkPack',pack)}catch{}renderTabs();layout()};return b}))}
+const DISPLAY=124,GAP=26;
+function toast(m,ms=2200){$('toast').textContent=m;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),ms)}
+function setMenu(o){$('menuList').hidden=!o;$('menuBtn').classList.toggle('open',o);$('menuBtn').setAttribute('aria-expanded',o)}
+$('menuBtn').onclick=e=>{e.stopPropagation();setMenu($('menuList').hidden)};document.addEventListener('click',e=>{if(!e.target.closest('.menu'))setMenu(false)});
+const DESC={capy:'쌤플레이 마스코트 동작 12가지',callig:'게시판·카드용 손글씨 문구',buttons:'퀴즈·게임 하이퍼링크 버튼',labels:'학습지·PPT 강조 문구',icons:'수업에 자주 쓰는 아이콘',ppt:'번호·화살표·말풍선·리본',subjects:'과목과 학교생활 아이콘',emoji:'표정·반응 이모티콘'};
+const src=(p,it)=>`${p.dir}/${it.file}`;
+function showPeek(p,btn){if(innerWidth<=900)return;const pk=$('peek');pk.querySelector('b').textContent=`${p.name} · ${p.items.length}개`;
+  pk.querySelector('.g').replaceChildren(...p.items.map(it=>{const im=new Image();im.src=src(p,it);im.alt='';return im}));
+  const r=btn.getBoundingClientRect();pk.style.left=(r.right+12)+'px';pk.classList.add('show');const h=pk.offsetHeight;pk.style.top=Math.max(8,Math.min(r.top,innerHeight-h-8))+'px'}
+function renderTabs(){$('tabs').replaceChildren(...PACKS.map(p=>{const b=document.createElement('button');b.className='pack'+(p.key===pack?' active':'');b.setAttribute('role','tab');b.setAttribute('aria-selected',p.key===pack);
+  const pv=document.createElement('div');pv.className='pv';p.items.slice(0,6).forEach(it=>{const im=new Image();im.src=src(p,it);im.alt='';im.loading='lazy';pv.append(im)});
+  const nm=document.createElement('b');nm.textContent=p.name;const n=document.createElement('span');n.textContent=p.items.length+'개';nm.append(n);const sm=document.createElement('small');sm.textContent=DESC[p.key]||'';
+  b.append(pv,nm,sm);b.onmouseenter=()=>showPeek(p,b);b.onmouseleave=()=>$('peek').classList.remove('show');
+  b.onclick=()=>{$('peek').classList.remove('show');pack=p.key;try{localStorage.setItem('stkPack',pack)}catch{}renderTabs();layout();if(innerWidth<=900)board.scrollIntoView({behavior:'smooth',block:'start'})};return b}))}
 function layout(){
   board.querySelectorAll('.item').forEach(e=>e.remove());sel.clear();
   const p=PACKS.find(x=>x.key===pack);const W=board.clientWidth;
@@ -93,23 +162,22 @@ function layout(){
   items=p.items.map((it,i)=>{const r=Math.min(size/it.w,size/it.h);const w=Math.round(it.w*r),h=Math.round(it.h*r);
     const cx=ox+(i%cols)*(size+GAP)+(size-w)/2,cy=GAP+Math.floor(i/cols)*(size+GAP)+(size-h)/2;
     const el=document.createElement('div');el.className='item';el.style.cssText=`left:${cx}px;top:${cy}px;width:${w}px;height:${h}px`;el.tabIndex=0;el.setAttribute('role','button');el.setAttribute('aria-label',(it.label||'스티커 '+(i+1))+' — 끌어서 옮기기, 더블클릭으로 복사');
-    const img=new Image();img.src=`${p.dir}/${it.file}`;img.alt='';img.draggable=false;img.decoding='async';el.append(img);board.append(el);
-    return {el,img,x:cx,y:cy,w,h,src:img.src}});
+    const img=new Image();img.src=src(p,it);img.alt='';img.draggable=false;img.decoding='async';const lb=document.createElement('span');lb.className='lb';lb.textContent=it.label||'';el.append(img,lb);board.append(el);
+    return {el,img,x:cx,y:cy,w,h,url:new URL(src(p,it),location.href).href}});
   board.style.height=(GAP*2+Math.ceil(p.items.length/cols)*(size+GAP))+'px';syncSel();
 }
 function place(o){o.el.style.left=o.x+'px';o.el.style.top=o.y+'px'}
 function syncSel(){items.forEach((o,i)=>o.el.classList.toggle('sel',sel.has(i)));$('selInfo').textContent=sel.size+'개 선택';$('copyBtn').disabled=$('saveBtn').disabled=!sel.size}
-// pointer interaction
 let mode=null,start=null,orig=null,moved=false,base=null;
 board.addEventListener('pointerdown',e=>{
   const rect=board.getBoundingClientRect();const px=e.clientX-rect.left,py=e.clientY-rect.top;
-  const el=e.target.closest('.item');start={x:px,y:py};moved=false;board.setPointerCapture(e.pointerId);
-  if(el){const i=items.findIndex(o=>o.el===el);
+  const el=e.target.closest('.item');start={x:px,y:py};moved=false;
+  if(el){board.setPointerCapture(e.pointerId);const i=items.findIndex(o=>o.el===el);
     if(e.shiftKey||e.ctrlKey||e.metaKey||(e.pointerType==='touch'&&sel.size&&!sel.has(i))){sel.has(i)&&e.pointerType!=='touch'?sel.delete(i):sel.add(i)}else if(!sel.has(i)){sel.clear();sel.add(i)}
-    syncSel();mode='move';orig=[...sel].map(k=>({k,x:items[k].x,y:items[k].y}));items.forEach(o=>o.el.classList.remove('dragging'));el.classList.add('dragging');
+    syncSel();mode='move';orig=[...sel].map(k=>({k,x:items[k].x,y:items[k].y}));el.classList.add('dragging');
     const top=Math.max(...items.map(o=>+o.el.style.zIndex||0))+1;[...sel].forEach(k=>items[k].el.style.zIndex=top)}
-  else if(e.pointerType==='touch'){board.releasePointerCapture(e.pointerId);if(!e.shiftKey){sel.clear();syncSel()}return}
-  else{mode='marquee';base=(e.shiftKey||e.ctrlKey||e.metaKey)?new Set(sel):new Set();marq.style.cssText=`display:block;left:${px}px;top:${py}px;width:0;height:0`}
+  else if(e.pointerType==='touch'){if(!e.shiftKey){sel.clear();syncSel()}}
+  else{board.setPointerCapture(e.pointerId);mode='marquee';base=(e.shiftKey||e.ctrlKey||e.metaKey)?new Set(sel):new Set();marq.style.cssText=`display:block;left:${px}px;top:${py}px;width:0;height:0`}
 });
 board.addEventListener('pointermove',e=>{if(!mode)return;const rect=board.getBoundingClientRect();const px=e.clientX-rect.left,py=e.clientY-rect.top;const dx=px-start.x,dy=py-start.y;if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
   if(mode==='move'){const W=board.clientWidth,H=board.clientHeight;orig.forEach(({k,x,y})=>{const o=items[k];o.x=Math.min(Math.max(-o.w*.5,x+dx),W-o.w*.5);o.y=Math.min(Math.max(-o.h*.5,y+dy),H-o.h*.5);place(o)})}
@@ -118,26 +186,34 @@ board.addEventListener('pointermove',e=>{if(!mode)return;const rect=board.getBou
 function endPointer(){if(mode==='marquee'){marq.style.display='none';if(!moved&&!base.size){sel.clear();syncSel()}}items.forEach(o=>o.el.classList.remove('dragging'));mode=null}
 board.addEventListener('pointerup',endPointer);board.addEventListener('pointercancel',endPointer);
 board.addEventListener('dblclick',e=>{const el=e.target.closest('.item');if(!el)return;const i=items.findIndex(o=>o.el===el);sel=new Set([i]);syncSel();copySel()});
-// compose selected items into one transparent PNG
 const SCALE=2.6;
-async function composeBlob(idx){const list=idx.map(k=>items[k]);await Promise.all(list.map(o=>o.img.decode().catch(()=>{})));
+async function composeCanvas(idx){const list=idx.map(k=>items[k]);await Promise.all(list.map(o=>o.img.decode().catch(()=>{})));
   const minx=Math.min(...list.map(o=>o.x)),miny=Math.min(...list.map(o=>o.y)),maxx=Math.max(...list.map(o=>o.x+o.w)),maxy=Math.max(...list.map(o=>o.y+o.h));
   const c=document.createElement('canvas');c.width=Math.ceil((maxx-minx)*SCALE);c.height=Math.ceil((maxy-miny)*SCALE);const g=c.getContext('2d');g.imageSmoothingQuality='high';
+  if($('whiteBg').checked){g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height)}
   [...idx].sort((a,b)=>(+items[a].el.style.zIndex||0)-(+items[b].el.style.zIndex||0)).forEach(k=>{const o=items[k];g.drawImage(o.img,(o.x-minx)*SCALE,(o.y-miny)*SCALE,o.w*SCALE,o.h*SCALE)});
-  return new Promise(r=>c.toBlob(r,'image/png'))}
+  return c}
+const toBlob=c=>new Promise(r=>c.toBlob(r,'image/png'));
 async function copySel(){if(!sel.size)return;const idx=[...sel];
-  try{if(!window.ClipboardItem||!navigator.clipboard?.write)throw 0;await navigator.clipboard.write([new ClipboardItem({'image/png':composeBlob(idx)})]);toast(idx.length+'개 복사 완료 · PPT에서 Ctrl+V')}
+  try{if(!window.ClipboardItem||!navigator.clipboard?.write)throw 0;
+    const c=await composeCanvas(idx);const png=await toBlob(c);
+    // Office reads the HTML flavour and keeps PNG transparency; a bare image/png often lands as a bitmap with a black background
+    const s=idx.length===1&&!$('whiteBg').checked?items[idx[0]].url:c.toDataURL('image/png');
+    const html=new Blob([`<img src="${s}" width="${Math.round(c.width/SCALE*1.5)}" height="${Math.round(c.height/SCALE*1.5)}">`],{type:'text/html'});
+    await navigator.clipboard.write([new ClipboardItem({'image/png':png,'text/html':html})]);
+    toast(idx.length+'개 복사 완료 · PPT에서 Ctrl+V (검게 나오면 Ctrl+Alt+V → 그림)',3200)}
   catch{toast('이 브라우저는 이미지 복사가 안 돼요. 저장해서 넣어 주세요.');saveSel()}}
-async function saveSel(){if(!sel.size)return;const blob=await composeBlob([...sel]);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`쌤플레이-스티커-${pack}-${sel.size}개.png`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast('PNG 저장 완료')}
+async function saveSel(){if(!sel.size)return;const blob=await toBlob(await composeCanvas([...sel]));const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`쌤플레이-PPT치트키-${pack}-${sel.size}개.png`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast('PNG 저장 완료 · PPT [삽입 → 그림]으로 넣으세요')}
 $('copyBtn').onclick=copySel;$('saveBtn').onclick=saveSel;
 $('allBtn').onclick=()=>{sel=new Set(items.map((_,i)=>i));syncSel()};$('noneBtn').onclick=()=>{sel.clear();syncSel()};$('resetBtn').onclick=layout;
 document.querySelectorAll('.bgsw button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bgsw button').forEach(x=>x.classList.toggle('on',x===b));board.className='board bg-'+b.dataset.bg;try{localStorage.setItem('stkBg',b.dataset.bg)}catch{}});
+$('whiteBg').onchange=()=>{try{localStorage.setItem('stkWhite',$('whiteBg').checked?'1':'0')}catch{}};
 document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;const mod=e.ctrlKey||e.metaKey;
   if(mod&&e.key.toLowerCase()==='c'&&sel.size){e.preventDefault();copySel()}
   if(mod&&e.key.toLowerCase()==='a'){e.preventDefault();sel=new Set(items.map((_,i)=>i));syncSel()}
-  if(e.key==='Escape'){sel.clear();syncSel()}
+  if(e.key==='Escape'){sel.clear();syncSel();setMenu(false)}
   if(e.key==='Enter'&&e.target.classList.contains('item')){const i=items.findIndex(o=>o.el===e.target);sel=new Set([i]);syncSel();copySel()}});
-try{const sp=localStorage.getItem('stkPack');if(PACKS.some(p=>p.key===sp))pack=sp;const bg=localStorage.getItem('stkBg');if(bg)document.querySelector(`.bgsw button[data-bg="${bg}"]`)?.click()}catch{}
+try{const sp=localStorage.getItem('stkPack');if(PACKS.some(p=>p.key===sp))pack=sp;const bg=localStorage.getItem('stkBg');if(bg)document.querySelector(`.bgsw button[data-bg="${bg}"]`)?.click();$('whiteBg').checked=localStorage.getItem('stkWhite')==='1'}catch{}
 let rz;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(!sel.size)layout()},200)});
 renderTabs();layout();
 </script>

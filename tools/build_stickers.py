@@ -14,7 +14,12 @@ PACKS = [
     ('labels', '문구 배지', ['참 잘했어요','중요!','정답','다시 보기','시험에 나와요','꼭 기억!','오늘의 목표','질문 있어요?','모둠 활동','발표 시간','쉬는 시간','복습하기']),
     ('emoji', '이모티콘', ['웃음','윙크','하트 눈','놀람','생각 중','엄지 척','박수','울먹임','화남','졸림','축하','아이디어']),
     ('ppt', 'PPT 꾸미기', ['1','2','3','4','5','오른쪽 화살표','곡선 화살표','양방향 화살표','말풍선','생각 풍선','제목 리본','메모지','체크박스','형광펜','반짝임']),
+    ('callig', '캘리그라피', ['참 잘했어요','수고했어요','고맙습니다','사랑합니다','힘내요','할 수 있어!','새 학기 새 출발','축 졸업','스승의 은혜 감사합니다','꿈을 향해','오늘도 행복하게','함께라서 좋아요']),
+    ('buttons', 'PPT 버튼', ['시작하기','다음','이전','처음으로','정답 확인','다시 하기','힌트','퀴즈 시작','결과 보기','O','X','재생','일시정지','소리','메뉴']),
 ]
+ORDER = ['capy','callig','buttons','labels','icons','ppt','subjects','emoji']
+PREVIEW = {'capy':[0,3,8,11],'callig':[0,2,4,7],'buttons':[0,4,9,10],'labels':[0,1,2,4],'icons':[2,6,7,8],'ppt':[0,5,8,10],'subjects':[0,2,5,6],'emoji':[0,2,5,10]}
+PACKS.sort(key=lambda p: ORDER.index(p[0]) if p[0] in ORDER else 99)
 out = []
 for key, name, labels in PACKS:
     d = os.path.join(ROOT, 'assets', 'stickers', key)
@@ -24,7 +29,7 @@ for key, name, labels in PACKS:
     for i, f in enumerate(files):
         w, h = Image.open(os.path.join(d, f)).size
         items.append({'file': f, 'w': w, 'h': h, 'label': labels[i] if i < len(labels) else ''})
-    out.append({'key': key, 'name': name, 'dir': f'assets/stickers/{key}', 'items': items})
+    out.append({'key': key, 'name': name, 'dir': f'assets/stickers/{key}', 'items': items, 'preview': PREVIEW.get(key, [0, 1, 2, 3])})
 src = io.open(os.path.join(ROOT, 'stickers.src.html'), encoding='utf-8').read()
 io.open(os.path.join(ROOT, 'stickers.html'), 'w', encoding='utf-8', newline='\n').write(src.replace('__PACKS__', json.dumps(out, ensure_ascii=False)))
 print('packs', [(p['key'], len(p['items'])) for p in out])
