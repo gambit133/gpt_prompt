@@ -381,6 +381,8 @@ dialog.guide{width:min(96vw,640px)}
 .primary.gbig{flex:1 1 0;padding:10px 12px;font-size:13.5px;box-shadow:0 3px 0 var(--accent-dark),0 10px 18px -10px rgba(0,0,0,.4)}
 .primary.gbig:active{transform:translateY(3px);box-shadow:0 0 0 var(--accent-dark)}
 .gact-row .gbig{flex:1 1 140px}
+.gimg{display:flex;flex-direction:column;gap:8px;border:1.5px dashed var(--line2);border-radius:14px;padding:10px 12px;background:var(--soft2)}
+.gimg .gact-row{margin-top:0}
 .gstatus{margin:0;font-size:12.5px;color:var(--accent-text);font-weight:700;background:var(--soft2);border-radius:8px;padding:6px 10px}
 .gstatus:empty{display:none}
 @media(max-width:1099px){
@@ -592,9 +594,11 @@ dialog.guide{width:min(96vw,640px)}
     </div>
     <hr class="gdiv">
     <div class="gact">
-      <p class="gnote">예시 이미지 링크는 프롬프트에 들어 있어요. <b>결과가 예시와 많이 다르면 예시 이미지도 직접 넣어 주세요.</b></p>
-      <div class="gact-row"><button id="gCopyImage" class="secondary gbig">🖼️ 예시 이미지 복사 (선택)</button><button id="gSave" class="secondary gbig">📁 예시 이미지 저장</button></div>
-      <p class="gstatus" id="gStatus"></p>
+      <div class="gimg">
+        <p class="gnote"><b>예시 이미지 (선택)</b> 링크는 프롬프트에 들어 있어요. 결과가 예시와 많이 다르면 직접 넣어 주세요.</p>
+        <div class="gact-row"><button id="gCopyImage" class="secondary gbig">🖼️ 복사</button><button id="gSave" class="secondary gbig">📁 저장</button></div>
+        <p class="gstatus" id="gStatus"></p>
+      </div>
       <div class="gact-row"><button id="guideClose" class="secondary gbig">닫기</button></div>
       <p class="gnote" style="margin-top:4px">이제 <b>ChatGPT를 열어서 프롬프트를 붙여넣어 주세요.</b> (Ctrl+V, 휴대폰은 입력창을 길게 눌러 붙여넣기)</p>
       <label class="noshow"><input id="noGuide" type="checkbox">다음부터 이 안내 띄우지 않기 (복사 후 플로팅 안내만 표시)</label>
